@@ -1,9 +1,9 @@
 ## Guide
 ### Workflow  
-.* main branch will be used only for deployment.  
-.* dev branch will be used for working/development. When working on a feature create a new branch from dev.  
-.* Pull changes from remote before you start working and before pushing.  
-.* main branch require pull request.  
+* main branch will be used only for deployment.  
+* dev branch will be used for working/development. When working on a feature create a new branch from dev.  
+* Pull changes from remote before you start working and before pushing.  
+* main branch require pull request.  
 
 
 ### Every day commands      
