@@ -10,7 +10,7 @@ const ContestDetails = () => {
         <div className="contest-details">
             {error && <div>{error}</div>}
             {isPending && <div>Loading...</div>}
-            {contest && <ProblemList problemset={contest.problems} title={contest.title} titlePrefixe={true} />}
+            {contest && <ProblemList problemset={contest.problems} title={contest.title} titlePrefixe={true} contestId={id} />}
         </div>
     );
 }
