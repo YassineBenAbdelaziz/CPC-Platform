@@ -11,15 +11,20 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
 
-app.get('/api/customers', cors(), (req, res) => {
-  const customers = [
-    {id: 1, firstName: 'John', lastName: 'Doe'},
-    {id: 2, firstName: 'Brad', lastName: 'Traversy'},
-    {id: 3, firstName: 'Mary', lastName: 'Swanson'},
-  ];
-
-  res.json(customers);
+app.use((req,res,next) => {
+  const error = new Error("NOT FOUND") ;
+  error.status = 404;
+  next(error);
 });
+
+
+app.use((error,req,res,next) => {
+  res.status(error.status || 500).json({
+      message : error.message,
+  });
+});
+
+
 
 const port = process.env.Server_PORT ;
 
