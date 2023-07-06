@@ -1,6 +1,8 @@
 import { useParams } from "react-router-dom";
 import useFetch from "./useFetch";
 import { useState } from "react";
+import CopyToClipboard from "react-copy-to-clipboard";
+import cpyBtn from './imgs/copy-icon.jpg'
 
 const ProblDetails = () => {
     const { id } = useParams();
@@ -31,14 +33,15 @@ const ProblDetails = () => {
                 <span>
                     <div className="exp" style={{ fontWeight: "bold" }}>Example :</div>
                     {problem.examples && problem.examples.map((example, ind) => (
-
-
                         < div className="exp-text" key={ind}>
                             <div className="input">
-                                <div className="title-inp">
-                                    Input
-                                </div>
-                                {example.input.map((i, index) => (
+                                <CopyToClipboard text={example.input}>
+                                    <div className="title-inp">
+                                        Input
+                                        <img className="copy-btn" src={cpyBtn} alt="copy" />
+                                    </div>
+                                </CopyToClipboard>
+                                {example.input.split('\n').map((i, index) => (
                                     <pre key={index}>{i} <br /></pre>
                                 ))}
                             </div>
@@ -46,7 +49,7 @@ const ProblDetails = () => {
                                 <div className="title-outp">
                                     Output
                                 </div>
-                                {example.output.map((i, index) => (
+                                {example.output.split('\n').map((i, index) => (
                                     <pre key={index}>{i} <br /></pre>
                                 ))}
                             </div>
