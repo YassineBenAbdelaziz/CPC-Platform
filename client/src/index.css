@@ -215,6 +215,8 @@ footer {
 }
 .exp-text .input .title-inp,
 .exp-text .output .title-outp {
+  display: flex;
+  align-items: center;
   padding: 0.25em;
   border-bottom: 1px solid #888;
   text-transform: lowercase;
@@ -228,7 +230,12 @@ footer {
   margin: 0;
   background-color: #efefef;
 }
-
+.copy-btn {
+  margin-left: auto;
+  margin-right: 2px;
+  width: 25px;
+  cursor: pointer;
+}
 
 /* UP Button  */
 

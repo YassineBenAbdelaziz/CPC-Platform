@@ -39,8 +39,8 @@
       "output": "output text",
       "examples": [
         {
-          "input": [],
-          "output": []
+          "input": "",
+          "output": ""
         }
       ],
       "note": "",
@@ -56,12 +56,8 @@
       "output": "Print YES, if the boys can divide the watermelon into two parts, each of them weighing even number of kilos; and NO in the opposite case.",
       "examples": [
         {
-          "input": [
-            8
-          ],
-          "output": [
-            "YES"
-          ]
+          "input": "8",
+          "output": "YES"
         }
       ],
       "score": 80,
@@ -77,25 +73,12 @@
       "output": "Print a single integer — the number of problems the friends will implement on the contest.",
       "examples": [
         {
-          "input": [
-            3,
-            "1 1 0",
-            "1 1 1",
-            "1 0 0"
-          ],
-          "output": [
-            2
-          ]
+          "input": "3\n1 1 0\n1 1 1\n1 0 0",
+          "output": "3"
         },
         {
-          "input": [
-            2,
-            "1 0 0",
-            "0 1 1"
-          ],
-          "output": [
-            1
-          ]
+          "input": "2\n1 0 0\n0 1 1",
+          "output": "1"
         }
       ],
       "note": "In the first sample Petya and Vasya are sure that they know how to solve the first problem and all three of them know how to solve the second problem. That means that they will write solutions for these problems. Only Petya is sure about the solution for the third problem, but that isn't enough, so the friends won't take it.\n\nIn the second sample the friends will only implement the second problem, as Vasya and Tonya are sure about the solution.",
