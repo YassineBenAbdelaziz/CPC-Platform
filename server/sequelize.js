@@ -10,18 +10,27 @@ const sequelize = new Sequelize(
     host: 'localhost',
     dialect: 'postgres',
   });
-/*
-const modelDefiners = [
-  require('./models/user.model'),
+
+const entitiesDefiners = [
+  require('./Entities/contest'),
 ];
 
 // We define all models according to their files.
-for (const modelDefiner of modelDefiners) {
-  modelDefiner(sequelize);
+for (const entityDefiner of entitiesDefiners) {
+  entityDefiner(sequelize);
 }
-*/
+
 // We execute any extra setup after the models are defined, such as adding associations.
 
+
+// Sync
+
+sequelize.sync().then( (data) => {
+    console.log("Data Successfully Sync.");
+  })
+  .catch((err) => {
+    console.log("Error Syncing Tables",err);
+  });
 
 // We export the sequelize connection instance to be used around our app.
 module.exports = sequelize;
