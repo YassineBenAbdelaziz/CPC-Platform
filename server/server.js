@@ -1,31 +1,19 @@
-const express = require('express');
-const cors = require('cors');
-const morgan = require('morgan');
-const bodyParser = require('body-parser') ;
+require('dotenv').config();
 
-const app = express();
-
-app.use(morgan('dev'));
-app.use(cors());
-app.use(bodyParser.urlencoded({extended:false}));
-app.use(bodyParser.json());
+const app = require('./app');
+const sequelize = require('./sequelize');
 
 
-app.use((req,res,next) => {
-  const error = new Error("NOT FOUND") ;
-  error.status = 404;
-  next(error);
-});
 
-
-app.use((error,req,res,next) => {
-  res.status(error.status || 500).json({
-      message : error.message,
+sequelize.authenticate().then( ( ) => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+    process.exit(1);
   });
-});
-
 
 
 const port = process.env.Server_PORT ;
 
-app.listen(port, () => `Server running on port ${port}`);
+app.listen(port, () => console.log(`Server running on port ${port}`));
