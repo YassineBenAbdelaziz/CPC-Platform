@@ -1,5 +1,4 @@
 import useFetch from "./useFetch";
-import image from "./imgs/blank-profile-picture-973460_1280.webp"
 
 const Scoreboard = () => {
 
@@ -15,7 +14,7 @@ const Scoreboard = () => {
                     users && users.sort((a, b) => a.score < b.score ? 1 : -1).map((user, index) => (
                         < div className="profile" key={index}>
                             <div className="item">
-                                <img src={image} alt="img" />
+                                <img src={user.img} alt="img" />
                                 <h3 className="name">{user.username}</h3>
                             </div>
                             <div className="score">

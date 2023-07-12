@@ -70,7 +70,7 @@ const ProblDetails = () => {
                     <article style={{ marginTop: '-20px' }}>
                         <div className="problem-head" style={{ textAlign: 'center', marginBottom: '30px' }} >
                             <h2>{problem.title}</h2>
-                            <span>Time Limit : {problem.timeLimit} Second</span><br />
+                            <span>Time Limit : {problem.timeLimit} Second{problem.timeLimit - 1 && "s"}</span><br />
                             <span>Memory Limit : {problem.memoryLimit}</span>
                         </div>
                         <div>{problem.topic}</div>

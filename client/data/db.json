@@ -1,12 +1,12 @@
 {
   "users": [
     {
-      "fname": "Rami",
-      "lname": "Jebali",
-      "username": "jebalirami7",
-      "email": "jebalirami7@gmail.com",
+      "fname": "Seif",
+      "lname": "Bouslama",
+      "username": "boxy",
+      "email": "boxymail",
       "pwd": "12345678",
-      "img": "imgs/Untitled.png",
+      "img": "imgs/boxy.jpg",
       "score": 1000,
       "id": 1
     },
@@ -23,9 +23,9 @@
     {
       "fname": "Rami",
       "lname": "Jebali",
-      "username": "jebalirami77",
+      "username": "rami_jebali",
       "email": "jebalirami77@gmail.com",
-      "img": "./imgs/boxy.jpg",
+      "img": "./imgs/Untitled.png",
       "score": 2000,
       "pwd": "123456",
       "id": 2
