@@ -5,7 +5,8 @@ const bodyParser = require('body-parser');
 const app = express();
 
 const contest = require('./Routes/contest');
-const problemsetRoutes = require('./Routes/problem');
+const problem = require('./Routes/problem');
+const example = require('./Routes/example');
 
 
 app.use(morgan('dev'));
@@ -26,7 +27,8 @@ app.use((req, res, next) => {
 
 
 app.use("/contest", contest);
-app.use('/problemset', problemsetRoutes);
+app.use('/problem', problem);
+app.use('/example', example);
 
 
 app.use((req, res, next) => {

@@ -14,6 +14,7 @@ const sequelize = new Sequelize(
 const entitiesDefiners = [
   require('./Entities/contest'),
   require('./Entities/problem'),
+  require('./Entities/example'),
 ];
 
 // We define all models according to their files.
