@@ -16,6 +16,7 @@ const entitiesDefiners = [
   require('./Entities/problem'),
   require('./Entities/example'),
   require('./Entities/submission'),
+  require('./Entities/tag'),
 ];
 
 // We define all models according to their files.

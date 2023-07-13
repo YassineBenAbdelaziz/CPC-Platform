@@ -8,6 +8,7 @@ const contest = require('./Routes/contest');
 const problem = require('./Routes/problem');
 const example = require('./Routes/example');
 const submission = require('./Routes/submission');
+const tag = require('./Routes/tag');
 
 
 app.use(morgan('dev'));
@@ -31,6 +32,7 @@ app.use("/contest", contest);
 app.use('/problem', problem);
 app.use('/example', example);
 app.use('/submission', submission);
+app.use('/tag', tag);
 
 
 app.use((req, res, next) => {
