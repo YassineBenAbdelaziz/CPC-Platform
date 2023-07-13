@@ -15,6 +15,7 @@ const entitiesDefiners = [
   require('./Entities/contest'),
   require('./Entities/problem'),
   require('./Entities/example'),
+  require('./Entities/submission'),
 ];
 
 // We define all models according to their files.
@@ -25,15 +26,6 @@ for (const entityDefiner of entitiesDefiners) {
 // We execute any extra setup after the models are defined, such as adding associations.
 
 //sync 
-sequelize.sync().then((data) => {
-  console.log("Data Successfully Sync.");
-})
-  .catch((err) => {
-    console.log("Error Syncing Tables", err);
-  });
-
-// Sync
-
 sequelize.sync().then((data) => {
   console.log("Data Successfully Sync.");
 })

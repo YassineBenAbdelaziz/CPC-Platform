@@ -7,6 +7,7 @@ const app = express();
 const contest = require('./Routes/contest');
 const problem = require('./Routes/problem');
 const example = require('./Routes/example');
+const submission = require('./Routes/submission');
 
 
 app.use(morgan('dev'));
@@ -29,6 +30,7 @@ app.use((req, res, next) => {
 app.use("/contest", contest);
 app.use('/problem', problem);
 app.use('/example', example);
+app.use('/submission', submission);
 
 
 app.use((req, res, next) => {
