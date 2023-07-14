@@ -17,6 +17,7 @@ const entitiesDefiners = [
   require('./Entities/example'),
   require('./Entities/submission'),
   require('./Entities/tag'),
+  require('./Entities/user',)
 ];
 
 // We define all models according to their files.
@@ -33,6 +34,7 @@ sequelize.sync().then((data) => {
   .catch((err) => {
     console.log("Error Syncing Tables", err);
   });
+
 
 // We export the sequelize connection instance to be used around our app.
 module.exports = sequelize;

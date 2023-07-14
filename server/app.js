@@ -9,7 +9,7 @@ const problem = require('./Routes/problem');
 const example = require('./Routes/example');
 const submission = require('./Routes/submission');
 const tag = require('./Routes/tag');
-
+const user = require('./Routes/user');
 
 app.use(morgan('dev'));
 app.use(cors());
@@ -33,7 +33,7 @@ app.use('/problem', problem);
 app.use('/example', example);
 app.use('/submission', submission);
 app.use('/tag', tag);
-
+app.use('/user', user);
 
 app.use((req, res, next) => {
   const error = new Error("NOT FOUND");
