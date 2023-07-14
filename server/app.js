@@ -6,6 +6,7 @@ const app = express();
 
 const contest = require('./Routes/contest');
 const problemsetRoutes = require('./Routes/problem');
+const user = require('./Routes/user');
 
 
 app.use(morgan('dev'));
@@ -27,6 +28,7 @@ app.use((req, res, next) => {
 
 app.use("/contest", contest);
 app.use('/problemset', problemsetRoutes);
+app.use('/user', user);
 
 
 app.use((req, res, next) => {

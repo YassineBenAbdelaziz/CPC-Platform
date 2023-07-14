@@ -14,6 +14,7 @@ const sequelize = new Sequelize(
 const entitiesDefiners = [
   require('./Entities/contest'),
   require('./Entities/problem'),
+  require('./Entities/user',)
 ];
 
 // We define all models according to their files.
@@ -31,14 +32,6 @@ sequelize.sync().then((data) => {
     console.log("Error Syncing Tables", err);
   });
 
-// Sync
-
-sequelize.sync().then((data) => {
-  console.log("Data Successfully Sync.");
-})
-  .catch((err) => {
-    console.log("Error Syncing Tables", err);
-  });
 
 // We export the sequelize connection instance to be used around our app.
 module.exports = sequelize;
