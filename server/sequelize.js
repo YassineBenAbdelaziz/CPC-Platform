@@ -26,6 +26,28 @@ for (const entityDefiner of entitiesDefiners) {
 }
 
 // We execute any extra setup after the models are defined, such as adding associations.
+sequelize.models.problem.hasMany(sequelize.models.example);
+sequelize.models.example.belongsTo(sequelize.models.problem, {
+  foreignKey: "id_problem",
+  allowNull: false
+});
+
+sequelize.models.contest.hasMany(sequelize.models.problem);
+sequelize.models.problem.belongsTo(sequelize.models.contest, {
+  foreignKey: "id_contest"
+});
+
+sequelize.models.user.hasMany(sequelize.models.submission);
+sequelize.models.submission.belongsTo(sequelize.models.user, {
+  foreignKey: "id_user",
+  allowNull: false
+});
+
+sequelize.models.problem.belongsToMany(sequelize.models.tag, { foreignKey: "id_problem", through: "problem_tag" });
+sequelize.models.tag.belongsToMany(sequelize.models.problem, { foreignKey: "id_tag", through: "problem_tag" });
+
+sequelize.models.user.belongsToMany(sequelize.models.contest, { foreignKey: "id_user", through: "participate" });
+sequelize.models.contest.belongsToMany(sequelize.models.user, { foreignKey: "id_contest", through: "participate" });
 
 //sync 
 sequelize.sync().then((data) => {
