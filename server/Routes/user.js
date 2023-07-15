@@ -3,11 +3,15 @@ const express = require('express');
 const router = express.Router();
 const multer = require('../middlewares/multerMiddleware');
 
-router.post('/signup', controller.createUser );
+router.get('/', controller.getAll);
 
-router.delete('/:id',controller.deleteUser);
+router.post('/signup', controller.createUser);
 
-router.patch('/:id',multer,controller.updateUser);
+router.post('/login', controller.loginUser);
+
+router.delete('/:id', controller.deleteUser);
+
+router.patch('/:id', multer, controller.updateUser);
 
 
 module.exports = router;

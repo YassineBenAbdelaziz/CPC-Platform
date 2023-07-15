@@ -7,11 +7,11 @@ router.get('/', controller.getContests);
 
 router.get('/:id', controller.getContestById);
 
-router.post('/add', controller.createContest );
+router.post('/add', controller.createContest);
 
-router.delete('/:id',controller.deleteContest);
+router.delete('/:id', controller.deleteContest);
 
-router.patch('/:id',controller.updateContest);
+router.patch('/:id', controller.updateContest);
 
 
 module.exports = router;
