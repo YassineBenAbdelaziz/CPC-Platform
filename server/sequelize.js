@@ -29,12 +29,14 @@ for (const entityDefiner of entitiesDefiners) {
 sequelize.models.problem.hasMany(sequelize.models.example);
 sequelize.models.example.belongsTo(sequelize.models.problem, {
   foreignKey: "id_problem",
-  allowNull: false
+  allowNull: false,
+  onDelete: "cascade"
 });
 
 sequelize.models.contest.hasMany(sequelize.models.problem);
 sequelize.models.problem.belongsTo(sequelize.models.contest, {
-  foreignKey: "id_contest"
+  foreignKey: "id_contest",
+  onDelete: "cascade"
 });
 
 sequelize.models.user.hasMany(sequelize.models.submission);
