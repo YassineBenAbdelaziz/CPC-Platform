@@ -306,9 +306,11 @@ footer {
 .profile {
   display: flex;
   padding: 10px;
+  height: 50px;
 }
 .profile img {
   width: 50px;
+  height: 50px;
   border-radius: 25%;
   margin-right: 10px;
 }

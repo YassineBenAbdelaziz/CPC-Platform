@@ -4,13 +4,16 @@ import ProblemList from "./ProblemList";
 
 const ContestDetails = () => {
     const { id } = useParams();
-    const { data: contest, isPending, error } = useFetch('http://localhost:8000/contests/' + id);
+    const { data: contest, isPending, error } = useFetch('http://localhost:5000/contest/' + id);
+
+    // eslint-disable-next-line
+    const { data: problems, isPending1, error1 } = useFetch('http://localhost:5000/problem/findByContest/' + id);
 
     return (
         <div className="contest-details">
             {error && <div>{error}</div>}
             {isPending && <div>Loading...</div>}
-            {contest && <ProblemList problemset={contest.problems} title={contest.title} titlePrefixe={true} contestId={id} />}
+            {contest && problems && <ProblemList problemset={problems} title={contest.title} titlePrefixe={true} contestId={id} />}
         </div>
     );
 }

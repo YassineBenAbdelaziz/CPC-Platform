@@ -6,7 +6,11 @@ import cpyBtn from './imgs/copy-icon.jpg'
 
 const ProblDetails = () => {
     const { id } = useParams();
-    const { data: problem, isPending, error } = useFetch('http://localhost:8000/problemset/' + id);
+    const { data: problem, isPending, error } = useFetch('http://localhost:5000/problem/' + id);
+
+    // eslint-disable-next-line
+    const { data: examples, isPending1, error1 } = useFetch('http://localhost:5000/example/findByProblem/' + id);
+
     const [lang, setLang] = useState("");
     const type = {
         java: ".java",
@@ -27,12 +31,11 @@ const ProblDetails = () => {
     }
 
     const exp = () => {
-
-        if (problem.examples[0].input.length) {
+        if (examples.length) {
             return (
                 <span>
                     <div className="exp" style={{ fontWeight: "bold" }}>Example :</div>
-                    {problem.examples && problem.examples.map((example, ind) => (
+                    {examples && examples.map((example, ind) => (
                         < div className="exp-text" key={ind}>
                             <div className="input">
                                 <CopyToClipboard text={example.input}>
@@ -70,15 +73,15 @@ const ProblDetails = () => {
                     <article style={{ marginTop: '-20px' }}>
                         <div className="problem-head" style={{ textAlign: 'center', marginBottom: '30px' }} >
                             <h2>{problem.title}</h2>
-                            <span>Time Limit : {problem.timeLimit} Second</span><br />
-                            <span>Memory Limit : {problem.memoryLimit}</span>
+                            <span>Time Limit : {problem.time_limit} Second{(problem.time_limit !== 1) ? ("s") : ("")}</span><br />
+                            <span>Memory Limit : {problem.memory_limit}</span>
                         </div>
                         <div>{problem.topic}</div>
                         <div className="inp" style={{ fontWeight: "bold" }}>Input :</div>
                         <div className="inp-text">{problem.input}</div>
                         <div className="outp" style={{ fontWeight: "bold" }}>Output :</div>
                         <div className="outp-text">{problem.output}</div>
-                        {exp()}
+                        {examples && exp()}
                         {note()}
                     </article>
 
