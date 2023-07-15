@@ -12,10 +12,31 @@ exports.get_all = async (req, res, next) => {
 }
 
 
+exports.get_examples_by_problem = async (req, res, next) => {
+    await models.example.findAll({
+        where: {
+            id_problem: req.params.problemId
+        }
+    })
+        .then(example => {
+            if (!example) {
+                return res.status(404).json({
+                    message: "Example NOT FOUND"
+                });
+            } else {
+                res.status(200).json(example);
+            }
+        }).catch(err => {
+            res.status(500).json({ error: err });
+        });
+}
+
+
 exports.create_example = async (req, res, next) => {
     const example = {
         input: req.body.input,
-        output: req.body.output
+        output: req.body.output,
+        id_problem: req.body.id_problem
     }
 
     await models.example.create(example)
@@ -35,7 +56,7 @@ exports.get_example = async (req, res, next) => {
         .then(example => {
             if (!example) {
                 return res.status(404).json({
-                    message: "example NOT FOUND"
+                    message: "Example NOT FOUND"
                 });
             } else {
                 res.status(200).json(example);
@@ -53,7 +74,7 @@ exports.update_example = async (req, res, next) => {
         .then(async example => {
             if (!example) {
                 return res.status(404).json({
-                    message: "example NOT FOUND"
+                    message: "Example NOT FOUND"
                 });
             } else {
                 const exampleBody = {

@@ -53,6 +53,26 @@ exports.get_problem = async (req, res, next) => {
 }
 
 
+exports.get_problems_by_contest = async (req, res, next) => {
+    await models.problem.findAll({
+        where: {
+            id_contest: req.params.contestId
+        }
+    })
+        .then(problem => {
+            if (!problem) {
+                return res.status(404).json({
+                    message: "Problem NOT FOUND"
+                });
+            } else {
+                res.status(200).json(problem);
+            }
+        }).catch(err => {
+            res.status(500).json({ error: err });
+        });
+}
+
+
 exports.update_problem = async (req, res, next) => {
     const id = req.params.problemId;
 
