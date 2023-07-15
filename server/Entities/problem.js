@@ -13,19 +13,19 @@ module.exports = (sequelize) => {
                 allowNull: false,
             },
             topic: {
-                type: DataTypes.STRING,
+                type: DataTypes.STRING(2000),
                 allowNull: false,
             },
             input: {
-                type: DataTypes.STRING,
+                type: DataTypes.STRING(1000),
                 allowNull: false,
             },
             output: {
-                type: DataTypes.STRING,
+                type: DataTypes.STRING(1000),
                 allowNull: false,
             },
             note: {
-                type: DataTypes.STRING,
+                type: DataTypes.STRING(1000),
                 allowNull: true,
             },
             score: {
@@ -50,17 +50,7 @@ module.exports = (sequelize) => {
             },
             status: {
                 type: DataTypes.STRING,
-                allowNull: false,
-                // validate: {
-                //     isIn: {
-                //         args: [['hidden', 'visible']],
-                //         msg: "Status must be in ['hidden','visible']",
-                //     },
-                // }
-            },
-            id_contest: {
-                type: DataTypes.INTEGER,
-                allowNull: true
+                allowNull: false
             }
         }
     );
