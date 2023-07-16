@@ -102,9 +102,25 @@
 /* problemset */
 
 .problem {
+  display: flex;
   padding: 10px 16px;
   margin: 20px 0;
   border-bottom: 1px solid #fafafa;
+}
+.table-titles {
+  display: flex;
+  padding: 10px 16px;
+  margin: 20px 0;
+}
+.table-titles .diff{
+  margin-left: auto;
+  width: 90px;
+  text-align: center;
+}
+.table-titles .score{
+  margin-left: 20px;
+  width: 50px;
+  text-align: center;
 }
 .problem:hover {
   box-shadow: 1px 3px 5px rgba(0,0,0,0.1);
@@ -116,6 +132,22 @@
 }
 a {
   text-decoration: none;
+}
+.problem-diff {
+  margin-left: auto;
+}
+.problem-score {
+  margin-left: 20px;
+  width: 50px;
+  font-weight: bold;
+  text-align: center;
+}
+.problem-diff {
+  margin-left: auto;
+  width: 90px;
+  text-align: center;
+  font-weight: bold;
+  color: black;
 }
 
 /* problem details */
@@ -328,4 +360,23 @@ footer {
 .btn button {
   padding: 10px;
   font-size: medium;
+}
+
+/* Pagination */
+.pagination {
+  margin-top: 25px;
+  display: flex;
+}
+.pagination .page-link {
+  margin: 5px;
+  padding: 8px;
+  border: 1px solid #b3b3b3;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 21px;
+  width: 18px;
+  text-align: center;
+}
+.pagination .page-link:hover {
+  background-color: #dddddd63;
 }
