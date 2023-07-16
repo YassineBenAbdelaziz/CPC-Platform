@@ -25,7 +25,7 @@ const ProblemList = ({ problemset, title, titlePrefixe = false, contestId = 0 })
                 <h3 className="diff">Difficulty</h3>
                 <h3 className="score">Score</h3>
             </div>
-            {problemset.sort((a, b) => a.score > b.score ? 1 : -1).map((problem, index) => (
+            {problemset.map((problem, index) => (
                 < Link to={fn(problem.id_problem)} key={index}>
                     <div className="problem">
                         <h2>{titlePrefixe && (ch[index] + '.')} {problem.title}</h2>
