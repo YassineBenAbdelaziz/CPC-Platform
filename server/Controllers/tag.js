@@ -1,5 +1,5 @@
 const { models } = require('../sequelize');
-
+const sequelize = require('../sequelize');
 
 exports.get_all = async (req, res, next) => {
     await models.tag.findAll()
@@ -9,6 +9,34 @@ exports.get_all = async (req, res, next) => {
         .catch((err) => {
             res.status(500).json({ error: err });
         });
+}
+
+exports.countByTag = async (req, res, next) => {
+    try {
+    const results = await models.tag.findAll({
+        attributes: ["tag",
+            [sequelize.fn('COUNT', sequelize.col('problems.id_problem')), 'n_tag'],
+        ],
+        include: [{
+            model: models.problem,
+            attributes: [],
+            through: {
+                attributes: []
+              }
+        }],
+        group: ['tag'],
+        raw: true,
+    });
+
+    return res.status(200).json(results);
+
+    } 
+    catch (err) {
+        res.status(500).json({
+            error : err,
+        })
+    }
+    
 }
 
 
