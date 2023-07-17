@@ -1,119 +1,118 @@
-import { useParams } from "react-router-dom";
-import useFetch from "./useFetch";
 import { useState } from "react";
-import CopyToClipboard from "react-copy-to-clipboard";
-import cpyBtn from './imgs/copy-icon.jpg'
+import { useNavigate } from "react-router-dom";
+import Problem from "./Problem";
+import CodeEditor from "./CodeEditor";
 
 const ProblDetails = () => {
-    const { id } = useParams();
-    const { data: problem, isPending, error } = useFetch('http://localhost:5000/problem/' + id);
 
-    // eslint-disable-next-line
-    const { data: examples, isPending1, error1 } = useFetch('http://localhost:5000/example/findByProblem/' + id);
+    const [showProblem, setShowProblem] = useState(true);
+    const [showSolution, setShowSolution] = useState(false);
+    const [showSubmissions, setShowSubmissions] = useState(false);
+    const [showTutorial, setShowTutorial] = useState(false);
 
-    const [lang, setLang] = useState("");
-    const type = {
-        java: ".java",
-        c: ".c",
-        "c++": ".cpp",
-        python: ".py",
+    const handleProblem = () => {
+        setShowProblem(true);
+        setShowSolution(false);
+        setShowSubmissions(false);
+        setShowTutorial(false);
+    }
+    const handleSolution = () => {
+        setShowSolution(true);
+        setShowProblem(false);
+        setShowSubmissions(false);
+        setShowTutorial(false);
+    }
+    const handleSubmissions = () => {
+        setShowSubmissions(true);
+        setShowSolution(false);
+        setShowProblem(false);
+        setShowTutorial(false);
+    }
+    const handleTutorial = () => {
+        setShowTutorial(true);
+        setShowSubmissions(false);
+        setShowSolution(false);
+        setShowProblem(false);
     }
 
-    const note = () => {
-        if (problem.note !== '') {
-            return (
-                <span>
-                    <div className="note" style={{ fontWeight: "bold" }}>Note :</div>
-                    <div className="note-text">{problem.note}</div>
-                </span>
-            )
-        }
-    }
+    const links = [
+        {
+            name: "Problem",
+            handle: handleProblem,
+            active: showProblem
+        },
+        {
+            name: "Tutorial",
+            handle: handleTutorial,
+            active: showTutorial
+        },
+        {
+            name: "Solution",
+            handle: handleSolution,
+            active: showSolution
+        },
+        {
+            name: "Submissions",
+            handle: handleSubmissions,
+            active: showSubmissions
+        },
+    ];
 
-    const exp = () => {
-        if (examples.length) {
-            return (
-                <span>
-                    <div className="exp" style={{ fontWeight: "bold" }}>Example :</div>
-                    {examples && examples.map((example, ind) => (
-                        < div className="exp-text" key={ind}>
-                            <div className="input">
-                                <CopyToClipboard text={example.input}>
-                                    <div className="title-inp">
-                                        Input
-                                        <img className="copy-btn" src={cpyBtn} alt="copy" />
-                                    </div>
-                                </CopyToClipboard>
-                                {example.input.split('\n').map((i, index) => (
-                                    <pre key={index}>{i} <br /></pre>
-                                ))}
-                            </div>
-                            <div className="output">
-                                <div className="title-outp">
-                                    Output
-                                </div>
-                                {example.output.split('\n').map((i, index) => (
-                                    <pre key={index}>{i} <br /></pre>
-                                ))}
-                            </div>
-                        </div>
-                    ))
-                    }
-                </span >
-            )
-        }
-    }
+    const history = useNavigate();
 
     return (
         <div className="problem-details">
-            {error && <div>{error}</div>}
-            {isPending && <div>Loading...</div>}
-            {problem && (
-                <div className="a">
-                    <article style={{ marginTop: '-20px' }}>
-                        <div className="problem-head" style={{ textAlign: 'center', marginBottom: '30px' }} >
-                            <h2>{problem.title}</h2>
-                            <span>Time Limit : {problem.time_limit} Second{(problem.time_limit !== 1) ? ("s") : ("")}</span><br />
-                            <span>Memory Limit : {problem.memory_limit}</span>
-                        </div>
-                        <div>{problem.topic}</div>
-                        <div className="inp" style={{ fontWeight: "bold" }}>Input :</div>
-                        <div className="inp-text">{problem.input}</div>
-                        <div className="outp" style={{ fontWeight: "bold" }}>Output :</div>
-                        <div className="outp-text">{problem.output}</div>
-                        {examples && exp()}
-                        {note()}
-                    </article>
+            <div className="a">
+                <div className="prb-code" style={{ margin: '-20px 0' }} >
+                    <div className="prb-details" style={{ margin: '5px', width: '70%' }}>
+                        <div className="prb-navbar" style={{ margin: '-10px 0', padding: '10px', borderBottom: '1px solid #f2f2f2' }}>
 
-                    <div className="sub" style={{ fontWeight: "bold" }}>Submission :</div>
-                    <div className="submission">
-                        <div className="select-lang">
-                            {/* Language:  */}
-                            <select
-                                name="lang"
-                                id="lang"
-                                value={lang}
-                                onChange={(e) => setLang(e.target.value)}
-                            >
-                                <option value={""} disabled>Select your language</option>
-                                <option value={"c"}>C</option>
-                                <option value={"c++"}>C++</option>
-                                <option value={"java"}>Java</option>
-                                <option value={"python"}>Python</option>
-                            </select>
+                            <button className="prb-link" onClick={() => history(-1)} style={{ marginRight: '10px' }}>&lt;</button>
+                            {links.map((link, i) => (
+                                <button className={`prb-link${link.active ? '-active' : ''}`} key={i} onClick={link.handle}>{link.name}</button>
+                            ))}
+
                         </div>
-                        <input type="file" accept={type[lang]} />
-                        {/* <textarea name="" id="" cols="50" rows="30" style={{ fontFamily: '-moz-initial' }}></textarea> */}
-                        <div className="btn">
-                            <button>Submit</button>
-                        </div>
+
+                        {
+                            showProblem ?
+                                <Problem /> :
+                                null
+                        }
+
+                        {
+                            showTutorial ?
+                                <div className="tutorial">
+                                    Tutorial
+                                </div> :
+                                null
+                        }
+
+                        {
+                            showSolution ?
+                                <div className="solution">
+                                    Solution
+                                </div> :
+                                null
+                        }
+
+                        {
+                            showSubmissions ?
+                                <div className="submissions">
+                                    Submissions
+                                </div> :
+                                null
+                        }
+
                     </div>
-
-
-
+                    <div className="code" style={{ margin: '5px', width: '70%' }}>
+                        <CodeEditor />
+                    </div>
                 </div>
-            )}
-        </div>
+
+            </div>
+
+        </div >
     );
 }
 
