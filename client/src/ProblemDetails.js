@@ -74,40 +74,19 @@ const ProblDetails = () => {
 
                         </div>
 
-                        {
-                            showProblem ?
-                                <Problem /> :
-                                null
-                        }
+                        {showProblem ? <Problem /> : null}
 
-                        {
-                            showTutorial ?
-                                <div className="tutorial">
-                                    Tutorial
-                                </div> :
-                                null
-                        }
+                        {showTutorial ? <div className="tutorial">Tutorial</div> : null}
 
-                        {
-                            showSolution ?
-                                <div className="solution">
-                                    Solution
-                                </div> :
-                                null
-                        }
+                        {showSolution ? <div className="solution">Solution</div> : null}
 
-                        {
-                            showSubmissions ?
-                                <div className="submissions">
-                                    Submissions
-                                </div> :
-                                null
-                        }
-
+                        {showSubmissions ? <div className="submissions">Submissions</div> : null}
                     </div>
+
                     <div className="code" style={{ margin: '5px', width: '70%' }}>
                         <CodeEditor />
                     </div>
+
                 </div>
 
             </div>
