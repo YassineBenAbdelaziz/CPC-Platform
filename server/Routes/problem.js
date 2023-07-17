@@ -7,6 +7,8 @@ const checkAuth = require("../middlewares/checkAuth");
 
 router.get('/', ProblemController.get_all);
 
+router.get('/problemPage', ProblemController.getPage);
+
 router.post('/', checkAuth, ProblemController.create_problem);
 
 router.get('/:problemId', ProblemController.get_problem);

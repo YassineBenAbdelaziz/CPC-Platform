@@ -11,8 +11,45 @@ exports.get_all = async (req, res, next) => {
         });
 }
 
+exports.getPage = async (req, res, next) => {
+    try {
+    const results = {};
+    const params = []
+    if (!req.body.page || !req.body.limit) {
+        return res.status(404).json({
+            error : "Missing params",
+        })
+    }
+    const limit = parseInt(req.body.limit);
+    const offset = ( parseInt(req.body.page ) - 1 )* limit ;
 
-exports.create_problem = async (req, res, next) => {
+    const queryParams = {
+        attributes : ["title","score"],
+        offset: offset,
+        limit: limit ,
+    }
+
+    if (req.body.column && req.body.type) {
+        params.push(req.body.column);
+        params.push(req.body.type);
+        queryParams.order = [params]
+    }
+    console.log(params);
+    results.count =  await models.problem.count();
+    results.results = await models.problem.findAll(
+        queryParams
+
+    );
+    return res.status(200).json({results }) ;
+    }
+    catch (err) {
+        return res.status(500).json({
+            error : err,
+        })
+    }
+}
+
+exports.create_problem =  (req, res, next) => {
     const problem = {
         title: req.body.title,
         topic: req.body.topic,
@@ -28,8 +65,10 @@ exports.create_problem = async (req, res, next) => {
         id_contest: req.body.id_contest
     }
 
-    await models.problem.create(problem)
-        .then(res.status(201).json(problem))
+    models.problem.create(problem)
+        .then((problem => {
+            res.status(201).json(problem)
+        }))
         .catch(err => {
             res.status(500).json({ error: err });
         });
