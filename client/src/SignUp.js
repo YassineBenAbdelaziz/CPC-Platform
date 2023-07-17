@@ -62,42 +62,44 @@ const SignUp = () => {
     }
 
     return (
-        <div className="form-auth">
-            <form onSubmit={handleSubmit} name="signup">
-                <h2>Sign Up</h2>
-                <label htmlFor="fname">First Name : </label>
-                <input type="text" required id="fname" value={fname} onChange={(e) => setFname(e.target.value)} />
-                <label htmlFor="lname">Last Name : </label>
-                <input type="text" required id="lname" value={lname} onChange={(e) => setLname(e.target.value)} />
-                <label htmlFor="username">Username : </label>
-                <input type="text" required id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
-                <label htmlFor="email">Email : </label>
-                <input type="email" required id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                <p style={{
-                    color: 'red',
-                    whiteSpace: 'pre-line',
-                    fontSize: '15px'
-                }}>{emailMsg}</p>
-                <label htmlFor="pwd">Password : </label>
-                <input type="password" required id="pwd" value={pwd} onChange={(e) => setPwd(e.target.value)} />
-                <p style={{
-                    color: 'red',
-                    whiteSpace: 'pre-line',
-                    fontSize: '15px'
-                }}>{pwdMsg}</p>
-                <label htmlFor="re-pwd">Repeat Password : </label>
-                <input type="password" required id="re-pwd" value={rePwd} onChange={(e) => setRePwd(e.target.value)} />
-                <p style={{
-                    color: 'red',
-                    whiteSpace: 'pre-line',
-                    fontSize: '15px'
-                }}>{rePwdMsg}</p>
-                <button>Sign Up</button>
-                <p style={{ marginBottom: '15px' }}>
-                    You already have an account ?
-                    <Link to="/login" style={{ fontWeight: 'bold' }}> Login</Link>
-                </p>
-            </form>
+        <div className="content">
+            <div className="form-auth">
+                <form onSubmit={handleSubmit} name="signup">
+                    <h2>Sign Up</h2>
+                    <label htmlFor="fname">First Name : </label>
+                    <input type="text" required id="fname" value={fname} onChange={(e) => setFname(e.target.value)} />
+                    <label htmlFor="lname">Last Name : </label>
+                    <input type="text" required id="lname" value={lname} onChange={(e) => setLname(e.target.value)} />
+                    <label htmlFor="username">Username : </label>
+                    <input type="text" required id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
+                    <label htmlFor="email">Email : </label>
+                    <input type="email" required id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                    <p style={{
+                        color: 'red',
+                        whiteSpace: 'pre-line',
+                        fontSize: '15px'
+                    }}>{emailMsg}</p>
+                    <label htmlFor="pwd">Password : </label>
+                    <input type="password" required id="pwd" value={pwd} onChange={(e) => setPwd(e.target.value)} />
+                    <p style={{
+                        color: 'red',
+                        whiteSpace: 'pre-line',
+                        fontSize: '15px'
+                    }}>{pwdMsg}</p>
+                    <label htmlFor="re-pwd">Repeat Password : </label>
+                    <input type="password" required id="re-pwd" value={rePwd} onChange={(e) => setRePwd(e.target.value)} />
+                    <p style={{
+                        color: 'red',
+                        whiteSpace: 'pre-line',
+                        fontSize: '15px'
+                    }}>{rePwdMsg}</p>
+                    <button>Sign Up</button>
+                    <p style={{ marginBottom: '15px' }}>
+                        You already have an account ?
+                        <Link to="/login" style={{ fontWeight: 'bold' }}> Login</Link>
+                    </p>
+                </form>
+            </div>
         </div>
     );
 }

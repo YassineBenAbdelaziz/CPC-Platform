@@ -13,10 +13,12 @@ const ContestDetails = () => {
     problems && problems.sort((a, b) => a.score > b.score ? 1 : -1);
 
     return (
-        <div className="contest-details">
-            {error && <div>{error}</div>}
-            {isPending && <div>Loading...</div>}
-            {contest && problems && <ProblemList problemset={problems} title={contest.title} titlePrefixe={true} contestId={id} />}
+        <div className="content">
+            <div className="contest-details">
+                {error && <div>{error}</div>}
+                {isPending && <div>Loading...</div>}
+                {contest && problems && <ProblemList problemset={problems} title={contest.title} titlePrefixe={true} contestId={id} />}
+            </div>
         </div>
     );
 }

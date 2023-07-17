@@ -10,18 +10,17 @@ const Pagination = ({ postsPerPage, setPostsPerPage, totalPosts, paginate, previ
     return (
         <nav>
             <div className="pagination">
-                <Link onClick={() => previousPage()} href="#" key={0} className="page-link">
+                <Link onClick={() => previousPage()} href=" " key={0} className="page-link">
                     &lt;
                 </Link>
                 {pageNumbers.map(number => (
-                    <Link onClick={() => paginate(number)} href="#" key={number} className={`page-link${number === currentPage ? '-active' : ''}`}>
+                    <Link onClick={() => paginate(number)} href=" " key={number} className={`page-link${number === currentPage ? '-active' : ''}`}>
                         {number}
                     </Link>
                 ))}
-                <Link onClick={() => nextPage()} href="#" key={Math.ceil(totalPosts / postsPerPage)} className="page-link">
+                <Link onClick={() => nextPage()} href=" " key={Math.ceil(totalPosts / postsPerPage)} className="page-link">
                     &gt;
                 </Link>
-                {console.log(postsPerPage)}
                 <select
                     name="posts-per-page"
                     id="posts-per-page"

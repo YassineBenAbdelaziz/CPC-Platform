@@ -112,12 +112,17 @@
   padding: 10px 16px;
   margin: 20px 0;
 }
-.table-titles .diff{
+.table-titles .status {
   margin-left: auto;
+  width: 65px;
+  text-align: center;
+}
+.table-titles .diff {
+  margin-left: 20px;
   width: 90px;
   text-align: center;
 }
-.table-titles .score{
+.table-titles .score {
   margin-left: 20px;
   width: 50px;
   text-align: center;
@@ -133,21 +138,24 @@
 a {
   text-decoration: none;
 }
-.problem-diff {
+.problem-status {
   margin-left: auto;
+  width: 65px;
+  font-weight: bold;
+  text-align: center;
+}
+.problem-diff {
+  margin-left: 20px;
+  width: 90px;
+  text-align: center;
+  font-weight: bold;
+  color: black;
 }
 .problem-score {
   margin-left: 20px;
   width: 50px;
   font-weight: bold;
   text-align: center;
-}
-.problem-diff {
-  margin-left: auto;
-  width: 90px;
-  text-align: center;
-  font-weight: bold;
-  color: black;
 }
 
 /* problem details */
@@ -157,17 +165,62 @@ a {
   color: red;
   margin-bottom: 10px;
 }
-.problem-details div {
+.problem-details,
+.prb-code,
+.prb-details div {
   white-space: pre-line;
   margin: 20px 0;
 }
-.problem-details button {
+.problem-details .submit {
   background-color: rgb(81, 95, 248);
   color: white;
   border: none;
   padding: 8px;
   border-radius: 8px;
   cursor: pointer;
+}
+.prb-details {
+  overflow-y: scroll;
+  height: 650px;
+  border: 2px solid #b3b3b3;
+  border-radius: 10px;
+  padding: 20px;
+}
+.code {
+  height: 650px;
+  border: 2px solid #b3b3b3;
+  border-radius: 10px;
+  padding: 20px;
+}
+.prb-code {
+  display: flex;
+}
+.prb-navbar .prb-link {
+  margin: 5px;
+  padding: 8px;
+  border: 1px solid #b3b3b3;
+  border-radius: 4px;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  background-color: white;
+}
+.prb-navbar .prb-link:hover {
+  background-color: #dddddd63;
+}
+.prb-link-active {
+  background-color: #dddddd63;
+  margin: 5px;
+  padding: 8px;
+  border: 1px solid #b3b3b3;
+  border-radius: 4px;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+}
+.code-editor {
+  margin: 20px 0; 
+  border: 1px solid #b3b3b3;
 }
 
 /* contests */
@@ -216,7 +269,7 @@ a {
   margin-top: 10px;
 }
 
-section {
+.aboutus section {
   margin: 50px 0;
 }
 .aboutus span {
@@ -226,7 +279,6 @@ section {
   margin-top: 10px;
   padding: 0;
 }
-
 footer {
   display: flex;
   justify-content: center;
@@ -243,7 +295,7 @@ footer {
 .exp-text .output,
 .exp-text .input {
   border: 1px solid #888;
-  width: 30%;
+  width: 35%;
 }
 .exp-text .input .title-inp,
 .exp-text .output .title-outp {
@@ -350,7 +402,7 @@ footer {
   margin-left: auto;
 }
 
-.select-lang select {
+.select-lang {
   width: 190px;
   padding: 3px;
   border-radius: 5px;

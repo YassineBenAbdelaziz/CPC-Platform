@@ -12,13 +12,16 @@ import ContestDetails from './ContestDetails';
 import LoggedIn from './LoggedIn';
 import ScrollToTop from './ScrollToTop';
 import ProtectedRoutes from './ProtectedRoutes';
+import ShowNavBar from './ShowNavbar';
 
 function App() {
   return (
     <BrowserRouter>
       <div className="App" style={{ minHeight: '633px' }}>
-        <NavBar />
-        <div className="content">
+        <ShowNavBar>
+          <NavBar />
+        </ShowNavBar>
+        <div className="app-content">
           <Routes>
             <Route path='/' element={<Home />}></Route>
             <Route path='/about' element={<About />}></Route>
@@ -38,12 +41,14 @@ function App() {
         </div>
       </div>
       <ScrollToTop />
-      <footer>
-        <p>
-          &copy;  2023 CPC Enicarthage <br />
-          All rights reserved.
-        </p>
-      </footer>
+      <ShowNavBar>
+        <footer>
+          <p>
+            &copy;  2023 CPC Enicarthage <br />
+            All rights reserved.
+          </p>
+        </footer>
+      </ShowNavBar>
     </BrowserRouter>
   );
 }
