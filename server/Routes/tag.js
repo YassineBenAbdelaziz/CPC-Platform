@@ -5,6 +5,8 @@ const TagController = require("../Controllers/tag");
 
 router.get('/', TagController.get_all);
 
+router.get('/count', TagController.countByTag);
+
 router.post('/', TagController.create_tag);
 
 router.get('/:tagId', TagController.get_tag);
