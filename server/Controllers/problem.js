@@ -1,5 +1,5 @@
 const { models } = require('../sequelize');
-
+const { Op } = require("sequelize");
 
 exports.get_all = async (req, res, next) => {
     await models.problem.findAll()
@@ -12,8 +12,8 @@ exports.get_all = async (req, res, next) => {
 }
 
 exports.getPage = async (req, res, next) => {
-    try {
-    const results = {};
+   try {
+    
     const params = []
     if (!req.body.page || !req.body.limit) {
         return res.status(404).json({
@@ -27,6 +27,9 @@ exports.getPage = async (req, res, next) => {
         attributes : ["title","score"],
         offset: offset,
         limit: limit ,
+        subQuery : false,
+
+          
     }
 
     if (req.body.column && req.body.type) {
@@ -34,19 +37,36 @@ exports.getPage = async (req, res, next) => {
         params.push(req.body.type);
         queryParams.order = [params]
     }
-    console.log(params);
-    results.count =  await models.problem.count();
-    results.results = await models.problem.findAll(
+
+    if (req.body.tags) {
+        queryParams.include =         [{
+            model: models.tag,
+              where: {
+                '$tags.tag$' : {
+                    [Op.in]: req.body.tags, 
+                }
+              },
+              through: {
+                attributes: []
+              }
+            
+          }]
+    }
+
+    
+    const results = await models.problem.findAndCountAll(
         queryParams
 
     );
     return res.status(200).json({results }) ;
     }
+    
     catch (err) {
         return res.status(500).json({
             error : err,
         })
     }
+    
 }
 
 exports.create_problem =  (req, res, next) => {
