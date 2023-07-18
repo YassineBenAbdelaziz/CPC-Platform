@@ -14,7 +14,7 @@ const Scoreboard = () => {
                     users && users.sort((a, b) => a.score < b.score ? 1 : -1).map((user, index) => (
                         < div className="profile" key={index}>
                             <div className="item">
-                                <img src={user.img} alt="img" />
+                                <img src={'http://localhost:5000/' + user.imagePath} alt="img" />
                                 <h3 className="name">{user.username}</h3>
                             </div>
                             <div className="score">
