@@ -17,7 +17,9 @@ async function deletefile(path) {
 
 
 exports.getAll = async (req, res, next) => {
-    await models.user.findAll()
+    await models.user.findAll({
+        attributes : ['username','score','rank','imagePath']
+    })
         .then((results) => {
             res.status(200).json(results);
         })
