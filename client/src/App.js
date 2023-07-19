@@ -13,6 +13,7 @@ import LoggedIn from './LoggedIn';
 import ScrollToTop from './ScrollToTop';
 import ProtectedRoutes from './ProtectedRoutes';
 import ShowNavBar from './ShowNavbar';
+import AddProblem from './AddProblem';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
             <Route path='/contests' element={<Contests />}></Route>
             <Route element={<ProtectedRoutes />}>
               {/* protected routes here */}
+              <Route path='/problemset/add-problem' element={<AddProblem />}></Route>
               <Route path='/loggedin' element={<LoggedIn />}></Route>
             </Route>
             <Route path='*' element={<NotFound />}></Route>

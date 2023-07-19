@@ -26,7 +26,10 @@ const ProblemList = ({ problemset, title, titlePrefixe = false, contestId = 0 })
 
     return (
         <div className="problem-list">
-            <h2>{title}</h2>
+            <div className="problemlist-header">
+                <h2>{title}</h2>
+                {!titlePrefixe && <Link to="/problemset/add-problem" className="add-problem">Add Problem</Link>}
+            </div>
             <div className="table-titles">
                 <h3 className="title">Title</h3>
                 <h3 className="status">Status</h3>

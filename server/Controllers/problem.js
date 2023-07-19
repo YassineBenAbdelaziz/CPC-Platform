@@ -12,64 +12,64 @@ exports.get_all = async (req, res, next) => {
 }
 
 exports.getPage = async (req, res, next) => {
-   try {
-    
-    const params = []
-    if (!req.body.page || !req.body.limit) {
-        return res.status(404).json({
-            error : "Missing params",
-        })
-    }
-    const limit = parseInt(req.body.limit);
-    const offset = ( parseInt(req.body.page ) - 1 )* limit ;
+    try {
 
-    const queryParams = {
-        attributes : ["title","score"],
-        offset: offset,
-        limit: limit ,
-        subQuery : false,
+        const params = []
+        if (!req.body.page || !req.body.limit) {
+            return res.status(404).json({
+                error: "Missing params",
+            })
+        }
+        const limit = parseInt(req.body.limit);
+        const offset = (parseInt(req.body.page) - 1) * limit;
 
-          
-    }
+        const queryParams = {
+            attributes: ["title", "score"],
+            offset: offset,
+            limit: limit,
+            subQuery: false,
 
-    if (req.body.column && req.body.type) {
-        params.push(req.body.column);
-        params.push(req.body.type);
-        queryParams.order = [params]
-    }
 
-    if (req.body.tags) {
-        queryParams.include =         [{
-            model: models.tag,
-              where: {
-                '$tags.tag$' : {
-                    [Op.in]: req.body.tags, 
+        }
+
+        if (req.body.column && req.body.type) {
+            params.push(req.body.column);
+            params.push(req.body.type);
+            queryParams.order = [params]
+        }
+
+        if (req.body.tags) {
+            queryParams.include = [{
+                model: models.tag,
+                where: {
+                    '$tags.tag$': {
+                        [Op.in]: req.body.tags,
+                    }
+                },
+                through: {
+                    attributes: []
                 }
-              },
-              through: {
-                attributes: []
-              }
-            
-          }]
+
+            }]
+        }
+
+
+        const results = await models.problem.findAndCountAll(
+            queryParams
+
+        );
+        return res.status(200).json({ results });
     }
 
-    
-    const results = await models.problem.findAndCountAll(
-        queryParams
-
-    );
-    return res.status(200).json({results }) ;
-    }
-    
     catch (err) {
         return res.status(500).json({
-            error : err,
+            error: err,
         })
     }
-    
+
 }
 
-exports.create_problem =  (req, res, next) => {
+exports.create_problem = (req, res, next) => {
     const problem = {
         title: req.body.title,
         topic: req.body.topic,
@@ -125,6 +125,34 @@ exports.get_problems_by_contest = async (req, res, next) => {
                 });
             } else {
                 res.status(200).json(problem);
+            }
+        }).catch(err => {
+            res.status(500).json({ error: err });
+        });
+}
+
+
+exports.add_tag = async (req, res, next) => {
+    const id = req.params.problemId;
+    await models.problem.findByPk(id)
+        .then(async problem => {
+            if (!problem) {
+                return res.status(404).json({
+                    message: "Problem NOT FOUND"
+                });
+            } else {
+                const problem_tag = {
+                    id_problem: id,
+                    id_tag: req.body.id_tag
+                }
+
+                await models.problem_tag.create(problem_tag)
+                    .then((problem_tag => {
+                        res.status(201).json(problem_tag)
+                    }))
+                    .catch(err => {
+                        res.status(500).json({ error: err });
+                    });
             }
         }).catch(err => {
             res.status(500).json({ error: err });

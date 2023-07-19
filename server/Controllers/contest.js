@@ -1,8 +1,15 @@
 const { models } = require('../sequelize');
+const Op = require('sequelize').Op;
 
 
 exports.getContests = (req, res, next) => {
-    models.contest.findAll()
+    models.contest.findAll(({
+        where: {
+            id_contest: {
+                [Op.ne]: 0
+            }
+        }
+    }))
         .then((results) => {
             res.status(200).json(results);
         })

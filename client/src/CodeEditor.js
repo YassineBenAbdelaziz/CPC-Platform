@@ -82,10 +82,11 @@ void main(){
                         width={'100%'}
                         path={lang}
                         defaultLanguage={lang}
-                        value={file.value}
+                        defaultValue={file.value}
+                        value={script}
                         onChange={(e) => setScript(e)}
                     />
-                    {console.log(script)}
+                    {/* {console.log(script)} */}
                 </div>
                 <div className="btn">
                     <button className="submit">Submit</button>

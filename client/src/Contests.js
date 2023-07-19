@@ -6,6 +6,8 @@ const Contests = () => {
 
     return (
         <div className="content">
+            <h2>Contests</h2>
+            <br />
             <div className="contests">
                 {error && <div>{error}</div>}
                 {isPending && <div>Loading...</div>}

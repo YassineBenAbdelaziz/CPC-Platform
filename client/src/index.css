@@ -101,6 +101,22 @@
 
 /* problemset */
 
+.problemlist-header {
+  display: flex;
+}
+.add-problem {
+  margin-left: auto;
+  padding: 8px;
+  border: 1px solid #b3b3b3;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 17px;
+  text-align: center;
+  cursor: pointer;
+}
+.add-problem:hover {
+  background-color: #dddddd63;
+}
 .problem {
   display: flex;
   padding: 10px 16px;
@@ -156,6 +172,74 @@ a {
   width: 50px;
   font-weight: bold;
   text-align: center;
+}
+.create {
+  border: 2px solid #b3b3b3;
+  border-radius: 10px;
+  padding: 20px;
+}
+.create h2 {
+  margin-top: 15px;
+  margin-bottom: 30px;
+}
+.create form {
+  margin-left: 7px;
+}
+.create .input-field {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+.create .input-field label {
+  margin-right: 5px;
+  font-size: larger;
+  font-weight: 600;
+  min-width: 80px;
+}
+.create .input-field #memory-limit {
+  width: 60px;
+}
+.create .input-field #memory-limit, 
+.create .input-field #time-limit {
+  margin-left: 10px;
+}
+.create .input-field #score, 
+.create .input-field #time-limit {
+  margin-right: 50px;
+} 
+.create .input-field input, 
+.create .input-field select, 
+.create .input-field textarea {
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: initial;
+}
+.create-btn {
+  text-align: center;
+  padding: 10px;
+  font-weight: 600;
+  font-size: 17px;
+  border: none;
+  border-radius: 9px;
+  color: white;
+  background-color: rgb(81, 95, 248);
+  cursor: pointer;
+}
+.create .tags {
+  display: flex;
+  margin-left: 80px;
+  flex-wrap: wrap;
+  margin-top: 5px;
+}
+.create .tag {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  margin: 5px;
+  border: 1px solid #b3b3b3;
+  border-radius: 5px;
+  background-color: #dddddd63;
 }
 
 /* problem details */

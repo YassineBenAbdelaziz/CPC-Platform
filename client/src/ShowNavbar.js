@@ -9,7 +9,7 @@ const ShowNavBar = ({ children }) => {
     useEffect(() => {
         const tab = location.pathname.split('/');
         // console.log(tab);
-        if ((tab.length === 3 && tab[1] === 'problemset') || (tab.length === 4 && tab[1] === 'contests')) {
+        if ((tab.length === 3 && tab[1] === 'problemset' && !isNaN(tab[2])) || (tab.length === 4 && tab[1] === 'contests' && !isNaN(tab[2]))) {
             setShow(false);
         } else {
             setShow(true);

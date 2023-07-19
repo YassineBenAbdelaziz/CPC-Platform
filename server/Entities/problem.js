@@ -41,11 +41,11 @@ module.exports = (sequelize) => {
                 allowNull: false,
             },
             test_file: {
-                type: DataTypes.STRING,
+                type: DataTypes.STRING(10e6),
                 allowNull: true,
             },
             solution_file: {
-                type: DataTypes.STRING,
+                type: DataTypes.STRING(5000),
                 allowNull: false,
             },
             status: {

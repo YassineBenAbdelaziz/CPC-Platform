@@ -9,7 +9,9 @@ router.get('/', ProblemController.get_all);
 
 router.get('/problemPage', ProblemController.getPage);
 
-router.post('/', checkAuth, ProblemController.create_problem);
+router.post('/create', ProblemController.create_problem);
+
+router.post('/:problemId/add-tag', ProblemController.add_tag);
 
 router.get('/:problemId', ProblemController.get_problem);
 
