@@ -15,7 +15,7 @@ exports.get_all = async (req, res, next) => {
 exports.get_examples_by_problem = async (req, res, next) => {
     await models.example.findAll({
         where: {
-            id_problem: req.params.problemId
+            problemIdProblem: req.params.problemId
         }
     })
         .then(example => {

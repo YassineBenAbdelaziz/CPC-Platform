@@ -10,7 +10,6 @@ export default function AddProblem() {
     const url = "http://localhost:5000/";
 
     const urlAddProblem = url + "problem/create";
-    const urlAddExample = url + "example";
 
     const [title, setTitle] = useState("");
     const [topic, setTopic] = useState("");
@@ -28,6 +27,11 @@ export default function AddProblem() {
     const [examples, setExamples] = useState([]);
     const [tags, setTags] = useState([]);
 
+    const tagsId = [];
+    tags.map(tag => {
+        tagsId.push(tag.id)
+    })
+
     const problem = {
         "title": title,
         "topic": topic,
@@ -40,7 +44,9 @@ export default function AddProblem() {
         "test_file": testFile,
         "solution_file": solutionFile,
         "status": status,
-        "id_contest": 0
+        "id_contest": 0,
+        "examples": examples,
+        "tags": tagsId
     }
 
     function handleSubmit(e) {
@@ -49,38 +55,6 @@ export default function AddProblem() {
         Axios.post(urlAddProblem, problem).then(res => {
             console.log("Problem Created");
             console.log(res.data);
-            const idProblem = res.data.id_problem;
-            // console.log(idProblem)
-            examples.map((exp) => {
-                const example = {
-                    "input": exp.input,
-                    "output": exp.output,
-                    "id_problem": idProblem
-                };
-                Axios.post(urlAddExample, example).then(result => {
-                    console.log('Example Created')
-                    console.log(result.data);
-                }).catch(err => {
-                    console.log("Examples post error")
-                    console.log(err)
-                })
-            });
-
-            const urlAddTag = url + "problem/" + idProblem + "/add-tag";
-            tags.map((tag) => {
-                const Tag = {
-                    "id_tag": tag.id
-                };
-                Axios.post(urlAddTag, Tag).then(result => {
-                    console.log("Tags Added")
-                    console.log(result.data);
-                }).catch(err => {
-                    console.log("Tags post error")
-                    console.log(err)
-                })
-            });
-
-
         }).catch(err => {
             console.log("Problem post error")
             console.log(err)
