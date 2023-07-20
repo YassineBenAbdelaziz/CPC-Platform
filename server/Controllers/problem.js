@@ -69,8 +69,8 @@ exports.getPage = async (req, res, next) => {
 
 }
 
-exports.create_problem = (req, res, next) => {
-    const problem = {
+exports.create_problem = async (req, res, next) => {
+    const attributes = {
         title: req.body.title,
         topic: req.body.topic,
         input: req.body.input,
@@ -82,16 +82,36 @@ exports.create_problem = (req, res, next) => {
         test_file: req.body.test_file,
         solution_file: req.body.solution_file,
         status: req.body.status,
-        id_contest: req.body.id_contest
+        id_contest: req.body.id_contest,
+        examples: req.body.examples,
+
+    }
+    try {
+
+        // Verify the existence of tag IDs before creating the problem
+
+        const tags = await models.tag.findAll({ where: { id_tag: req.body.tags } });
+
+        if (tags.length !== req.body.tags.length) {
+
+            throw new Error(`Invalid tag IDs`);
+        }
+
+        const problem = await models.problem.create(attributes,
+            {
+                include: [models.example],
+            });
+
+
+        await problem.setTags(req.body.tags);
+
+        return res.status(201).json(problem)
     }
 
-    models.problem.create(problem)
-        .then((problem => {
-            res.status(201).json(problem)
-        }))
-        .catch(err => {
-            res.status(500).json({ error: err });
-        });
+    catch (err) {
+        return res.status(500).json({ error: err.message });
+
+    };
 }
 
 
@@ -163,38 +183,49 @@ exports.add_tag = async (req, res, next) => {
 exports.update_problem = async (req, res, next) => {
     const id = req.params.problemId;
 
-    await models.problem.findByPk(id)
-        .then(async problem => {
-            if (!problem) {
-                return res.status(404).json({
-                    message: "Problem NOT FOUND"
-                });
-            } else {
-                const problemBody = {
-                    title: req.body.title,
-                    topic: req.body.topic,
-                    input: req.body.input,
-                    output: req.body.output,
-                    note: req.body.note,
-                    score: req.body.score,
-                    time_limit: req.body.time_limit,
-                    memory_limit: req.body.memory_limit,
-                    test_file: req.body.test_file,
-                    solution_file: req.body.solution_file,
-                    status: req.body.status,
-                    id_contest: req.body.id_contest
-                }
 
-                await models.problem.update(problemBody, { where: { id_problem: id } })
-                    .then(() => {
-                        res.status(200).json({
-                            message: "Updated problem with id : " + id
-                        });
-                    })
+    try {
+        const problem = await models.problem.findByPk(id)
+
+        if (!problem) {
+            return res.status(404).json({
+                message: "Problem NOT FOUND"
+            });
+        } else {
+            const problemBody = {
+                title: req.body.title,
+                topic: req.body.topic,
+                input: req.body.input,
+                output: req.body.output,
+                note: req.body.note,
+                score: req.body.score,
+                time_limit: req.body.time_limit,
+                memory_limit: req.body.memory_limit,
+                test_file: req.body.test_file,
+                solution_file: req.body.solution_file,
+                status: req.body.status,
+                id_contest: req.body.id_contest
             }
-        }).catch(err => {
-            res.status(500).json({ error: err });
-        });
+
+            await models.problem.update(problemBody, { where: { id_problem: id } });
+
+            const examples = await models.example.bulkCreate(req.body.examples);
+
+
+            await problem.setExamples(examples);
+
+            await problem.setTags(req.body.tags);
+
+
+            return res.status(200).json({
+                message: "Updated problem with id : " + id
+            });
+        }
+    }
+    catch ( err ) {
+        return res.status(500).json({ error: err });
+    }
+
 }
 
 
