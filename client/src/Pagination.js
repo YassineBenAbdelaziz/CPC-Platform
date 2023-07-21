@@ -1,11 +1,33 @@
 import { Link } from "react-router-dom";
 
-const Pagination = ({ postsPerPage, setPostsPerPage, totalPosts, paginate, previousPage, nextPage, currentPage }) => {
+const Pagination = ({
+    postsPerPage,
+    setPostsPerPage,
+    totalPosts,
+    paginate,
+    previousPage,
+    nextPage,
+    currentPage,
+    maxPageNumberLimit,
+    minPageNumberLimit
+}) => {
     const pageNumbers = [];
 
     for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
         pageNumbers.push(i)
     }
+
+    const renderPagesNumbers = pageNumbers.map(number => {
+        if (number < maxPageNumberLimit + 1 && number >= minPageNumberLimit) {
+            return (
+                < Link onClick={() => paginate(number)} href=" " key={number} className={`page-link${number === currentPage ? '-active' : ''}`}>
+                    {number}
+                </Link>
+            )
+        } else {
+            return null
+        }
+    })
 
     return (
         <nav>
@@ -13,11 +35,7 @@ const Pagination = ({ postsPerPage, setPostsPerPage, totalPosts, paginate, previ
                 <Link onClick={() => previousPage()} href=" " key={0} className="page-link">
                     &lt;
                 </Link>
-                {pageNumbers.map(number => (
-                    <Link onClick={() => paginate(number)} href=" " key={number} className={`page-link${number === currentPage ? '-active' : ''}`}>
-                        {number}
-                    </Link>
-                ))}
+                {renderPagesNumbers}
                 <Link onClick={() => nextPage()} href=" " key={Math.ceil(totalPosts / postsPerPage)} className="page-link">
                     &gt;
                 </Link>
@@ -33,7 +51,7 @@ const Pagination = ({ postsPerPage, setPostsPerPage, totalPosts, paginate, previ
                     <option value={"25"}>25 / page</option>
                 </select>
             </div>
-        </nav>
+        </nav >
     );
 }
 

@@ -17,6 +17,11 @@ const Problemset = () => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [problemsPerPage, setProblemsPerPage] = useState(10);
+
+    const [pageNumberLimit] = useState(15);
+    const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(15);
+    const [minPageNumberLimit, setMinPageNumberLimit] = useState(1);
+
     const [column, setColumn] = useState("title");
     const [type, setType] = useState("asc");
     const [tag, setTag] = useState("");
@@ -62,14 +67,23 @@ const Problemset = () => {
     const previousPage = () => {
         if (currentPage !== 1) {
             setCurrentPage(currentPage - 1);
+            if ((currentPage - 1) < minPageNumberLimit) {
+                setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit)
+                setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit)
+            }
         }
     }
     const nextPage = () => {
         if (problemset && currentPage !== Math.ceil(count / problemsPerPage)) {
             setCurrentPage(currentPage + 1);
+            if (currentPage + 1 > maxPageNumberLimit) {
+                setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit)
+                setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit)
+            }
         }
     }
 
+    //Sort problems
     const handleScoreSort = () => {
         setColumn("score")
         type === "asc" ? setType("desc") : setType("asc")
@@ -79,8 +93,6 @@ const Problemset = () => {
         setColumn("title")
         type === "asc" ? setType("desc") : setType("asc")
     }
-
-    console.log(type)
 
     return (
         <div className="problemset-content">
@@ -103,6 +115,8 @@ const Problemset = () => {
                             previousPage={previousPage}
                             nextPage={nextPage}
                             currentPage={currentPage}
+                            maxPageNumberLimit={maxPageNumberLimit}
+                            minPageNumberLimit={minPageNumberLimit}
                         />}
                 </div>
 
