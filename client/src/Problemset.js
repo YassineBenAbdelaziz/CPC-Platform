@@ -1,21 +1,68 @@
 import useFetch from "./useFetch";
 import ProblemList from "./ProblemList";
-import { useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Pagination from "./Pagination";
+import Axios from 'axios'
+import close from "./imgs/close.png";
 
 const Problemset = () => {
 
-    const { data: tags } = useFetch('http://localhost:5000/tag/count');
+    const url = "http://localhost:5000/";
 
-    const { data: problemset, isPending, error } = useFetch('http://localhost:5000/problem');
+    const urlGetPage = url + 'problem/problemPage'
+
+    const { data: tags, tagIsPending, tagError } = useFetch(url + 'tag/count');
+
+    const { data: problemset, isPending, error } = useFetch(url + 'problem');
 
     const [currentPage, setCurrentPage] = useState(1);
     const [problemsPerPage, setProblemsPerPage] = useState(10);
+    const [column, setColumn] = useState("title");
+    const [type, setType] = useState("asc");
+    const [tag, setTag] = useState("");
+    const [problems, setProblems] = useState([]);
+    const [count, setCount] = useState(0);
+
+    const [chosenTagDisplay, setChosenTagDisplay] = useState("none");
+    const [tagName, setTagName] = useState("");
+
+    const handleTagClick = useCallback((tag) => {
+        setTag([tag])
+        setChosenTagDisplay("flex")
+        setTagName(tag)
+    }, [])
+
+    const handleTagDelete = useCallback(() => {
+        setTag("")
+        setChosenTagDisplay("none")
+    }, [])
+
+    useEffect(() => {
+        const pageRequest = {
+            "page": currentPage,
+            "limit": problemsPerPage,
+            "column": column,
+            "type": type,
+            "tags": tag
+        }
+        Axios.post(urlGetPage, pageRequest).then(res => {
+            console.log('Problem Page Fetched')
+            setCount(res.data.results.count)
+            const newData = res.data.results.rows;
+            setProblems(newData);
+        }).catch(err => {
+            console.log("Fetching Problems Error")
+            console.log(err)
+        });
+        if (!problems.length && count) setCurrentPage(Math.ceil(count / problemsPerPage))
+    }, [column, count, currentPage, problems.length, problemsPerPage, tag, type, urlGetPage])
+
+    console.log('count', count, Math.ceil(count / problemsPerPage))
 
     //Get Current Problems
-    const indexOfLastProblem = currentPage * problemsPerPage;
-    const indexOfFirstProblem = indexOfLastProblem - problemsPerPage;
-    const currentProblems = problemset && problemset.slice(indexOfFirstProblem, indexOfLastProblem);
+    // const indexOfLastProblem = currentPage * problemsPerPage;
+    // const indexOfFirstProblem = indexOfLastProblem - problemsPerPage;
+    // const currentProblems = problemset && problemset.slice(indexOfFirstProblem, indexOfLastProblem);
 
     //Change Page
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -25,13 +72,13 @@ const Problemset = () => {
         }
     }
     const nextPage = () => {
-        if (problemset && currentPage !== Math.ceil(problemset.length / problemsPerPage)) {
+        if (problemset && currentPage !== Math.ceil(count / problemsPerPage)) {
             setCurrentPage(currentPage + 1);
         }
     }
 
     //Sort problems
-    problemset && problemset.sort((a, b) => a.score > b.score ? 1 : -1);
+    // problemset && problemset.sort((a, b) => a.score > b.score ? 1 : -1);
 
     return (
         <div className="problemset-content">
@@ -39,12 +86,15 @@ const Problemset = () => {
                 <div className="problems">
                     {error && <div>{error}</div>}
                     {isPending && <div>Loading...</div>}
-                    {problemset && <ProblemList problemset={currentProblems} title="Problems" />}
+                    {problemset && <ProblemList
+                        problemset={problems}
+                        title="Problems"
+                    />}
                     {problemset &&
                         <Pagination
                             postsPerPage={problemsPerPage}
                             setPostsPerPage={setProblemsPerPage}
-                            totalPosts={problemset.length}
+                            totalPosts={count}
                             paginate={paginate}
                             previousPage={previousPage}
                             nextPage={nextPage}
@@ -55,14 +105,30 @@ const Problemset = () => {
                 <div className="sidebar">
                     <div className="item">
                         <h3>Tags :</h3>
-                        <div className="item-content">
-                            {tags && tags.sort((a, b) => a.tag > b.tag ? 1 : -1).map((tag, i) => (
-                                <div className="tag" key={i}>
-                                    <div style={{ width: 'max-content', marginRight: '5px' }}>{tag.tag}</div>
-                                    <div>{tag.n_tag}</div>
-                                </div>
-                            ))}
+                        <div className="tag" style={{ width: 'max-content', backgroundColor: "rgb(221 221 221 / 79%)", display: chosenTagDisplay }}>
+                            <div>{tagName}</div>
+                            <img src={close} style={{
+                                width: '13px',
+                                height: '13px',
+                                cursor: 'pointer',
+                                marginLeft: '10px',
+                            }}
+                                alt="close"
+                                onClick={() => handleTagDelete()}
+                            />
                         </div>
+                        {tagError && <div>{tagError}</div>}
+                        {tagIsPending && <div>Loading...</div>}
+                        {tags &&
+                            <div className="item-content">
+                                {tags.sort((a, b) => a.tag > b.tag ? 1 : -1).map((tag, i) => (
+                                    <div className="tag" key={i + 55} onClick={() => handleTagClick(tag.tag)}>
+                                        <div style={{ width: 'max-content', marginRight: '5px' }}>{tag.tag}</div>
+                                        <div>{tag.n_tag}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
