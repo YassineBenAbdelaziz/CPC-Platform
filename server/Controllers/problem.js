@@ -24,7 +24,7 @@ exports.getPage = async (req, res, next) => {
         const offset = (parseInt(req.body.page) - 1) * limit;
 
         const queryParams = {
-            attributes: ["title", "score"],
+            attributes: ["id_problem", "title", "score"],
             offset: offset,
             limit: limit,
             subQuery: false,
