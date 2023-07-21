@@ -36,7 +36,7 @@ const Pagination = ({
                     &lt;
                 </Link>
                 {renderPagesNumbers}
-                <Link onClick={() => nextPage()} href=" " key={Math.ceil(totalPosts / postsPerPage)} className="page-link">
+                <Link onClick={() => nextPage()} href=" " key={Math.ceil(totalPosts / postsPerPage) + 1} className="page-link">
                     &gt;
                 </Link>
                 <select

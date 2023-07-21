@@ -18,8 +18,8 @@ const Problemset = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [problemsPerPage, setProblemsPerPage] = useState(10);
 
-    const [pageNumberLimit] = useState(15);
-    const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(15);
+    const [pageNumberLimit] = useState(5);
+    const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
     const [minPageNumberLimit, setMinPageNumberLimit] = useState(1);
 
     const [column, setColumn] = useState("title");
