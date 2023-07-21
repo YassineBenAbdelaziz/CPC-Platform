@@ -46,6 +46,10 @@
   margin: 40px auto;
   padding: 20px;
 }
+.problemset-content {
+  margin: 40px 0;
+  padding: 20px;
+}
 .active {
   color: rgb(81, 95, 248);
   border-bottom: 3px solid rgb(81, 95, 248);
@@ -172,6 +176,36 @@ a {
   width: 50px;
   font-weight: bold;
   text-align: center;
+}
+.problemset {
+  display: flex;
+  justify-content: space-between;
+}
+.problemset .problems {
+  width: 1000px;
+  margin-left: 150px;
+}
+.problemset .sidebar {
+  width: 175px;
+  margin-right: 80px;
+  margin-top: 63px;
+}
+.sidebar .item-content{
+  display: flex;
+  flex-wrap: wrap;
+}
+.sidebar .item h3 {
+  padding: 5px;
+}
+.problemset .tag {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  margin: 5px;
+  border: 1px solid #b3b3b3;
+  border-radius: 5px;
+  background-color: #dddddd63;
+  cursor: pointer;
 }
 .create {
   border: 2px solid #b3b3b3;
