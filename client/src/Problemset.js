@@ -57,13 +57,6 @@ const Problemset = () => {
         if (!problems.length && count) setCurrentPage(Math.ceil(count / problemsPerPage))
     }, [column, count, currentPage, problems.length, problemsPerPage, tag, type, urlGetPage])
 
-    console.log('count', count, Math.ceil(count / problemsPerPage))
-
-    //Get Current Problems
-    // const indexOfLastProblem = currentPage * problemsPerPage;
-    // const indexOfFirstProblem = indexOfLastProblem - problemsPerPage;
-    // const currentProblems = problemset && problemset.slice(indexOfFirstProblem, indexOfLastProblem);
-
     //Change Page
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
     const previousPage = () => {
@@ -77,8 +70,17 @@ const Problemset = () => {
         }
     }
 
-    //Sort problems
-    // problemset && problemset.sort((a, b) => a.score > b.score ? 1 : -1);
+    const handleScoreSort = () => {
+        setColumn("score")
+        type === "asc" ? setType("desc") : setType("asc")
+    }
+
+    const handleTitleSort = () => {
+        setColumn("title")
+        type === "asc" ? setType("desc") : setType("asc")
+    }
+
+    console.log(type)
 
     return (
         <div className="problemset-content">
@@ -89,6 +91,8 @@ const Problemset = () => {
                     {problemset && <ProblemList
                         problemset={problems}
                         title="Problems"
+                        handleScoreSort={handleScoreSort}
+                        handleTitleSort={handleTitleSort}
                     />}
                     {problemset &&
                         <Pagination

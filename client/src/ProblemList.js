@@ -1,6 +1,13 @@
 import { Link } from "react-router-dom";
 
-const ProblemList = ({ problemset, title, titlePrefixe = false, contestId = 0 }) => {
+const ProblemList = ({
+    problemset,
+    title,
+    titlePrefixe = false,
+    contestId = 0,
+    handleTitleSort = function () { },
+    handleScoreSort = function () { }
+}) => {
     const ch = 'ABDEFGHIJKLMNOPQRSTUVWXYZ';
 
     const fn = (x) => {
@@ -31,10 +38,10 @@ const ProblemList = ({ problemset, title, titlePrefixe = false, contestId = 0 })
                 {!titlePrefixe && <Link to="/problemset/add-problem" className="add-problem">Add Problem</Link>}
             </div>
             <div className="table-titles">
-                <h3 className="title">Title</h3>
+                <h3 className="title" onClick={() => handleTitleSort()}>Title</h3>
                 <h3 className="status">Status</h3>
-                <h3 className="diff">Difficulty</h3>
-                <h3 className="score">Score</h3>
+                <h3 className="diff" onClick={() => handleScoreSort()}>Difficulty</h3>
+                <h3 className="score" onClick={() => handleScoreSort()}>Score</h3>
             </div>
             {problemset.map((problem, index) => (
                 < Link to={fn(problem.id_problem)} key={index}>
