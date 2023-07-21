@@ -70,6 +70,7 @@ exports.getPage = async (req, res, next) => {
 }
 
 exports.create_problem = async (req, res, next) => {
+    const id_contest = req.body.id_contest ? req.body.id_contest : null;
     const attributes = {
         title: req.body.title,
         topic: req.body.topic,
@@ -82,9 +83,8 @@ exports.create_problem = async (req, res, next) => {
         test_file: req.body.test_file,
         solution_file: req.body.solution_file,
         status: req.body.status,
-        id_contest: req.body.id_contest,
+        id_contest: id_contest,
         examples: req.body.examples,
-
     }
     try {
 
@@ -222,7 +222,7 @@ exports.update_problem = async (req, res, next) => {
             });
         }
     }
-    catch ( err ) {
+    catch (err) {
         return res.status(500).json({ error: err });
     }
 

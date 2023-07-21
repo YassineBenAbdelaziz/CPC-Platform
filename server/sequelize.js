@@ -28,7 +28,6 @@ for (const entityDefiner of entitiesDefiners) {
 // We execute any extra setup after the models are defined, such as adding associations.
 sequelize.models.problem.hasMany(sequelize.models.example);
 sequelize.models.example.belongsTo(sequelize.models.problem, {
-  foreignKey: "id_problem",
   allowNull: false,
   onDelete: "cascade"
 });
