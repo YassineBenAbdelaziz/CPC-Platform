@@ -5,13 +5,18 @@ import { useParams } from "react-router-dom";
 
 const Problem = () => {
 
+    const url = 'http://localhost:5000/';
+
     const { id } = useParams();
 
-    // eslint-disable-next-line
-    const { data: problem, isPending, error } = useFetch('http://localhost:5000/problem/' + id);
+    const { data: problem, isPending, error } = useFetch(url + 'problem/' + id);
 
-    // eslint-disable-next-line
-    const { data: examples, isPending1, error1 } = useFetch('http://localhost:5000/example/findByProblem/' + id);
+    const { data: examples, examplesArePending, examplesError } = useFetch(url + 'example/findByProblem/' + id);
+
+    const { data: Tags, tagsArePending, tagsError } = useFetch(url + 'tag/findByProblem/' + id);
+
+    const tags = [];
+    Tags && Tags.tags.map((tag) => tags.push(tag.tag));
 
     const note = () => {
         if (problem.note !== '') {
@@ -25,7 +30,9 @@ const Problem = () => {
     }
 
     const exp = () => {
-        if (examples.length) {
+        if (examplesError) return (<div>{examplesError}</div>)
+        if (examplesArePending) return (<div>Loading...</div>)
+        if (examples && examples.length) {
             return (
                 <span>
                     <div className="exp" style={{ fontWeight: "bold" }}>Example :</div>
@@ -58,6 +65,24 @@ const Problem = () => {
         }
     }
 
+    const tag = () => {
+        if (tagsError) return (<div>{tagsError}</div>)
+        if (tagsArePending) return (<div>Loading...</div>)
+        if (tags && tags.length) {
+            return (
+                <div className="problem-tags">
+                    <div className="tagss" style={{ fontWeight: "bold", marginBottom: '-5px' }}>Tags :</div>
+                    <div className="tags">
+                        {tags && tags.map((tag, ind) => (
+                            <div className="tag" key={ind}>{tag}</div>
+                        ))
+                        }
+                    </div>
+                </div >
+            )
+        }
+    }
+
     return (
         <div>
             {error && <div>{error}</div>}
@@ -76,8 +101,9 @@ const Problem = () => {
                     <div className="inp-text">{problem.input}</div>
                     <div className="outp" style={{ fontWeight: "bold" }}>Output :</div>
                     <div className="outp-text">{problem.output}</div>
-                    {examples && exp()}
+                    {exp()}
                     {note()}
+                    {tag()}
                 </div>
             )}
         </div>
