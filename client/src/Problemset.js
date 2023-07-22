@@ -24,23 +24,33 @@ const Problemset = () => {
 
     const [column, setColumn] = useState("title");
     const [type, setType] = useState("asc");
-    const [tag, setTag] = useState("");
+    const [tagsFilter, setTagsFilter] = useState("");
     const [problems, setProblems] = useState([]);
     const [count, setCount] = useState(0);
 
-    const [chosenTagDisplay, setChosenTagDisplay] = useState("none");
-    const [tagName, setTagName] = useState("");
-
     const handleTagClick = useCallback((tag) => {
-        setTag([tag])
-        setChosenTagDisplay("flex")
-        setTagName(tag)
-    }, [])
+        const onChangeVal = tagsFilter === "" ? [tag] : [...tagsFilter, tag];
+        let test = true;
+        for (let i = 0; i < onChangeVal.length - 1; i++) {
+            if (onChangeVal[i] === tag)
+                test = false;
+        }
+        if (test || onChangeVal.length === 1) {
+            setTagsFilter(onChangeVal);
+        }
+        test = true
+    }, [tagsFilter])
 
-    const handleTagDelete = useCallback(() => {
-        setTag("")
-        setChosenTagDisplay("none")
-    }, [])
+    const handleTagDelete = useCallback((i) => {
+        if (tagsFilter !== "") {
+            const deleteVal = [...tagsFilter];
+            deleteVal.splice(i, 1);
+            setTagsFilter(deleteVal);
+            if (!deleteVal.length) {
+                setTagsFilter("")
+            }
+        }
+    }, [tagsFilter])
 
     useEffect(() => {
         const pageRequest = {
@@ -48,7 +58,7 @@ const Problemset = () => {
             "limit": problemsPerPage,
             "column": column,
             "type": type,
-            "tags": tag
+            "tags": tagsFilter
         }
         Axios.post(urlGetPage, pageRequest).then(res => {
             console.log('Problem Page Fetched')
@@ -60,7 +70,7 @@ const Problemset = () => {
             console.log(err)
         });
         if (!problems.length && count) setCurrentPage(Math.ceil(count / problemsPerPage))
-    }, [column, count, currentPage, problems.length, problemsPerPage, tag, type, urlGetPage])
+    }, [column, count, currentPage, problems.length, problemsPerPage, tagsFilter, type, urlGetPage])
 
     //Change Page
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -123,17 +133,26 @@ const Problemset = () => {
                 <div className="sidebar">
                     <div className="item">
                         <h3>Tags :</h3>
-                        <div className="tag" style={{ width: 'max-content', backgroundColor: "rgb(221 221 221 / 79%)", display: chosenTagDisplay }}>
-                            <div>{tagName}</div>
-                            <img src={close} style={{
-                                width: '13px',
-                                height: '13px',
-                                cursor: 'pointer',
-                                marginLeft: '10px',
-                            }}
-                                alt="close"
-                                onClick={() => handleTagDelete()}
-                            />
+                        <div className="item-content" >
+                            {tagsFilter !== "" && tagsFilter.map((tagName, i) => (
+                                <div className="tag"
+                                    key={i}
+                                    style={{
+                                        width: 'max-content',
+                                        backgroundColor: "rgb(221 221 221 / 79%)",
+                                    }}>
+                                    <div>{tagName}</div>
+                                    <img src={close} style={{
+                                        width: '13px',
+                                        height: '13px',
+                                        cursor: 'pointer',
+                                        marginLeft: '10px',
+                                    }}
+                                        alt="close"
+                                        onClick={() => handleTagDelete(i)}
+                                    />
+                                </div>
+                            ))}
                         </div>
                         {tagError && <div>{tagError}</div>}
                         {tagIsPending && <div>Loading...</div>}
