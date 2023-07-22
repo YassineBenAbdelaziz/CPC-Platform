@@ -13,30 +13,30 @@ exports.get_all = async (req, res, next) => {
 
 exports.countByTag = async (req, res, next) => {
     try {
-    const results = await models.tag.findAll({
-        attributes: ["tag",
-            [sequelize.fn('COUNT', sequelize.col('problems.id_problem')), 'n_tag'],
-        ],
-        include: [{
-            model: models.problem,
-            attributes: [],
-            through: {
-                attributes: []
-              }
-        }],
-        group: ['tag'],
-        raw: true,
-    });
+        const results = await models.tag.findAll({
+            attributes: ["tag",
+                [sequelize.fn('COUNT', sequelize.col('problems.id_problem')), 'n_tag'],
+            ],
+            include: [{
+                model: models.problem,
+                attributes: [],
+                through: {
+                    attributes: []
+                }
+            }],
+            group: ['tag'],
+            raw: true,
+        });
 
-    return res.status(200).json(results);
+        return res.status(200).json(results);
 
-    } 
+    }
     catch (err) {
         res.status(500).json({
-            error : err,
+            error: err,
         })
     }
-    
+
 }
 
 
@@ -70,6 +70,30 @@ exports.get_tag = async (req, res, next) => {
         }).catch(err => {
             res.status(500).json({ error: err });
         });
+}
+
+
+exports.get_tags_by_problem = async (req, res, next) => {
+    try {
+        const results = await models.problem.findOne({
+            where: { id_problem: req.params.problemId },
+            attributes: ["id_problem"],
+            include: [{
+                model: models.tag,
+                attributes: ["tag"],
+                through: {
+                    attributes: []
+                }
+            }],
+        });
+        return res.status(200).json(results);
+
+    }
+    catch (err) {
+        res.status(500).json({
+            error: err,
+        })
+    }
 }
 
 

@@ -11,6 +11,8 @@ router.post('/', TagController.create_tag);
 
 router.get('/:tagId', TagController.get_tag);
 
+router.get('/findByProblem/:problemId', TagController.get_tags_by_problem);
+
 router.patch('/:tagId', TagController.update_tag);
 
 router.delete('/:tagId', TagController.delete_tag);
