@@ -115,6 +115,7 @@ const Problemset = () => {
                         title="Problems"
                         handleScoreSort={handleScoreSort}
                         handleTitleSort={handleTitleSort}
+                        inProblemset={true}
                     />}
                     {problemset &&
                         <Pagination
