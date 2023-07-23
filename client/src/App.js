@@ -14,6 +14,7 @@ import ScrollToTop from './ScrollToTop';
 import ProtectedRoutes from './ProtectedRoutes';
 import ShowNavBar from './ShowNavbar';
 import AddProblem from './AddProblem';
+import Profile from './Profile';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <div className="app-content">
           <Routes>
             <Route path='/' element={<Home />}></Route>
+            <Route path='/profile' element={<Profile />}></Route>
             <Route path='/about' element={<About />}></Route>
             <Route path='/login' element={<Login />}></Route>
             <Route path='/signup' element={<SignUp />}></Route>
