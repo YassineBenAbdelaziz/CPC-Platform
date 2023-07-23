@@ -336,6 +336,20 @@ a {
   text-align: center;
   cursor: pointer;
 }
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+}
+.tags .tag {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  margin: 5px;
+  border: 1px solid #b3b3b3;
+  border-radius: 5px;
+  background-color: #dddddd63;
+  cursor: pointer;
+}
 .code-editor {
   margin: 20px 0; 
   border: 1px solid #b3b3b3;
@@ -494,29 +508,29 @@ footer {
 .board h2 {
   margin: 25px;
 }
-.profile .item,
-.profile .score {
+.board .profile .item,
+.board .profile .score {
   display: flex;
   align-items: center;
 }
-.profiles {
+.board .profiles {
   margin: 0 250px;
   background-color: #dddddd26;
   border: 1px solid #efefef;
   border-radius: 15px;
 }
-.profile {
+.board .profile {
   display: flex;
   padding: 10px;
   height: 50px;
 }
-.profile img {
+.board .profile img {
   width: 50px;
   height: 50px;
   border-radius: 25%;
   margin-right: 10px;
 }
-.profile .score {
+.board .profile .score {
   margin-left: auto;
 }
 
@@ -556,4 +570,126 @@ footer {
 }
 .pagination .page-link-active {
   background-color: #dddddd63;
+}
+
+/* Profile */
+.profile-content {
+  display: flex;
+}
+.profile-content .sidebar1{
+  border: 1px solid rgb(81, 95, 248);
+  border-radius: 15px;
+  padding: 10px;
+  background-color: #dddddd26;
+  width: 250px;
+  margin-right: 10px;
+}
+.profile-content .profile-details {
+  display: flex;
+  align-items: center;
+}
+.profile-content .profile-img {
+  width: 110px;
+  border-radius: 27px;
+  padding: 10px;
+}
+.profile-content .info {
+  padding: 10px;
+}
+.profile-content .info div {
+  margin: 15px 0;
+}
+.profile-content .name {
+  font-weight: bold;
+}
+.profile-content .rank,
+.sidebar2 .solved-details,
+.sidebar2 .solved-details .diff {
+  display: flex;
+}
+.profile-content .rank h4 {
+  margin-left: 7px;
+}
+.profile-content .edit {
+  background-color: rgb(81, 95, 248);
+  border: none;
+  border-radius: 9px;
+  color: white;
+  padding: 10px;
+  width: -webkit-fill-available;
+  margin: 10px 0;
+  font-weight: bold;
+  cursor: pointer;
+}
+.profile-content .class-title {
+  font-weight: bold;
+  margin: 10px 0;
+  display: flex;
+}
+.profile-content .subitems {
+  display: flex;
+  flex-wrap: wrap;
+}
+.profile-content .subitem {
+  display: flex;
+  padding: 3px;
+  margin: 5px;
+  border: 1px solid #b3b3b3;
+  border-radius: 10px;
+  background-color: #dddddd63;
+  /* cursor: pointer; */
+}
+
+.sidebar2 {
+  width: -webkit-fill-available;
+}
+.profile-content .solved-problems {
+  margin-bottom: 10px;
+}
+.profile-content .solved-problems,
+.profile-content .recent-submissions {
+  border: 1px solid rgb(81, 95, 248);
+  border-radius: 15px;
+  padding: 10px;
+  background-color: #dddddd26;
+}
+.solved-details .solved-pourcentage {
+  border: 1px solid rgb(81, 95, 248);
+  border-radius: 50%;
+  padding: 0 30px;
+  margin: 20px;
+  display: flex;
+  align-items: center;
+}
+.solved-pourcentage .solved-number {
+  font-weight: bold;
+  display: flex;
+  justify-content: center
+}
+.solved-details .diff-name{
+  width: 70px;
+}
+.solved-details .difficulties {
+  width: -webkit-fill-available;
+}
+.solved-details .difficulty {
+  padding: 5px;
+}
+.uncolored-bar,
+.colored-bar {
+  margin: 5px 0;
+  padding: 5px;
+  border-radius: 5px
+}
+.colored-bar {
+  margin-top: -15px;
+}
+
+.sidebar2 .view-all {
+  margin-left: auto;
+  margin-right: 10px;
+}
+.sidebar2 .view-all:hover {
+  color: rgb(81, 95, 248);
+  cursor: pointer;
 }
