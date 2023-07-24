@@ -3,7 +3,7 @@ require('dotenv').config();
 const { models } = require('../sequelize');
 const { unlink } = require('node:fs/promises');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+
 
 
 async function deletefile(path) {
@@ -50,53 +50,7 @@ exports.createUser = (req, res, next) => {
 };
 
 
-exports.loginUser = async (req, res, next) => {
-    await models.user.findOne({
-        where: {
-            username: req.body.username,
-        }
-    })
-        .then((user) => {
-            if (!user) {
-                return res.status(401).json({
-                    message: 'Auth failed'
-                });
-            }
-            bcrypt.compare(req.body.password, user.password, (err, response) => {
-                if (err) {
-                    return res.status(401).json({
-                        message: 'Auth failed'
-                    });
-                }
-                if (response) {
-                    const token = jwt.sign({
-                        username: user.username,
-                        email: user.email,
-                        id_user: user.id_user,
-                        fname: user.fname,
-                        lname: user.lname,
-                        score: user.score,
-                        rank: user.rank,
-                        imagePath: user.imagePath
-                    }, process.env.JWT_KEY,
-                        {
-                            expiresIn: "1h"
-                        }
-                    )
-                    return res.status(200).json({
-                        message: 'Auth successful',
-                        token: token
-                    });
-                }
-                res.status(200).json({
-                    message: 'Auth failed'
-                });
-            })
-        })
-        .catch((err) => {
-            res.status(500).json({ error: err });
-        });
-}
+
 
 
 exports.deleteUser = async (req, res, next) => {
