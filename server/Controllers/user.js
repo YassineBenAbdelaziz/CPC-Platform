@@ -29,13 +29,11 @@ exports.getAll = async (req, res, next) => {
 }
 
 
-exports.createUser = (req, res, next) => {
+exports.register = (req, res, next) => {
     models.user.create({
         email: req.body.email,
         username: req.body.username,
         password: req.body.password,
-        fname: req.body.fname,
-        lname: req.body.lname,
     })
         .then((data) => {
             res.status(201).json({
@@ -134,3 +132,33 @@ exports.updateUser = (req, res, next) => {
         }
         );
 };
+
+
+
+
+
+exports.login = (req, res, next ) => {
+
+        return res.status(200).json({
+            message : "Login successful"
+        });
+
+}
+
+
+
+
+exports.logout = (req, res, next ) => {
+
+    req.logout((err) => {
+        if (err) {
+            next(err);
+        }
+        else {
+            res.status(200).json({
+                message : "Logout successful",
+            });
+        }
+    });
+
+}
