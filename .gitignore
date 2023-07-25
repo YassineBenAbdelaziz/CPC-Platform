@@ -12,3 +12,6 @@ package-lock.json
 /server/.env.test
 /server/uploads/
 /server/img/
+
+
+dump.rdb
