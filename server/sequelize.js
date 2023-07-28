@@ -18,7 +18,8 @@ const entitiesDefiners = [
   require('./Entities/example'),
   require('./Entities/submission'),
   require('./Entities/tag'),
-  require('./Entities/user',)
+  require('./Entities/user'),
+  require('./Entities/role'),
 ];
 
 // We define all models according to their files.
@@ -51,8 +52,12 @@ sequelize.models.tag.belongsToMany(sequelize.models.problem, { foreignKey: "id_t
 sequelize.models.user.belongsToMany(sequelize.models.contest, { foreignKey: "id_user", through: "participate" });
 sequelize.models.contest.belongsToMany(sequelize.models.user, { foreignKey: "id_contest", through: "participate" });
 
+sequelize.models.role.hasMany(sequelize.models.user,{foreignKey: 'id_role'});
+sequelize.models.user.belongsTo(sequelize.models.role,{foreignKey: 'id_role'}) ;
+
+
 //sync 
-sequelize.sync().then((data) => {
+sequelize.sync({alter:true}).then((data) => {
   console.log("Data Successfully Sync.");
 })
   .catch((err) => {
