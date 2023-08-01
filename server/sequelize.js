@@ -40,7 +40,11 @@ sequelize.models.problem.belongsTo(sequelize.models.contest, {
 
 sequelize.models.user.hasMany(sequelize.models.submission);
 sequelize.models.submission.belongsTo(sequelize.models.user, {
-  foreignKey: "id_user",
+  allowNull: false
+});
+
+sequelize.models.problem.hasMany(sequelize.models.submission);
+sequelize.models.submission.belongsTo(sequelize.models.problem, {
   allowNull: false
 });
 
