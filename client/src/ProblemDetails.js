@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Problem from "./Problem";
 import CodeEditor from "./CodeEditor";
+import Submissions from "./Submissions";
 
 const ProblDetails = () => {
 
@@ -80,11 +81,11 @@ const ProblDetails = () => {
 
                         {showSolution ? <div className="solution">Solution</div> : null}
 
-                        {showSubmissions ? <div className="submissions">Submissions</div> : null}
+                        {showSubmissions ? <Submissions /> : null}
                     </div>
 
                     <div className="code" style={{ margin: '5px', width: '70%' }}>
-                        <CodeEditor />
+                        <CodeEditor handleSubmissions={handleSubmissions} />
                     </div>
 
                 </div>
