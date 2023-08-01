@@ -8,3 +8,18 @@ exports.isAuth = (req, res, next) => {
         })
     }
 }
+
+
+
+exports.checkRole = (roles) => {
+    return (req, res, next) => {
+        if ( roles.includes(req.user.role.description)) {
+            next();
+        }
+        else {
+            res.status(401).json({
+                message : "You don't have permissions to view this ressource"
+            })
+        }
+    }
+}
