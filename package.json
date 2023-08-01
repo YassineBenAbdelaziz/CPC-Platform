@@ -13,6 +13,7 @@
   "author": "Yassine Ben Abdelaziz",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.4.0",
     "concurrently": "^3.5.1"
   }
 }
