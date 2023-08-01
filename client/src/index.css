@@ -152,7 +152,7 @@
 }
 .problem h2 {
   font-size: 20px;
-  color: red;
+  color: rgba(0, 0, 255, 0.601);
   margin-bottom: 8px;
 }
 a {
@@ -280,11 +280,10 @@ a {
 
 .problem-details h2 {
   font-size: 25px;
-  color: red;
+  color: rgba(0, 0, 255, 0.601);
   margin-bottom: 10px;
 }
 .problem-details,
-.prb-code,
 .prb-details div {
   white-space: pre-line;
   margin: 20px 0;
@@ -367,7 +366,7 @@ a {
 }
 .contest h2 {
   font-size: 20px;
-  color: red;
+  color: rgba(0, 0, 255, 0.601);
   margin-bottom: 8px;
 }
 
@@ -452,6 +451,51 @@ footer {
   width: 25px;
   cursor: pointer;
 }
+
+/* submission */
+.submission-list div {
+  display: flex;
+  padding: 10px 0;
+  margin: 40px 0 20px 0;
+  justify-content: space-between;
+}
+.submission-list div a,
+.submission-list div h3,
+.submission-list div div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.submission-list .result,
+.submission-list .problem-title {
+  width: 90px;
+}
+.submission-list .lang {
+  width: 120px;
+}
+.submission-list .time {
+  width: 65px;
+}
+.submission-list .memory {
+  width: 85px;
+}
+.submission-list .created {
+  width: 100px;
+}
+.submission-list .submission,
+.submission-list .submission div {
+  margin: 0;
+}
+.submission-list .submission:hover {
+  box-shadow: 1px 3px 5px rgba(0,0,0,0.1);
+  cursor: pointer;
+}
+.submission-list .submission .problem-title {
+  font-weight: bold;
+  color: rgba(0, 0, 255, 0.601);
+}
+
 
 /* UP Button  */
 
@@ -541,6 +585,10 @@ footer {
   font-size: 15px;
 }
 
+.submission .btn {
+  display: flex;
+  align-items: center;
+} 
 .btn button {
   padding: 10px;
   font-size: medium;
