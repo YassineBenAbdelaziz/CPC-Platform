@@ -9,7 +9,7 @@ const sequelize = new Sequelize(
   {
     host: 'localhost',
     dialect: 'postgres',
-    logging: false
+    logging: false,
   });
 
 const entitiesDefiners = [
@@ -52,12 +52,24 @@ sequelize.models.tag.belongsToMany(sequelize.models.problem, { foreignKey: "id_t
 sequelize.models.user.belongsToMany(sequelize.models.contest, { foreignKey: "id_user", through: "participate" });
 sequelize.models.contest.belongsToMany(sequelize.models.user, { foreignKey: "id_contest", through: "participate" });
 
-sequelize.models.role.hasMany(sequelize.models.user,{foreignKey: 'id_role'});
-sequelize.models.user.belongsTo(sequelize.models.role,{foreignKey: 'id_role'}) ;
+sequelize.models.role.hasMany(sequelize.models.user, { 
+  foreignKey: {
+    name : 'id_role',
+    allowNull: false,
+    defaultValue : 1,
+  }
+});
 
+sequelize.models.user.belongsTo(sequelize.models.role, { 
+  foreignKey: {
+    name : 'id_role',
+    allowNull: false,
+    defaultValue : 1,
+  }
+});
 
-//sync 
-sequelize.sync({alter:true}).then((data) => {
+ 
+sequelize.sync().then((data) => {
   console.log("Data Successfully Sync.");
 })
   .catch((err) => {
