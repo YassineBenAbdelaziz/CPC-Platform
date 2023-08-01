@@ -1,70 +1,89 @@
 import React from 'react'
 import Editor from "@monaco-editor/react"
 import { useState } from "react";
+import Axios from 'axios';
+import { useParams } from "react-router-dom";
+import loading from "./imgs/loading.gif";
 
+export default function CodeEditor({ handleSubmissions }) {
 
-export default function CodeEditor() {
+    const url = "http://localhost:5000/";
+
+    const urlAddSubmission = url + "submission/";
+
+    const problemId = useParams();
 
     const [lang, setLang] = useState("");
     const [script, setScript] = useState("");
+    const [submittedDisplay, setSubmittedDisplay] = useState("none");
+
     const files = {
         "": {
             name: "file.text",
-            lang: lang,
-            value: `Choose your language`
+            lang: "",
+            value: `Choose your language`,
+            id: ""
         },
         "java": {
             name: "file.java",
-            lang: lang,
-            value: `//Here you put your code`
+            lang: "Java",
+            value: `//Here you put your code`,
+            id: 62
         },
         "cpp": {
             name: "file.cpp",
-            lang: lang,
-            value: `#include <bits/stdc++.h>
-using namespace std;
-
-void solve(){
-    //Here you put your code
-}
-
-int main(){
-    solve();
-    return 0;
-}`
+            lang: "C++",
+            value: `#include <bits/stdc++.h>\nusing namespace std;\n\nvoid solve(){\n    //Here you put your code\n}\nint main(){\n    solve();\n    return 0;\n}`,
+            id: 54
         },
         "c": {
             name: "file.c",
-            lang: lang,
-            value: `#include <iostream>
-#include<conio.h>
-
-void solve(){
-    //Here you put your code
-}
-
-void main(){
-    solve();
-}`
+            lang: "C",
+            value: `#include <iostream>\n#include<conio.h>\n\nvoid solve(){\n    //Here you put your code\n}\n\nvoid main(){\n    solve();\n}`,
+            id: 50
         },
         "python": {
             name: "file.py",
-            lang: lang,
-            value: `#Here you put your code`
+            lang: "Python",
+            value: `#Here you put your code`,
+            id: 71
         }
     }
 
     const file = files[lang];
 
-    return (
-        <div>
+    function handleSubmittion() {
+        setSubmittedDisplay('none')
+        handleSubmissions()
+    }
 
+    function handleSubmit(e) {
+        e.preventDefault()
+        const submission = {
+            "langId": file.id,
+            "code": script,
+            "problemId": problemId.id
+        }
+        Axios.post(urlAddSubmission, submission).then(res => {
+            console.log("Submission Created");
+            console.log(res.data);
+        }).catch(err => {
+            console.log("Submission Post Error")
+            console.log(err)
+        })
+
+        setSubmittedDisplay('block')
+        setTimeout(handleSubmittion, 2000)
+    }
+
+    return (
+        <form onSubmit={(e) => handleSubmit(e)}>
             <select
                 className="select-lang"
                 name="lang"
-                id="lang"
                 value={lang}
-                onChange={(e) => setLang(e.target.value)}
+                onChange={(e) => { setLang(e.target.value); setSubmittedDisplay('none') }}
+                required
             >
                 <option value={""} disabled>Select your language</option>
                 <option value={"c"}>C</option>
@@ -74,7 +93,6 @@ void main(){
             </select>
 
             <div className="submission">
-                {/* <input type="file" accept={type[lang]} /><br /> */}
                 <div className="code-editor" >
                     <Editor
                         // theme='vs-dark'
@@ -86,14 +104,13 @@ void main(){
                         value={script}
                         onChange={(e) => setScript(e)}
                     />
-                    {/* {console.log(script)} */}
                 </div>
                 <div className="btn">
                     <button className="submit">Submit</button>
+                    <img src={loading} alt="" style={{ width: '30px', display: submittedDisplay, marginLeft: '5px' }} />
                 </div>
             </div>
-
-        </div>
+        </form>
     );
 }
 
