@@ -8,11 +8,11 @@ module.exports = (sequelize) => {
                 primaryKey: true,
                 autoIncrement: true,
             },
-            lang: {
+            tokens: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            result: {
+            lang: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
@@ -20,10 +20,18 @@ module.exports = (sequelize) => {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            output: {
+            time: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+            },
+            memory: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+            },
+            result: {
                 type: DataTypes.STRING,
                 allowNull: false,
-            }
+            },
         }
     );
 };
