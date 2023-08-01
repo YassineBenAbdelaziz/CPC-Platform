@@ -18,7 +18,7 @@ export default function AddProblem() {
     const [note, setNote] = useState("");
     const [score, setScore] = useState(80);
     const [timeLimit, setTimeLimit] = useState(1);
-    const [memoryLimit, setMemoryLimit] = useState("512 Mb");
+    const [memoryLimit, setMemoryLimit] = useState(512000);
     const [testFile, setTestFile] = useState("");
     const [tutorial, setTutorial] = useState("");
     const [solutionFile, setSolutionFile] = useState("");
@@ -26,6 +26,7 @@ export default function AddProblem() {
     const [status, setStatus] = useState("");
     const [examples, setExamples] = useState([]);
     const [tags, setTags] = useState([]);
+    const [tests, setTests] = useState([]);
 
     const tagsId = [];
     tags.map(tag => {
@@ -51,7 +52,7 @@ export default function AddProblem() {
 
     function handleSubmit(e) {
         // e.preventDefault();
-        if (tutorial) setSolutionFile(tutorial + "\n========\n" + solutionFile);
+        if (tutorial) setSolutionFile(tutorial + "\nsolution\n" + solutionFile);
         Axios.post(urlAddProblem, problem).then(res => {
             console.log("Problem Created");
             console.log(res.data);
@@ -59,6 +60,7 @@ export default function AddProblem() {
             console.log("Problem post error")
             console.log(err)
         })
+        // console.log(testFile)
     }
 
     const scores = [];
@@ -72,6 +74,18 @@ export default function AddProblem() {
 
     const getTags = (data) => {
         setTags(data);
+    }
+
+    const getTests = (data) => {
+        setTests(data);
+
+        let inputs = "";
+        let outputs = "";
+        tests.map(test => {
+            inputs += test.input + "\nnext\n";
+            outputs += test.output + "\nnext\n";
+        })
+        setTestFile(inputs + "\nexpected\n" + outputs)
     }
 
     return (
@@ -97,7 +111,7 @@ export default function AddProblem() {
                     </div>
 
                     <div className='input-field'>
-                        <AddExamples getData={getExemples} />
+                        <AddExamples name="Example(s)" getData={getExemples} />
                     </div>
 
                     <div className='input-field'>
@@ -119,10 +133,10 @@ export default function AddProblem() {
                             })}
                         </select>
 
-                        <label htmlFor="time-limit">Time Limit : </label>
+                        <label htmlFor="time-limit">Time Limit (Second): </label>
                         <input required type="number" id='time-limit' name='time-limit' min={1} max={20} value={timeLimit} onChange={(e) => setTimeLimit(e.target.value)} />
 
-                        <label htmlFor="memory-limit">Memory Limit : </label>
+                        <label htmlFor="memory-limit">Memory Limit (Kb): </label>
                         <input required type="text" id='memory-limit' value={memoryLimit} onChange={(e) => setMemoryLimit(e.target.value)} />
                     </div>
 
@@ -137,8 +151,7 @@ export default function AddProblem() {
                         <textarea required name="solution" id="solution" cols="100" rows="20" onChange={(e) => setSolutionFile(e.target.value)}></textarea>
                     </div>
                     <div className='input-field'>
-                        <label htmlFor="test">Tests : </label>
-                        <textarea required name="test" id="test" cols="100" rows="10" onChange={(e) => setTestFile(e.target.value)}></textarea>
+                        <AddExamples name="Test(s)" getData={getTests} />
                     </div>
 
                     <div className='input-field'>

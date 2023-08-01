@@ -30,7 +30,7 @@ export default function AddExamples(props) {
     return (
         <div className='input-field exp' style={{ display: 'block' }}>
 
-            <label htmlFor="memory-limit">Example(s) : </label>
+            <label htmlFor="memory-limit">{props.name} : </label>
             <img src={add} style={{
                 width: '20px',
                 height: '20px',
