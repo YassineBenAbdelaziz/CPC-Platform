@@ -18,7 +18,7 @@ async function deletefile(path) {
 
 exports.getAll = async (req, res, next) => {
     await models.user.findAll({
-        attributes : ['username','score','rank','imagePath']
+        attributes: ['username', 'score', 'rank', 'imagePath']
     })
         .then((results) => {
             res.status(200).json(results);
@@ -31,6 +31,8 @@ exports.getAll = async (req, res, next) => {
 
 exports.register = (req, res, next) => {
     models.user.create({
+        fname: req.body.fname,
+        lname: req.body.lname,
         email: req.body.email,
         username: req.body.username,
         password: req.body.password,
@@ -137,18 +139,18 @@ exports.updateUser = (req, res, next) => {
 
 
 
-exports.login = (req, res, next ) => {
+exports.login = (req, res, next) => {
 
-        return res.status(200).json({
-            message : "Login successful"
-        });
+    return res.status(200).json({
+        message: "Login successful"
+    });
 
 }
 
 
 
 
-exports.logout = (req, res, next ) => {
+exports.logout = (req, res, next) => {
 
     req.logout((err) => {
         if (err) {
@@ -156,7 +158,7 @@ exports.logout = (req, res, next ) => {
         }
         else {
             res.status(200).json({
-                message : "Logout successful",
+                message: "Logout successful",
             });
         }
     });

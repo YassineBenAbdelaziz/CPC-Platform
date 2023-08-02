@@ -1,64 +1,68 @@
 import { useState } from "react";
-import useFetch from "./useFetch";
 import { Link, useNavigate } from "react-router-dom";
+import Axios from 'axios'
 
 const SignUp = () => {
+
+    const url = "http://localhost:5000/";
+
     const [fname, setFname] = useState('');
     const [lname, setLname] = useState('');
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
-    const [pwd, setPwd] = useState('');
+    const [password, setPassword] = useState('');
     const [rePwd, setRePwd] = useState('');
     const [pwdMsg, setPwdMsg] = useState('');
     const [emailMsg, setEmailMsg] = useState('');
+    const [usernameMsg, setUsernameMsg] = useState('');
     const [rePwdMsg, setRePwdMsg] = useState('');
 
     const navigate = useNavigate();
 
-    // eslint-disable-next-line
-    const { data: users, isPending, error } = useFetch('http://localhost:8000/users');
-
     const handleSubmit = (e) => {
+        e.preventDefault();
         let test = true;
-        let testMail = true;
-        const regExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-        if (!regExp.test(pwd)) {
-            e.preventDefault();
+        const regExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$/i;
+        if (!regExp.test(password)) {
             test = false;
-            setPwdMsg('Password must have minimum of 8 caracters, \n at least one letter and one number.');
+            setPwdMsg('Minimum eight and maximum 10 characters,\nat least one uppercase letter,\none lowercase letter, one number\nand one special character.');
         } else {
             setPwdMsg('');
         }
-        if (rePwd !== pwd) {
-            e.preventDefault();
+        if (rePwd !== password) {
             test = false;
             setRePwdMsg('Passwords are not the same.');
         } else {
             setRePwdMsg('');
         }
-        (users && users.forEach((user) => {
-            if (email === user.email) {
-                testMail = false;
-            }
-        }))
-        if (!testMail) {
-            e.preventDefault();
-            setEmailMsg('Email exists already.');
-        } else {
-            setEmailMsg('');
+
+        const user = {
+            "fname": fname,
+            "lname": lname,
+            "username": username,
+            "email": email,
+            "password": password
+        };
+
+        if (test) {
+            Axios.post(url + "user/register", user)
+                .then(res => {
+                    console.log("User Created");
+                    console.log(res.data);
+                    navigate('/login');
+                }).catch(err => {
+                    console.log(err)
+                    if (err.response.data.error.errors[0].message === "username must be unique") {
+                        setUsernameMsg('Username already exists.')
+                        setEmailMsg('');
+                    } else if (err.response.data.error.errors[0].message === "email must be unique") {
+                        setEmailMsg('Email already exists.');
+                        setUsernameMsg('')
+                    }
+                    console.log("User creation error")
+                })
         }
 
-        const user = { fname, lname, username, email, img: "./imgs/blank-profile-picture-973460_1280.webp", score: 0, pwd };
-        if (test && testMail) {
-            fetch('http://localhost:8000/users', {
-                method: 'POST',
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(user)
-            }).then(() => {
-                console.log('new user added');
-            })
-            navigate('/');
-        }
     }
 
     return (
@@ -72,6 +76,11 @@ const SignUp = () => {
                     <input type="text" required id="lname" value={lname} onChange={(e) => setLname(e.target.value)} />
                     <label htmlFor="username">Username : </label>
                     <input type="text" required id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
+                    <p style={{
+                        color: 'red',
+                        whiteSpace: 'pre-line',
+                        fontSize: '15px'
+                    }}>{usernameMsg}</p>
                     <label htmlFor="email">Email : </label>
                     <input type="email" required id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                     <p style={{
@@ -80,7 +89,7 @@ const SignUp = () => {
                         fontSize: '15px'
                     }}>{emailMsg}</p>
                     <label htmlFor="pwd">Password : </label>
-                    <input type="password" required id="pwd" value={pwd} onChange={(e) => setPwd(e.target.value)} />
+                    <input type="password" required id="pwd" value={password} onChange={(e) => setPassword(e.target.value)} />
                     <p style={{
                         color: 'red',
                         whiteSpace: 'pre-line',
