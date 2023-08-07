@@ -80,6 +80,7 @@ exports.create_problem = async (req, res, next) => {
         score: req.body.score,
         time_limit: req.body.time_limit,
         memory_limit: req.body.memory_limit,
+        owner : req.user.username,
         test_file: req.body.test_file,
         solution_file: req.body.solution_file,
         status: req.body.status,
@@ -192,6 +193,14 @@ exports.update_problem = async (req, res, next) => {
                 message: "Problem NOT FOUND"
             });
         } else {
+
+            if (req.user.role.description === 'mod' && problem.toJSON().owner !== req.user.username ) {
+                return res.status(401).json({
+                    message: "Ownership needed"
+                });
+            }
+
+
             const problemBody = {
                 title: req.body.title,
                 topic: req.body.topic,

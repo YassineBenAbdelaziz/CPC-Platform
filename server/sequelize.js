@@ -69,6 +69,9 @@ sequelize.models.user.belongsTo(sequelize.models.role, {
 });
 
  
+sequelize.models.problem.belongsTo(sequelize.models.user,{ targetKey: 'username', foreignKey: 'owner' });
+
+
 sequelize.sync().then((data) => {
   console.log("Data Successfully Sync.");
 })
