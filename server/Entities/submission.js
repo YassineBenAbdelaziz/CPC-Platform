@@ -17,7 +17,7 @@ module.exports = (sequelize) => {
                 allowNull: false,
             },
             code: {
-                type: DataTypes.STRING,
+                type: DataTypes.STRING(2000),
                 allowNull: false,
             },
             time: {
