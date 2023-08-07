@@ -16,6 +16,7 @@ export default function CodeEditor({ handleSubmissions }) {
     const [lang, setLang] = useState("");
     const [script, setScript] = useState("");
     const [submittedDisplay, setSubmittedDisplay] = useState("none");
+    const [disableButton, setDisableButton] = useState(false);
 
     const files = {
         "": {
@@ -55,6 +56,7 @@ export default function CodeEditor({ handleSubmissions }) {
     function handleSubmittion() {
         setSubmittedDisplay('none')
         handleSubmissions()
+        setDisableButton(false)
     }
 
     function handleSubmit(e) {
@@ -62,7 +64,8 @@ export default function CodeEditor({ handleSubmissions }) {
         const submission = {
             "langId": file.id,
             "code": script,
-            "problemId": problemId.id
+            "problemId": problemId.id,
+            "userId": 23
         }
         Axios.post(urlAddSubmission, submission).then(res => {
             console.log("Submission Created");
@@ -73,6 +76,7 @@ export default function CodeEditor({ handleSubmissions }) {
         })
 
         setSubmittedDisplay('block')
+        setDisableButton(true)
         setTimeout(handleSubmittion, 2000)
     }
 
@@ -106,8 +110,8 @@ export default function CodeEditor({ handleSubmissions }) {
                     />
                 </div>
                 <div className="btn">
-                    <button className="submit">Submit</button>
-                    <img src={loading} alt="" style={{ width: '30px', display: submittedDisplay, marginLeft: '5px' }} />
+                    <button className="submit" disabled={disableButton}>Submit</button>
+                    <img src={loading} alt="" style={{ width: '30px', display: submittedDisplay, marginLeft: '10px' }} />
                 </div>
             </div>
         </form>
