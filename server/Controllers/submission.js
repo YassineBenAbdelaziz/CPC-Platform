@@ -159,6 +159,15 @@ exports.get_submissions_by_problem_and_user = async (req, res, next) => {
             res.status(404).json(err)
         })
 
+    let problemName = ""
+    await models.problem.findByPk(req.params.problemId)
+        .then(problem => {
+            problemName = problem.dataValues.title
+        }).catch(err => {
+            console.log('Problem Not Found')
+            res.status(404).json(err)
+        })
+
     await models.submission.findAll({
         where: {
             userIdUser: req.params.userId,
@@ -168,6 +177,7 @@ exports.get_submissions_by_problem_and_user = async (req, res, next) => {
         let result = []
         for (let sub of submissions) {
             sub.dataValues.user = username
+            sub.dataValues.problem = problemName
             result.push(sub.dataValues)
         }
         res.status(200).json(result)
@@ -188,8 +198,15 @@ exports.get_submissions_by_problem = async (req, res, next) => {
         let result = []
         for (let sub of submissions) {
             await models.user.findByPk(sub.dataValues.userIdUser)
-                .then(user => {
+                .then(async user => {
                     sub.dataValues.user = user.dataValues.username
+                    await models.problem.findByPk(sub.dataValues.problemIdProblem)
+                        .then(problem => {
+                            sub.dataValues.problem = problem.dataValues.title
+                        }).catch(err => {
+                            console.log('Problem Not Found')
+                            res.status(404).json(err)
+                        })
                     result.push(sub.dataValues)
                 }).catch(err => {
                     console.log('User Not Found')
@@ -240,7 +257,7 @@ exports.get_submission = async (req, res, next) => {
                         console.log('Get submission from judge failed')
                         console.log(err)
                     });
-                console.log(result)
+                // console.log(result)
                 res.status(200).json({
                     count: result.length,
                     testCases: result
