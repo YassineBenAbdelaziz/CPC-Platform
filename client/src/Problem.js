@@ -83,6 +83,14 @@ const Problem = () => {
         }
     }
 
+    const memory = (memory) => {
+        if (!(memory % 1000)) {
+            return (<span>Memory Limit : {memory / 1000} Mb</span>)
+        } else {
+            return (<span>Memory Limit : {memory} Kb</span>)
+        }
+    }
+
     return (
         <div>
             {error && <div>{error}</div>}
@@ -93,7 +101,7 @@ const Problem = () => {
                         <div className="problem-head" style={{ textAlign: 'center', margin: '30px 0' }} >
                             <h2>{problem.title}</h2>
                             <span>Time Limit : {problem.time_limit} Second{(problem.time_limit !== 1) ? ("s") : ("")}</span><br />
-                            <span>Memory Limit : {problem.memory_limit}</span>
+                            {memory(problem.memory_limit)}
                         </div>
                     </article>
                     <div>{problem.topic}</div>

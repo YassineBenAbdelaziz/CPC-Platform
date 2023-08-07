@@ -455,7 +455,7 @@ footer {
 /* submission */
 .submission-list div {
   display: flex;
-  padding: 10px 0;
+  padding: 5px 0;
   margin: 40px 0 20px 0;
   justify-content: space-between;
 }
@@ -471,8 +471,11 @@ footer {
 .submission-list .problem-title {
   width: 90px;
 }
-.submission-list .lang {
+.submission-list .user {
   width: 120px;
+}
+.submission-list .lang {
+  width: 65px;
 }
 .submission-list .time {
   width: 65px;
@@ -491,10 +494,29 @@ footer {
   box-shadow: 1px 3px 5px rgba(0,0,0,0.1);
   cursor: pointer;
 }
-.submission-list .submission .problem-title {
+.submission-list .submission .problem-title,
+.submission-list .submission .user {
   font-weight: bold;
+  /* color: rgba(0, 0, 255, 0.601); */
+}
+.submission-list .submission .problem-title:hover,
+.submission-list .submission .user:hover {
   color: rgba(0, 0, 255, 0.601);
 }
+.submission-list .submission-details,
+.submission-list .submission-details div {
+  margin: 0;
+  display: block;
+}
+.submission-details .testcase div{
+  text-align: initial;
+}
+.submission-details .testcase .input, 
+.submission-details .testcase .output, 
+.submission-details .testcase .expected {
+  background-color: #efefef;
+}
+
 
 
 /* UP Button  */
