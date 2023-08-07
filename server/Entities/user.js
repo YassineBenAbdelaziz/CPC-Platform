@@ -12,57 +12,57 @@ module.exports = (sequelize) => {
             email: {
                 type: DataTypes.STRING,
                 unique: true,
-                validate : {
+                validate: {
                     isEmail: true,
                 }
             },
             username: {
                 type: DataTypes.STRING(30),
                 allowNull: false,
-                unique : true,
-                validate : {
-                    notEmpty : {
-                        msg : "Username can't be empty",
+                unique: true,
+                validate: {
+                    notEmpty: {
+                        msg: "Username can't be empty",
                     }
                 }
             },
             password: {
                 type: DataTypes.STRING,
                 allowNull: false,
-                validate : {
+                validate: {
                     // Minimum eight and maximum 10 characters, at least one uppercase letter,
                     // one lowercase letter, one number and one special character:
-                    is : {
-                        args : /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$/i,
-                        msg : "Minimum eight and maximum 10 characters, at least one uppercase letter, one lowercase letter, one number and one special character",
+                    is: {
+                        args: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$/i,
+                        msg: "Minimum eight and maximum 10 characters, at least one uppercase letter, one lowercase letter, one number and one special character",
                     }
-                    
+
                 }
             },
-            fname :{
+            fname: {
                 type: DataTypes.STRING(40),
             },
-            lname :{
+            lname: {
                 type: DataTypes.STRING(40),
             },
-            score : {
-                type : DataTypes.INTEGER,
+            score: {
+                type: DataTypes.INTEGER,
                 defaultValue: 0,
             },
-            rank : {
-                type : DataTypes.STRING,
-                defaultValue : 'Newbie',
-                validate : {
-                    isIn : [['Newbie','Expert','Master']]
+            rank: {
+                type: DataTypes.STRING,
+                defaultValue: 'Newbie',
+                validate: {
+                    isIn: [['Newbie', 'Expert', 'Master']]
                 }
             },
-            imagePath : {
-                type : DataTypes.STRING,
-                defaultValue : "../img/profile.jpg"
+            imagePath: {
+                type: DataTypes.STRING,
+                defaultValue: "../uploads/profile.webp"
             }
         },
         {
-            validate : {
+            validate: {
                 userNameMatchPass() {
                     if (this.username === this.password) {
                         throw new Error("Password must be different from username.");
@@ -72,25 +72,25 @@ module.exports = (sequelize) => {
             hooks: {
                 beforeCreate: (user) => {
                     return bcrypt
-                    .hash(user.password, 10)
-                    .then((hashedPassword) => {
-                      user.password = hashedPassword;
-                    })
-                    .catch((error) => {
-                      throw new Error("There was an error while trying to register");
-                    });
+                        .hash(user.password, 10)
+                        .then((hashedPassword) => {
+                            user.password = hashedPassword;
+                        })
+                        .catch((error) => {
+                            throw new Error("There was an error while trying to register");
+                        });
                 },
                 beforeUpdate: (user) => {
                     return bcrypt
-                    .hash(user.password, 10)
-                    .then((hashedPassword) => {
-                      user.password = hashedPassword;
-                    })
-                    .catch((error) => {
-                      throw new Error("There was an error while trying to register");
-                    });
+                        .hash(user.password, 10)
+                        .then((hashedPassword) => {
+                            user.password = hashedPassword;
+                        })
+                        .catch((error) => {
+                            throw new Error("There was an error while trying to register");
+                        });
                 },
             },
         },
-    );   
+    );
 };
