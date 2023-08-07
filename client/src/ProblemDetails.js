@@ -2,36 +2,49 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Problem from "./Problem";
 import CodeEditor from "./CodeEditor";
-import Submissions from "./Submissions";
+import MySubmissions from "./MySubmissions";
+import AllSubmissions from "./AllSubmissions";
 
 const ProblDetails = () => {
 
     const [showProblem, setShowProblem] = useState(true);
     const [showSolution, setShowSolution] = useState(false);
-    const [showSubmissions, setShowSubmissions] = useState(false);
+    const [showMySubmissions, setShowMySubmissions] = useState(false);
+    const [showAllSubmissions, setShowAllSubmissions] = useState(false);
     const [showTutorial, setShowTutorial] = useState(false);
 
     const handleProblem = () => {
         setShowProblem(true);
         setShowSolution(false);
-        setShowSubmissions(false);
+        setShowMySubmissions(false);
+        setShowAllSubmissions(false);
         setShowTutorial(false);
     }
     const handleSolution = () => {
         setShowSolution(true);
         setShowProblem(false);
-        setShowSubmissions(false);
+        setShowAllSubmissions(false);
+        setShowMySubmissions(false);
         setShowTutorial(false);
     }
-    const handleSubmissions = () => {
-        setShowSubmissions(true);
+    const handleMySubmissions = () => {
+        setShowMySubmissions(true);
+        setShowAllSubmissions(false);
+        setShowSolution(false);
+        setShowProblem(false);
+        setShowTutorial(false);
+    }
+    const handleAllSubmissions = () => {
+        setShowAllSubmissions(true);
+        setShowMySubmissions(false);
         setShowSolution(false);
         setShowProblem(false);
         setShowTutorial(false);
     }
     const handleTutorial = () => {
         setShowTutorial(true);
-        setShowSubmissions(false);
+        setShowAllSubmissions(false);
+        setShowMySubmissions(false);
         setShowSolution(false);
         setShowProblem(false);
     }
@@ -53,9 +66,14 @@ const ProblDetails = () => {
             active: showSolution
         },
         {
-            name: "Submissions",
-            handle: handleSubmissions,
-            active: showSubmissions
+            name: "My Submissions",
+            handle: handleMySubmissions,
+            active: showMySubmissions
+        },
+        {
+            name: "All Submissions",
+            handle: handleAllSubmissions,
+            active: showAllSubmissions
         },
     ];
 
@@ -81,11 +99,14 @@ const ProblDetails = () => {
 
                         {showSolution ? <div className="solution">Solution</div> : null}
 
-                        {showSubmissions ? <Submissions /> : null}
+                        {showMySubmissions ? <MySubmissions /> : null}
+
+                        {showAllSubmissions ? <AllSubmissions /> : null}
+
                     </div>
 
                     <div className="code" style={{ margin: '5px', width: '70%' }}>
-                        <CodeEditor handleSubmissions={handleSubmissions} />
+                        <CodeEditor handleSubmissions={handleMySubmissions} />
                     </div>
 
                 </div>

@@ -1,17 +1,8 @@
 import React, { useState } from 'react'
-import useFetch from "./useFetch";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import SubmissionDetails from './SubmissionDetails';
 
-export default function Submissions() {
-    const url = 'http://localhost:5000/';
-
-    const { id } = useParams();
-
-    const { data: submissions, isPending, error } = useFetch(url + 'submission/findByProblemAndUser/' + id + "/23");
-
-    const { data: problem } = useFetch(url + 'problem/' + id);
-
+const SubmissionList = ({ submissions, error, isPending }) => {
     const [display, setDisplay] = useState('none')
     const [subId, setSubId] = useState(0)
 
@@ -65,7 +56,7 @@ export default function Submissions() {
                         <span key={i}>
                             <div className='submission' onClick={(e) => handleDisplay(e, sub.id_submission)}>
                                 <Link to={`/profile/`} className="user" >{sub.user}</Link >
-                                <Link to={`/problemset/${id}`} className="problem-title" >{problem && problem.title}</Link >
+                                <Link to={`/problemset/${sub.problemIdProblem}`} className="problem-title" >{sub.problem}</Link >
                                 <div className="lang">{sub.lang}</div>
                                 <div className="time" >{sub.time + " ms"}</div>
                                 {memory(sub.memory)}
@@ -80,3 +71,5 @@ export default function Submissions() {
         </div>
     )
 }
+
+export default SubmissionList;
