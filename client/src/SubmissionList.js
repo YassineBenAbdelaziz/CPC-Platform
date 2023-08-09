@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Link } from "react-router-dom";
 import SubmissionDetails from './SubmissionDetails';
 
-const SubmissionList = ({ submissions, error, isPending }) => {
+const SubmissionList = ({ submissions }) => {
     const [display, setDisplay] = useState('none')
     const [subId, setSubId] = useState(0)
 
@@ -39,8 +39,6 @@ const SubmissionList = ({ submissions, error, isPending }) => {
 
     return (
         <div>
-            {error && <div>{error}</div>}
-            {isPending && <div>Loading...</div>}
             {submissions && (
                 <div className='submission-list'>
                     <div className="titles">

@@ -69,8 +69,12 @@ const Problemset = () => {
             console.log("Fetching Problems Error")
             console.log(err)
         });
-        if (!problems.length && count) setCurrentPage(Math.ceil(count / problemsPerPage))
-    }, [column, count, currentPage, problems.length, problemsPerPage, tagsFilter, type, urlGetPage])
+        if (!problems.length && count) {
+            setCurrentPage(Math.ceil(count / problemsPerPage))
+            setMinPageNumberLimit(Math.ceil(currentPage / pageNumberLimit))
+            setMaxPageNumberLimit(minPageNumberLimit + pageNumberLimit)
+        }
+    }, [column, count, currentPage, minPageNumberLimit, pageNumberLimit, problems.length, problemsPerPage, tagsFilter, type, urlGetPage])
 
     //Change Page
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
