@@ -13,7 +13,7 @@ const SubmissionList = ({ submissions, error, isPending }) => {
     const result = (result) => {
         const color = result === "Accepted" ?
             'rgb(2, 177, 2)' : result.includes("Wrong Answer") ||
-                result.includes("Time Limit Exceeded") || result.includes("Runtime Error") || result.includes("Compilation Error") ?
+                result === "Time Limit Exceeded" || result === "Runtime Error" || result === "Compilation Error" || result === "Memory Limit Exceeded" ?
                 'red' : ""
         return (
             <div className="result" style={{ color: color, fontWeight: 'bold' }}>{result}</div>
@@ -52,7 +52,7 @@ const SubmissionList = ({ submissions, error, isPending }) => {
                         <h3 className="created" >Created At</h3>
                         <h3 className="result" >Result</h3>
                     </div>
-                    {submissions && submissions.sort((a, b) => created(a.createdAt) < created(b.createdAt) ? 1 : -1).map((sub, i) => (
+                    {submissions && submissions.map((sub, i) => (
                         <span key={i}>
                             <div className='submission' onClick={(e) => handleDisplay(e, sub.id_submission)}>
                                 <Link to={`/profile/`} className="user" >{sub.user}</Link >
