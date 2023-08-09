@@ -35,7 +35,7 @@ const ProblemList = ({
     return (
         <div className="problem-list">
             <div className="problemlist-header">
-                <h2>{title}</h2>
+                <h2>{title} ({problemset.length})</h2>
                 {inProblemset && <Link to="/problemset/add-problem" className="add-problem">Add Problem</Link>}
             </div>
             <div className="table-titles">
