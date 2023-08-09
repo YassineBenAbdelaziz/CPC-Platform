@@ -1,11 +1,16 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Problem from "./Problem";
 import CodeEditor from "./CodeEditor";
-import MySubmissions from "./MySubmissions";
-import AllSubmissions from "./AllSubmissions";
+import Submissions from "./Submissions";
 
 const ProblDetails = () => {
+    const url = 'http://localhost:5000/';
+
+    const { id } = useParams();
+
+    const urlAllSubmissions = url + 'submission/findByProblem/' + id;
+    const urlMySubmissions = url + 'submission/findByProblemAndUser/' + id + "/23";
 
     const [showProblem, setShowProblem] = useState(true);
     const [showSolution, setShowSolution] = useState(false);
@@ -99,9 +104,9 @@ const ProblDetails = () => {
 
                         {showSolution ? <div className="solution">Solution</div> : null}
 
-                        {showMySubmissions ? <MySubmissions /> : null}
+                        {showMySubmissions ? <Submissions url={urlMySubmissions} /> : null}
 
-                        {showAllSubmissions ? <AllSubmissions /> : null}
+                        {showAllSubmissions ? <Submissions url={urlAllSubmissions} /> : null}
 
                     </div>
 
