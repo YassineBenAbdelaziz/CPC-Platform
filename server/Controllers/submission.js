@@ -127,6 +127,14 @@ get_submission_details = async (tokens) => {
 
 
 exports.get_submissions_by_problem_and_user = async (req, res, next) => {
+    if (!req.body.page || !req.body.limit) {
+        return res.status(404).json({
+            error: "Missing params",
+        })
+    }
+    const limit = parseInt(req.body.limit);
+    const offset = (parseInt(req.body.page) - 1) * limit;
+
     let subs = [];
     await models.submission.findAll({
         where: {
@@ -136,8 +144,11 @@ exports.get_submissions_by_problem_and_user = async (req, res, next) => {
                 { result: { [sequelize.Op.like]: "Processing%" } },
                 { result: "In Queue" }
             ]
-
-        }
+        },
+        offset: offset,
+        limit: limit,
+        subQuery: false,
+        order: [["createdAt", "desc"]]
     }).then(submissions => {
         submissions.map(sub => {
             subs.push(sub.dataValues)
@@ -169,19 +180,26 @@ exports.get_submissions_by_problem_and_user = async (req, res, next) => {
             res.status(404).json(err)
         })
 
-    await models.submission.findAll({
+    await models.submission.findAndCountAll({
         where: {
             userIdUser: req.params.userId,
             problemIdProblem: req.params.problemId
-        }
+        },
+        offset: offset,
+        limit: limit,
+        subQuery: false,
+        order: [["createdAt", "desc"]]
     }).then(async submissions => {
         let result = []
-        for (let sub of submissions) {
+        for (let sub of submissions.rows) {
             sub.dataValues.user = username
             sub.dataValues.problem = problemName
             result.push(sub.dataValues)
         }
-        res.status(200).json(result)
+        res.status(200).json({
+            count: submissions.count,
+            rows: result
+        })
     }).catch(err => {
         console.log(err)
         res.status(500).json(err)
@@ -191,13 +209,25 @@ exports.get_submissions_by_problem_and_user = async (req, res, next) => {
 
 
 exports.get_submissions_by_problem = async (req, res, next) => {
-    await models.submission.findAll({
+    if (!req.body.page || !req.body.limit) {
+        return res.status(404).json({
+            error: "Missing params",
+        })
+    }
+    const limit = parseInt(req.body.limit);
+    const offset = (parseInt(req.body.page) - 1) * limit;
+
+    await models.submission.findAndCountAll({
         where: {
             problemIdProblem: req.params.problemId
-        }
+        },
+        offset: offset,
+        limit: limit,
+        subQuery: false,
+        order: [["createdAt", "desc"]]
     }).then(async submissions => {
         let result = []
-        for (let sub of submissions) {
+        for (let sub of submissions.rows) {
             await models.user.findByPk(sub.dataValues.userIdUser)
                 .then(async user => {
                     sub.dataValues.user = user.dataValues.username
@@ -214,7 +244,10 @@ exports.get_submissions_by_problem = async (req, res, next) => {
                     res.status(404).json(err)
                 })
         }
-        res.status(200).json(result)
+        res.status(200).json({
+            count: submissions.count,
+            rows: result
+        })
     })
 }
 
