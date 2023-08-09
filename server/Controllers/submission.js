@@ -112,6 +112,7 @@ get_submission_details = async (tokens) => {
                 subResult.time = Math.max(subResult.time, sub[i].time * 1000)
                 subResult.memory = Math.max(subResult.memory, sub[i].memory)
                 subResult.result = sub[i].status.description
+                subResult.result = subResult.result === "Runtime Error (NZEC)" ? "Memory Limit Exceeded" : subResult.result
                 subResult.result = subResult.result.includes('Runtime Error') ? "Runtime Error" : subResult.result
                 if (subResult.result !== "Accepted" && subResult.result !== "In Queue" && subResult.result !== "Processing") {
                     break;
@@ -228,11 +229,15 @@ exports.get_submission = async (req, res, next) => {
                 });
             } else {
                 let result = []
-                await axios.get(jugdeUrl + `submissions/batch?tokens=${submission.dataValues.tokens}&base64_encoded=false&fields=stdin,stdout,expected_output,status,time,memory`)
+                let code = ""
+                await axios.get(jugdeUrl + `submissions/batch?tokens=${submission.dataValues.tokens}&base64_encoded=false&fields=source_code,stdin,stdout,expected_output,status,time,memory`)
                     .then(res => {
                         console.log('Get submission from judge successful')
                         const sub = res.data.submissions;
                         for (let i = 0; i < sub.length; i++) {
+                            if (i === 0) {
+                                code = sub[i].source_code
+                            }
                             const subResult = {
                                 time: 0,
                                 memory: 0,
@@ -247,6 +252,7 @@ exports.get_submission = async (req, res, next) => {
                             subResult.stdout = sub[i].stdout
                             subResult.expected_output = sub[i].expected_output
                             subResult.result = sub[i].status.description
+                            subResult.result = subResult.result === "Runtime Error (NZEC)" ? "Memory Limit Exceeded" : subResult.result
                             subResult.result = subResult.result.includes('Runtime Error') ? "Runtime Error" : subResult.result
                             result.push(subResult)
                             if (subResult.result !== "Accepted" && subResult.result !== "In Queue" && subResult.result !== "Processing") {
@@ -257,8 +263,8 @@ exports.get_submission = async (req, res, next) => {
                         console.log('Get submission from judge failed')
                         console.log(err)
                     });
-                // console.log(result)
                 res.status(200).json({
+                    code: code,
                     count: result.length,
                     testCases: result
                 });
