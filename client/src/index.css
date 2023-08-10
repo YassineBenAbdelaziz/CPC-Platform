@@ -353,6 +353,10 @@ a {
   margin: 20px 0; 
   border: 1px solid #b3b3b3;
 }
+.code-editor section span {
+  font-family: Cascadia, monospace;
+  /* font-family: courier, monospace; */
+}
 
 /* contests */
 
@@ -516,7 +520,14 @@ footer {
 .submission-details .testcase .expected {
   background-color: #efefef;
 }
-
+.submission-details .source_code,
+.problem-details .source_code {
+  text-align: initial;
+  white-space: pre;
+  border: 1px solid #d0cece;
+  border-radius: 10px;
+  padding: 10px;
+}
 
 
 /* UP Button  */
