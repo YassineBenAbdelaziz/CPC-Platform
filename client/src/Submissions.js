@@ -61,7 +61,7 @@ export default function MySubmissions({ url }) {
     return (
         <>
             {subs && <SubmissionList submissions={subs} />}
-            {subs &&
+            {subs && count !== 0 &&
                 <Pagination
                     postsPerPage={submissionsPerPage}
                     setPostsPerPage={setSubmissionsPerPage}

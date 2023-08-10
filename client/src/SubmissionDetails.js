@@ -37,6 +37,10 @@ const SubmissionDetails = ({ submissionId, display }) => {
             {isPending && <div>Loading...</div>}
             {submission && (
                 <>
+                    <h5>Code :</h5>
+                    <div className='source_code' style={{ margin: '10px 0' }}>
+                        <code style={{ fontFamily: "courier, monospace" }} >{submission.code}</code>
+                    </div><br />
                     <h5>Number of test cases : {submission.count}</h5><br />
                     {submission.testCases && submission.testCases.map((sub, i) => (
                         <div key={i} className="testcase" style={{ marginBottom: '20px', textAlign: 'initial' }}>

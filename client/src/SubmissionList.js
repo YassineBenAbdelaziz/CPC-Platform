@@ -39,7 +39,9 @@ const SubmissionList = ({ submissions }) => {
 
     return (
         <div>
-            {submissions && (
+            {!submissions && <div>Loading...</div>}
+            {submissions && submissions.length === 0 && <h3>No Submissions Available</h3>}
+            {submissions && submissions.length !== 0 && (
                 <div className='submission-list'>
                     <div className="titles">
                         <h3 className="user">Username</h3>
