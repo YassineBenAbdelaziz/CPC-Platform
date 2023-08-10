@@ -3,13 +3,11 @@ import cpyBtn from './imgs/copy-icon.jpg'
 import useFetch from "./useFetch";
 import { useParams } from "react-router-dom";
 
-const Problem = () => {
+const Problem = ({ problem, isPending, error }) => {
 
     const url = 'http://localhost:5000/';
 
     const { id } = useParams();
-
-    const { data: problem, isPending, error } = useFetch(url + 'problem/' + id);
 
     const { data: examples, examplesArePending, examplesError } = useFetch(url + 'example/findByProblem/' + id);
 

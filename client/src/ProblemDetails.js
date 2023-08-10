@@ -3,11 +3,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import Problem from "./Problem";
 import CodeEditor from "./CodeEditor";
 import Submissions from "./Submissions";
+import useFetch from "./useFetch";
 
 const ProblDetails = () => {
     const url = 'http://localhost:5000/';
 
     const { id } = useParams();
+
+    const { data: problem, isPending, error } = useFetch(url + 'problem/' + id);
 
     const urlAllSubmissions = url + 'submission/findByProblem/' + id;
     const urlMySubmissions = url + 'submission/findByProblemAndUser/' + id + "/23";
@@ -98,11 +101,25 @@ const ProblDetails = () => {
 
                         </div>
 
-                        {showProblem ? <Problem /> : null}
+                        {showProblem ? <Problem problem={problem} error={error} isPending={isPending} /> : null}
 
-                        {showTutorial ? <div className="tutorial">Tutorial</div> : null}
+                        {
+                            showTutorial ? <div className="tutorial">
+                                {
+                                    problem.tutorial ? <div className="source_code">
+                                        {problem.tutorial}
+                                    </div> : <div>There Is No Tutorial Available</div>
+                                }
+                            </div> : null
+                        }
 
-                        {showSolution ? <div className="solution">Solution</div> : null}
+                        {
+                            showSolution ? <div className="solution">
+                                <div className="source_code">
+                                    {problem.solution}
+                                </div>
+                            </div> : null
+                        }
 
                         {showMySubmissions ? <Submissions url={urlMySubmissions} /> : null}
 
