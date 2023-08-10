@@ -13,8 +13,6 @@ const Problemset = () => {
 
     const { data: tags, tagIsPending, tagError } = useFetch(url + 'tag/count');
 
-    const { data: problemset, isPending, error } = useFetch(url + 'problem');
-
     const [currentPage, setCurrentPage] = useState(1);
     const [problemsPerPage, setProblemsPerPage] = useState(10);
 
@@ -88,7 +86,7 @@ const Problemset = () => {
         }
     }
     const nextPage = () => {
-        if (problemset && currentPage !== Math.ceil(count / problemsPerPage)) {
+        if (problems && currentPage !== Math.ceil(count / problemsPerPage)) {
             setCurrentPage(currentPage + 1);
             if (currentPage + 1 > maxPageNumberLimit) {
                 setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit)
@@ -112,17 +110,16 @@ const Problemset = () => {
         <div className="problemset-content">
             <div className="problemset">
                 <div className="problems">
-                    {error && <div>{error}</div>}
-                    {isPending && <div>Loading...</div>}
-                    {problemset && <ProblemList
+                    {problems && count === 0 && <h2>No Problems Available</h2>}
+                    {problems && count !== 0 && <ProblemList
                         problemset={problems}
                         title="Problems"
                         handleScoreSort={handleScoreSort}
                         handleTitleSort={handleTitleSort}
                         inProblemset={true}
                     />}
-                    {problemset &&
-                        <Pagination
+                    {problems && count !== 0 &&
+                        < Pagination
                             postsPerPage={problemsPerPage}
                             setPostsPerPage={setProblemsPerPage}
                             totalPosts={count}
