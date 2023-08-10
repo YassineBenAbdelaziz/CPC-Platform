@@ -81,7 +81,8 @@ exports.create_problem = async (req, res, next) => {
         time_limit: req.body.time_limit,
         memory_limit: req.body.memory_limit,
         test_file: req.body.test_file,
-        solution_file: req.body.solution_file,
+        solution: req.body.solution,
+        tutorial: req.body.tutorial,
         status: req.body.status,
         id_contest: id_contest,
         examples: req.body.examples,
@@ -202,7 +203,8 @@ exports.update_problem = async (req, res, next) => {
                 time_limit: req.body.time_limit,
                 memory_limit: req.body.memory_limit,
                 test_file: req.body.test_file,
-                solution_file: req.body.solution_file,
+                solution: req.body.solution,
+                tutorial: req.body.tutorial,
                 status: req.body.status,
                 id_contest: req.body.id_contest
             }

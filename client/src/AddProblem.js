@@ -43,7 +43,8 @@ export default function AddProblem() {
         "time_limit": timeLimit,
         "memory_limit": memoryLimit,
         "test_file": testFile,
-        "solution_file": solutionFile,
+        "solution": solutionFile,
+        "tutorial": tutorial,
         "status": status,
         "id_contest": 0,
         "examples": examples,
@@ -52,7 +53,6 @@ export default function AddProblem() {
 
     function handleSubmit(e) {
         // e.preventDefault();
-        if (tutorial) setSolutionFile(tutorial + "\nsolution\n" + solutionFile);
         Axios.post(urlAddProblem, problem).then(res => {
             console.log("Problem Created");
             console.log(res.data);
@@ -60,7 +60,7 @@ export default function AddProblem() {
             console.log("Problem post error")
             console.log(err)
         })
-        // console.log(testFile)
+        // console.log(problem)
     }
 
     const scores = [];

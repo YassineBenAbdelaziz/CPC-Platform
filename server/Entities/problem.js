@@ -44,9 +44,13 @@ module.exports = (sequelize) => {
                 type: DataTypes.STRING(10e6),
                 allowNull: true,
             },
-            solution_file: {
+            solution: {
                 type: DataTypes.STRING(5000),
                 allowNull: false,
+            },
+            tutorial: {
+                type: DataTypes.STRING(5000),
+                allowNull: true,
             },
             status: {
                 type: DataTypes.STRING,
