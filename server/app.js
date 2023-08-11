@@ -38,9 +38,6 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   store : redisStore,
-  cookie : {
-    maxAge: 1000 * 60 * 60 * 24,
-  }
 }));
 
 
@@ -64,21 +61,15 @@ app.use(passport.session());
 
 
 app.use(morgan('dev'));
-app.use(cors());
+app.use(cors({
+  origin : ['http://localhost:3000'],
+  methods : ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
+  allowedHeaders : ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
+  credentials : true,
+}));
 app.use('/uploads',express.static('./uploads'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-app.use((req, res, next) => {
-  req.header("Access-Control-Allow-Origin", "*");
-  req.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-  if (req.method === 'OPTIONS') {
-    req.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
-    return res.status(200).json({});
-  }
-  next();
-});
-
 
 
 /*
