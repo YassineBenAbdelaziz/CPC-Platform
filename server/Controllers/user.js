@@ -141,6 +141,10 @@ exports.updateUser = (req, res, next) => {
 
 exports.login = (req, res, next) => {
 
+    if (req.body.remember) {
+        // Set cookie age to 1 week
+        req.session.cookie.maxAge = 604800000  ;
+    }
     return res.status(200).json({
         message: "Login successful"
     });
