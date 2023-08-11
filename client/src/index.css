@@ -81,6 +81,7 @@
   margin-bottom: 30px;
   margin-top: 25px;
 }
+
 .form-auth input {
   width: 320px;
   padding: 14px 20px;
@@ -90,6 +91,27 @@
   display: block;
   border-radius: 25px;
 }
+
+.form-auth input[type="checkbox"] {
+  width: auto;
+  display: inline;
+}
+
+
+.form-checkbox-container{
+  margin-top: 15px;
+  padding-left: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 5px;
+}
+
+.form-checkbox-container label {
+  margin: 0px;
+  display: inline;
+}
+
 .form-auth button {
   background-color: rgb(81, 95, 248);
   color: white;
