@@ -1,13 +1,19 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Axios from 'axios'
-
+import useAuth from "./hooks/useAuth";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Login = () => {
 
     const url = "http://localhost:5000/";
     Axios.defaults.withCredentials = true;
 
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || '/' ;
+
+    const {setAuth} = useAuth();
     const [email, setEmail] = useState('');
     const [pwd, setPwd] = useState('');
     const [checked, setChecked] = useState(false);
@@ -24,7 +30,12 @@ const Login = () => {
 
         Axios.post(url + "user/login", user ,  )
         .then( (res) => {
-            console.log(res);
+            console.log(res.data.data);
+            setAuth(res.data.data);
+            setEmail('');
+            setPwd('');
+            navigate(from, {replace : true});
+            
         })
         .catch(err => {
             if (err.response) {
