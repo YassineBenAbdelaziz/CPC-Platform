@@ -145,8 +145,13 @@ exports.login = (req, res, next) => {
         // Set cookie age to 1 week
         req.session.cookie.maxAge = 604800000  ;
     }
+    const user = {
+        username : req.user.username,
+        img : req.user.imagePath,
+    }
     return res.status(200).json({
-        message: "Login successful"
+        message: "Login successful",
+        data : user,
     });
 
 }
@@ -166,5 +171,24 @@ exports.logout = (req, res, next) => {
             });
         }
     });
+
+}
+
+exports.getCurrentUser = (req, res, next) => {
+    if (req.user) {  
+        const user = {
+            username : req.user.username,
+            img : req.user.imagePath,
+    }
+        return res.status(200).json({
+            status: 'OK',
+            data : user,
+    })}
+    else {
+        return res.status(200).json({
+            status: 'Invalid',
+
+        })
+    }
 
 }
