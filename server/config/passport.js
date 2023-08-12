@@ -20,7 +20,7 @@ const validateUser = async (email, password, done) => {
         }
 
         if (await bcrypt.compare(password, user.password)) {
-            return done(null, user);
+            return done(null, user.toJSON());
         }
         else {
             return done(null, false, {
@@ -55,7 +55,9 @@ passport.deserializeUser((userID, done) => {
     models.user.findByPk(userID,{
         attributes : ['id_user','username','score','rank']
     }).then(
-        (user) => done(null, user.toJSON())
+        (user) => {
+            done(null, user.toJSON());
+        }
     ).catch(
         err => done(err)
     )
