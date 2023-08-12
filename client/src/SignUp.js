@@ -6,8 +6,6 @@ const SignUp = () => {
 
     const url = "http://localhost:5000/";
 
-    const [fname, setFname] = useState('');
-    const [lname, setLname] = useState('');
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -16,6 +14,10 @@ const SignUp = () => {
     const [emailMsg, setEmailMsg] = useState('');
     const [usernameMsg, setUsernameMsg] = useState('');
     const [rePwdMsg, setRePwdMsg] = useState('');
+    const [usernameBorder, setUsernameBorder] = useState('1px solid #ddd')
+    const [emailBorder, setEmailBorder] = useState('1px solid #ddd')
+    const [pwdBorder, setPwdBorder] = useState('1px solid #ddd')
+    const [rePwdBorder, setRePwdBorder] = useState('1px solid #ddd')
 
     const navigate = useNavigate();
 
@@ -26,19 +28,21 @@ const SignUp = () => {
         if (!regExp.test(password)) {
             test = false;
             setPwdMsg('Minimum eight and maximum 10 characters,\nat least one uppercase letter,\none lowercase letter, one number\nand one special character.');
+            setPwdBorder('1px solid red')
         } else {
             setPwdMsg('');
+            setPwdBorder('1px solid #ddd')
         }
         if (rePwd !== password) {
             test = false;
+            setRePwdBorder('1px solid red')
             setRePwdMsg('Passwords are not the same.');
         } else {
             setRePwdMsg('');
+            setRePwdBorder('1px solid #ddd')
         }
 
         const user = {
-            "fname": fname,
-            "lname": lname,
             "username": username,
             "email": email,
             "password": password
@@ -54,9 +58,13 @@ const SignUp = () => {
                     console.log(err)
                     if (err.response.data.error.errors[0].message === "username must be unique") {
                         setUsernameMsg('Username already exists.')
+                        setUsernameBorder('1px solid red')
+                        setEmailBorder('1px solid #ddd')
                         setEmailMsg('');
                     } else if (err.response.data.error.errors[0].message === "email must be unique") {
                         setEmailMsg('Email already exists.');
+                        setEmailBorder('1px solid red')
+                        setUsernameBorder('1px solid #ddd')
                         setUsernameMsg('')
                     }
                     console.log("User creation error")
@@ -70,33 +78,29 @@ const SignUp = () => {
             <div className="form-auth">
                 <form onSubmit={handleSubmit} name="signup">
                     <h2>Sign Up</h2>
-                    <label htmlFor="fname">First Name : </label>
-                    <input type="text" required id="fname" value={fname} onChange={(e) => setFname(e.target.value)} />
-                    <label htmlFor="lname">Last Name : </label>
-                    <input type="text" required id="lname" value={lname} onChange={(e) => setLname(e.target.value)} />
                     <label htmlFor="username">Username : </label>
-                    <input type="text" required id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
+                    <input type="text" required id="username" value={username} style={{ border: usernameBorder }} onChange={(e) => setUsername(e.target.value)} />
                     <p style={{
                         color: 'red',
                         whiteSpace: 'pre-line',
                         fontSize: '15px'
                     }}>{usernameMsg}</p>
                     <label htmlFor="email">Email : </label>
-                    <input type="email" required id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                    <input type="email" required id="email" value={email} style={{ border: emailBorder }} onChange={(e) => setEmail(e.target.value)} />
                     <p style={{
                         color: 'red',
                         whiteSpace: 'pre-line',
                         fontSize: '15px'
                     }}>{emailMsg}</p>
                     <label htmlFor="pwd">Password : </label>
-                    <input type="password" required id="pwd" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <input type="password" required id="pwd" value={password} style={{ border: pwdBorder }} onChange={(e) => setPassword(e.target.value)} />
                     <p style={{
                         color: 'red',
                         whiteSpace: 'pre-line',
                         fontSize: '15px'
                     }}>{pwdMsg}</p>
                     <label htmlFor="re-pwd">Repeat Password : </label>
-                    <input type="password" required id="re-pwd" value={rePwd} onChange={(e) => setRePwd(e.target.value)} />
+                    <input type="password" required id="re-pwd" value={rePwd} style={{ border: rePwdBorder }} onChange={(e) => setRePwd(e.target.value)} />
                     <p style={{
                         color: 'red',
                         whiteSpace: 'pre-line',
