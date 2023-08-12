@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Axios from 'axios'
+import eye from "./imgs/eye.png";
+import invisible from "./imgs/invisible.png";
 
 const SignUp = () => {
 
@@ -18,6 +20,8 @@ const SignUp = () => {
     const [emailBorder, setEmailBorder] = useState('1px solid #ddd')
     const [pwdBorder, setPwdBorder] = useState('1px solid #ddd')
     const [rePwdBorder, setRePwdBorder] = useState('1px solid #ddd')
+
+    const [visible, setVisible] = useState(true)
 
     const navigate = useNavigate();
 
@@ -70,7 +74,10 @@ const SignUp = () => {
                     console.log("User creation error")
                 })
         }
+    }
 
+    const handleIconClick = () => {
+        visible ? setVisible(false) : setVisible(true)
     }
 
     return (
@@ -93,14 +100,30 @@ const SignUp = () => {
                         fontSize: '15px'
                     }}>{emailMsg}</p>
                     <label htmlFor="pwd">Password : </label>
-                    <input type="password" required id="pwd" value={password} style={{ border: pwdBorder }} onChange={(e) => setPassword(e.target.value)} />
+                    <div className="password-field" >
+                        <input type={visible ? "password" : "text"} required id="pwd" value={password} style={{ border: pwdBorder }} onChange={(e) => setPassword(e.target.value)} />
+                        <img
+                            className="password-icon"
+                            src={visible ? eye : invisible}
+                            alt=""
+                            onClick={handleIconClick}
+                        />
+                    </div>
                     <p style={{
                         color: 'red',
                         whiteSpace: 'pre-line',
                         fontSize: '15px'
                     }}>{pwdMsg}</p>
                     <label htmlFor="re-pwd">Repeat Password : </label>
-                    <input type="password" required id="re-pwd" value={rePwd} style={{ border: rePwdBorder }} onChange={(e) => setRePwd(e.target.value)} />
+                    <div className="password-field" >
+                        <input type={visible ? "password" : "text"} required id="re-pwd" value={rePwd} style={{ border: rePwdBorder }} onChange={(e) => setRePwd(e.target.value)} />
+                        <img
+                            className="password-icon"
+                            src={visible ? eye : invisible}
+                            alt=""
+                            onClick={handleIconClick}
+                        />
+                    </div>
                     <p style={{
                         color: 'red',
                         whiteSpace: 'pre-line',

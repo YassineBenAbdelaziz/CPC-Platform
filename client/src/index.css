@@ -796,3 +796,17 @@ footer {
   color: rgb(81, 95, 248);
   cursor: pointer;
 }
+
+
+
+.password-field {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+}
+.password-icon {
+  width: 20px;
+  position: absolute;
+  margin-right: 15px;
+  cursor: pointer;
+}
