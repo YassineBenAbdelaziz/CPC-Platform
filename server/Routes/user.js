@@ -7,6 +7,8 @@ const {isAuth} = require('../middlewares/authMiddlewares');
 
 router.get('/',  controller.getAll);
 
+router.get('/current',  controller.getCurrentUser);
+
 router.post('/register', controller.register);
 
 router.post('/login', passport.authenticate('local'), controller.login);
