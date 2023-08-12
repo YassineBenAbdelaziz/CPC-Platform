@@ -31,8 +31,6 @@ exports.getAll = async (req, res, next) => {
 
 exports.register = (req, res, next) => {
     models.user.create({
-        fname: req.body.fname,
-        lname: req.body.lname,
         email: req.body.email,
         username: req.body.username,
         password: req.body.password,
@@ -143,7 +141,7 @@ exports.login = (req, res, next) => {
 
     if (req.body.remember) {
         // Set cookie age to 1 week
-        req.session.cookie.maxAge = 604800000  ;
+        req.session.cookie.maxAge = 604800000;
     }
     return res.status(200).json({
         message: "Login successful"
