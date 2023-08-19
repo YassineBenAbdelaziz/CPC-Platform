@@ -59,7 +59,8 @@ export default function AddExamples(props) {
                                 }}
                             ></textarea>
                             <textarea
-                                required
+                                required={!props.checker}
+                                disabled={props.checker}
                                 placeholder="Output"
                                 name="output"
                                 id={`output${i}`}

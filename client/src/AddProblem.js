@@ -22,11 +22,13 @@ export default function AddProblem() {
     const [testFile, setTestFile] = useState("");
     const [tutorial, setTutorial] = useState("");
     const [solutionFile, setSolutionFile] = useState("");
-    // eslint-disable-next-line
-    const [status, setStatus] = useState("");
+    const [checker, setChecker] = useState("");
+    const [status] = useState("");
     const [examples, setExamples] = useState([]);
     const [tags, setTags] = useState([]);
     const [tests, setTests] = useState([]);
+
+    const [chooseChcker, setChooseChecker] = useState(false);
 
     const tagsId = [];
     tags.map(tag => {
@@ -53,6 +55,8 @@ export default function AddProblem() {
 
     function handleSubmit(e) {
         // e.preventDefault();
+        // console.log(problem)
+        if (chooseChcker) problem.checker = checker
         Axios.post(urlAddProblem, problem).then(res => {
             console.log("Problem Created");
             console.log(res.data);
@@ -60,7 +64,6 @@ export default function AddProblem() {
             console.log("Problem post error")
             console.log(err)
         })
-        // console.log(problem)
     }
 
     const scores = [];
@@ -110,9 +113,7 @@ export default function AddProblem() {
                         <textarea required name="output" id="output" cols="100" rows="3" onChange={(e) => setOutput(e.target.value)}></textarea>
                     </div>
 
-                    <div className='input-field'>
-                        <AddExamples name="Example(s)" getData={getExemples} />
-                    </div>
+                    <AddExamples name="Example(s)" getData={getExemples} />
 
                     <div className='input-field'>
                         <label htmlFor="note">Note : </label>
@@ -148,11 +149,20 @@ export default function AddProblem() {
                     </div>
                     <div className='input-field'>
                         <label htmlFor="solution">Solution : </label>
-                        <textarea required name="solution" id="solution" cols="100" rows="20" onChange={(e) => setSolutionFile(e.target.value)}></textarea>
+                        <textarea required name="solution" id="solution" cols="100" rows="15" onChange={(e) => setSolutionFile(e.target.value)}></textarea>
                     </div>
                     <div className='input-field'>
-                        <AddExamples name="Test(s)" getData={getTests} />
+                        <label> </label>
+                        <input type="radio" id='multiple' value='multiple' name='checker' onClick={() => setChooseChecker(true)} />
+                        <label htmlFor="multiple">Multiple Answers </label>
+                        <input type="radio" id='single' value='single' name='checker' onClick={() => setChooseChecker(false)} />
+                        <label htmlFor="single">Single Answer </label>
                     </div>
+                    <div className='input-field' style={chooseChcker ? {} : { display: 'none' }}>
+                        <label htmlFor="checker">Checker : </label>
+                        <textarea name="checker" id="checker" cols="100" rows="15" onChange={(e) => setChecker(e.target.value)}></textarea>
+                    </div>
+                    <AddExamples name="Test(s)" getData={getTests} checker={chooseChcker} />
 
                     <div className='input-field'>
                         <button className='create-btn'>Create</button>
