@@ -6,9 +6,9 @@ const Home = () => {
     return (
         <div className="content">
             <div className="home">
-                <h2>Welcome <span className="name">{auth?.username }</span> !</h2>
+                <h2>Welcome <span className="name">{auth?.username}</span> !</h2>
                 {/* <h3>Anouncements</h3> */}
-                <Scoreboard />
+                <Scoreboard username={auth?.username} />
             </div>
         </div>
     );

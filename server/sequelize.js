@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const { Sequelize } = require('sequelize');
+const { Sequelize, DataTypes } = require('sequelize');
 
 const sequelize = new Sequelize(
   process.env.DB_NAME,
@@ -48,6 +48,15 @@ sequelize.models.problem.hasMany(sequelize.models.submission);
 sequelize.models.submission.belongsTo(sequelize.models.problem, {
   allowNull: false
 });
+
+const user_problem = sequelize.define('user_problem', {
+  status: {
+    type: DataTypes.STRING,
+    allowNull: false
+  }
+});
+sequelize.models.problem.belongsToMany(sequelize.models.user, { foreignKey: "id_problem", through: "user_problem" });
+sequelize.models.user.belongsToMany(sequelize.models.problem, { foreignKey: "id_user", through: "user_problem" });
 
 sequelize.models.problem.belongsToMany(sequelize.models.tag, { foreignKey: "id_problem", through: "problem_tag" });
 sequelize.models.tag.belongsToMany(sequelize.models.problem, { foreignKey: "id_tag", through: "problem_tag" });
