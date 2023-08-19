@@ -18,7 +18,7 @@ async function deletefile(path) {
 
 exports.getAll = async (req, res, next) => {
     await models.user.findAll({
-        attributes: ['username', 'score', 'rank', 'imagePath']
+        attributes: ['id_user', 'username', 'score', 'rank', 'imagePath']
     })
         .then((results) => {
             res.status(200).json(results);
@@ -27,6 +27,23 @@ exports.getAll = async (req, res, next) => {
             res.status(500).json({ error: err });
         });
 }
+
+
+// exports.getUser = async (req, res, next) => {
+//     const id = req.params.id;
+//     await models.user.findByPk(id)
+//         .then(user => {
+//             if (!user) {
+//                 return res.status(404).json({
+//                     message: "User NOT FOUND"
+//                 });
+//             } else {
+//                 res.status(200).json(user);
+//             }
+//         }).catch(err => {
+//             res.status(500).json({ error: err });
+//         });
+// }
 
 
 exports.register = (req, res, next) => {
@@ -144,14 +161,14 @@ exports.login = (req, res, next) => {
         req.session.cookie.maxAge = 604800000;
     }
     const user = {
-        username : req.user.username,
-        img : req.user.imagePath,
+        id: req.user.id_user,
+        username: req.user.username,
+        img: req.user.imagePath,
     }
     return res.status(200).json({
         message: "Login successful",
-        data : user,
+        data: user,
     });
-
 }
 
 
@@ -173,19 +190,20 @@ exports.logout = (req, res, next) => {
 }
 
 exports.getCurrentUser = (req, res, next) => {
-    if (req.user) {  
+    if (req.user) {
         const user = {
-            username : req.user.username,
-            img : req.user.imagePath,
-    }
+            id: req.user.id_user,
+            username: req.user.username,
+            img: req.user.imagePath,
+        }
         return res.status(200).json({
             status: 'OK',
-            data : user,
-    })}
+            data: user,
+        })
+    }
     else {
         return res.status(200).json({
             status: 'Invalid',
-
         })
     }
 
