@@ -1,6 +1,7 @@
+import { Link } from "react-router-dom";
 import useFetch from "./useFetch";
 
-const Scoreboard = () => {
+const Scoreboard = ({ username }) => {
 
     const { data: users, isPending, error } = useFetch('http://localhost:5000/user');
 
@@ -12,10 +13,14 @@ const Scoreboard = () => {
                 {isPending && <div>Loading...</div>}
                 {
                     users && users.sort((a, b) => a.score < b.score ? 1 : -1).map((user, index) => (
-                        < div className="profile" key={index}>
+                        < div className="profile" key={index} style={username === user.username ? { background: '#00800047' } : {}}>
                             <div className="item">
-                                <img src={'http://localhost:5000/' + user.imagePath} alt="img" />
-                                <h3 className="name">{user.username}</h3>
+                                <Link to={`/profile/${user.id_user}`}>
+                                    <img src={'http://localhost:5000/' + user.imagePath} alt="img" />
+                                </Link>
+                                <Link to={`/profile/${user.id_user}`}>
+                                    <h3 className="username">{user.username}</h3>
+                                </Link>
                             </div>
                             <div className="score">
                                 {user.score}
