@@ -4,12 +4,15 @@ import { useState } from "react";
 import Axios from 'axios';
 import { useParams } from "react-router-dom";
 import loading from "./imgs/loading.gif";
+import useAuth from './hooks/useAuth';
 
 export default function CodeEditor({ handleSubmissions }) {
 
     const url = "http://localhost:5000/";
 
     const urlAddSubmission = url + "submission/";
+
+    const { auth } = useAuth();
 
     const problemId = useParams();
 
@@ -65,7 +68,7 @@ export default function CodeEditor({ handleSubmissions }) {
             "langId": file.id,
             "code": script,
             "problemId": problemId.id,
-            "userId": 23
+            "userId": auth?.id
         }
         Axios.post(urlAddSubmission, submission).then(res => {
             console.log("Submission Created");

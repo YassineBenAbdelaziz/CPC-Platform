@@ -154,6 +154,21 @@ exports.get_problems_by_contest = async (req, res, next) => {
 }
 
 
+exports.get_problem_status = async (req, res, next) => {
+    const userProblem = await models.user_problem.findOne({
+        where: {
+            id_problem: req.params.problemId,
+            id_user: req.user.id_user
+        }
+    });
+    if (userProblem) {
+        res.status(200).json({ status: userProblem.dataValues.status })
+    } else {
+        res.status(200).json({ status: "" })
+    }
+}
+
+
 exports.add_tag = async (req, res, next) => {
     const id = req.params.problemId;
     await models.problem.findByPk(id)

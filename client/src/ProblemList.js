@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import GetProblemStatus from "./GetProblemStatus";
 
 const ProblemList = ({
     problemset,
@@ -9,6 +10,8 @@ const ProblemList = ({
     handleTitleSort = function () { },
     handleScoreSort = function () { }
 }) => {
+    const url = "http://localhost:5000/";
+
     const ch = 'ABDEFGHIJKLMNOPQRSTUVWXYZ';
 
     const fn = (x) => {
@@ -48,7 +51,7 @@ const ProblemList = ({
                 < Link to={fn(problem.id_problem)} key={index}>
                     <div className="problem">
                         <h2>{inContests && (ch[index] + '.')} {problem.title}</h2>
-                        <div className="problem-status">{ }</div>
+                        <GetProblemStatus url={url + 'problem/problemStatus/' + problem.id_problem} />
                         {diff(problem.score)}
                         <div className="problem-score">{problem.score}</div>
                     </div>
