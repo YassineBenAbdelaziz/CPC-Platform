@@ -1,5 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
 
+/* :root {
+  --primary-bg: #fff;
+  --secondary-bg: #242526;
+  --primary-text-color: black;
+  --secondary-text-color: #cecece;
+  --border-radius: 8px;
+  --speed: 500ms;
+} */
+
 /* base style */
 
 * {
@@ -16,13 +25,15 @@
   border-bottom: 1px solid #f2f2f2;
   /* background-color: #f2f2f2; */
 }
-.navbar img {
+.navbar .logo {
   width: 90px;
 }
 .navbar .links{
   margin-left: 20px;
 }
-.navbar a {
+.navbar .none,
+.navbar .active,
+.navbar .auth a {
   margin-left: 16px;
   padding: 6px;
   font-weight: bold;
@@ -31,7 +42,7 @@
 .navbar .auth .login:hover {
   color: rgb(81, 95, 248);
 }
-.navbar .signup {
+.navbar #signup {
   background-color: rgb(81, 95, 248);
   border: none;
   border-radius: 9px;
@@ -40,6 +51,32 @@
 }
 .navbar .auth {
   margin-left: auto;
+}
+.navbar .user-img {
+  width: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.navbar .user-info {
+  position: absolute;
+  background-color: #dddddd26;
+  border: 1px solid rgb(81, 95, 248);
+  border-radius: 10px;
+} 
+.navbar .user-info .item {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.navbar .user-info .item:hover {
+  background-color: #dddddd63;
+}
+.navbar .user-info .item img{
+  width: 20px;
+  margin: 10px ;
+}
+.navbar .user-info .item .name{
+  width: 130px
 }
 .content {
   max-width: 1000px;
@@ -54,6 +91,7 @@
   color: rgb(81, 95, 248);
   border-bottom: 3px solid rgb(81, 95, 248);
 }
+
 
 /* form auth */
 
@@ -296,6 +334,10 @@ a {
   border: 1px solid #b3b3b3;
   border-radius: 5px;
   background-color: #dddddd63;
+}
+.create #multiple,
+.create #single {
+  margin: 0 10px;
 }
 
 /* problem details */
