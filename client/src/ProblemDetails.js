@@ -4,16 +4,18 @@ import Problem from "./Problem";
 import CodeEditor from "./CodeEditor";
 import Submissions from "./Submissions";
 import useFetch from "./useFetch";
+import useAuth from "./hooks/useAuth";
 
 const ProblDetails = () => {
     const url = 'http://localhost:5000/';
 
     const { id } = useParams();
+    const { auth } = useAuth()
 
     const { data: problem, isPending, error } = useFetch(url + 'problem/' + id);
 
     const urlAllSubmissions = url + 'submission/findByProblem/' + id;
-    const urlMySubmissions = url + 'submission/findByProblemAndUser/' + id + "/23";
+    const urlMySubmissions = url + 'submission/findByProblemAndUser/' + id + "/" + auth?.id;
 
     const [showProblem, setShowProblem] = useState(true);
     const [showSolution, setShowSolution] = useState(false);
