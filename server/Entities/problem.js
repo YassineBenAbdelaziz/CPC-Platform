@@ -52,6 +52,10 @@ module.exports = (sequelize) => {
                 type: DataTypes.STRING(5000),
                 allowNull: true,
             },
+            checker: {
+                type: DataTypes.STRING(5000),
+                allowNull: true,
+            },
             status: {
                 type: DataTypes.STRING,
                 allowNull: false

@@ -83,6 +83,7 @@ exports.create_problem = async (req, res, next) => {
         test_file: req.body.test_file,
         solution: req.body.solution,
         tutorial: req.body.tutorial,
+        checker: req.body.checker,
         status: req.body.status,
         id_contest: id_contest,
         examples: req.body.examples,
@@ -205,6 +206,7 @@ exports.update_problem = async (req, res, next) => {
                 test_file: req.body.test_file,
                 solution: req.body.solution,
                 tutorial: req.body.tutorial,
+                checker: req.body.checker,
                 status: req.body.status,
                 id_contest: req.body.id_contest
             }
