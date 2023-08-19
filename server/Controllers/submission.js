@@ -43,12 +43,14 @@ exports.create_submission = async (req, res, next) => {
         let timeLimit = 0;
         let memoryLimit = "";
         let testFile = "";
+        let checker = "";
         await models.problem.findByPk(problemId)
             .then(data => {
                 const problem = data.dataValues;
                 timeLimit = problem.time_limit;
                 memoryLimit = problem.memory_limit;
                 testFile = problem.test_file;
+                checker = problem.checker;
             })
 
         const tests = testFile.split("\nexpected\n");
@@ -56,7 +58,6 @@ exports.create_submission = async (req, res, next) => {
         const outputs = tests[1].split("\nnext\n");
 
         let bodies = []
-
         for (let i = 0; i < inputs.length - 1; i++) {
             const body = {
                 "source_code": submission.code,
@@ -64,8 +65,8 @@ exports.create_submission = async (req, res, next) => {
                 "memory_limit": memoryLimit,
                 "cpu_time_limit": timeLimit,
                 "stdin": inputs[i],
-                "expected_output": outputs[i]
             }
+            if (!checker) body.expected_output = outputs[i]
             bodies.push(body)
         }
 
@@ -98,13 +99,13 @@ exports.create_submission = async (req, res, next) => {
 }
 
 
-get_submission_details = async (tokens) => {
+get_submission_details_no_checker = async (tokens) => {
     const subResult = {
         time: 0,
         memory: 0,
         result: ""
     }
-    await axios.get(jugdeUrl + `submissions/batch?tokens=${tokens}&base64_encoded=false&fields=stdout,status,language_id,time,memory`)
+    await axios.get(jugdeUrl + `submissions/batch?tokens=${tokens}&base64_encoded=false&fields=status,time,memory`)
         .then(res => {
             console.log('Get submission from judge successful')
             const sub = res.data.submissions;
@@ -122,6 +123,52 @@ get_submission_details = async (tokens) => {
             console.log('Get submission from judge failed')
             console.log(err)
         });
+    return subResult;
+}
+
+
+get_submission_details_checker = async (tokens, checker) => {
+    const subResult = {
+        time: 0,
+        memory: 0,
+        outputs: []
+    }
+    await axios.get(jugdeUrl + `submissions/batch?tokens=${tokens}&base64_encoded=false&fields=stdout,time,memory`)
+        .then(res => {
+            console.log('Get submission from judge successful')
+            const sub = res.data.submissions;
+            for (let i = 0; i < sub.length; i++) {
+                subResult.time = Math.max(subResult.time, sub[i].time * 1000)
+                subResult.memory = Math.max(subResult.memory, sub[i].memory)
+                subResult.outputs.push(sub[i].stdout)
+            }
+        }).catch(err => {
+            console.log('Get submission from judge failed')
+            console.log(err)
+        });
+
+    let bodies = []
+    for (let i = 0; i < outputs.length - 1; i++) {
+        const body = {
+            "source_code": checker,
+            "language_id": 54,
+            "stdin": outputs[i],
+        }
+        bodies.push(body)
+    }
+
+    let newTokens = "";
+    await axios.post(jugdeUrl + "submissions/batch/?base64_encoded=false", {
+        "submissions": bodies
+    }).then(result => {
+        console.log('Post submission to judge successful')
+        result.data && result.data.map(item => newTokens += item.token + ",")
+        console.log(newTokens)
+    }).catch(err => {
+        console.log('Post submission to judge failed')
+        console.log(err)
+    });
+
     return subResult;
 }
 
@@ -155,30 +202,95 @@ exports.get_submissions_by_problem_and_user = async (req, res, next) => {
         })
     })
 
-    for (let sub of subs) {
-        if (sub && sub.id_submission) {
-            const subResult = await get_submission_details(sub.tokens);
-            await models.submission.update(subResult, { where: { id_submission: sub.id_submission } })
-        }
-    }
-
     let username = ""
     await models.user.findByPk(req.params.userId)
         .then(user => {
             username = user.dataValues.username
         }).catch(err => {
             console.log('User Not Found')
-            res.status(404).json(err)
+            return res.status(404).json(err)
         })
 
-    let problemName = ""
-    await models.problem.findByPk(req.params.problemId)
-        .then(problem => {
-            problemName = problem.dataValues.title
-        }).catch(err => {
-            console.log('Problem Not Found')
-            res.status(404).json(err)
-        })
+    const user = req.user;
+    const problem = await models.problem.findByPk(req.params.problemId);
+
+    const problemName = problem.dataValues.title
+    const checker = problem.dataValues.checker
+
+    for (let sub of subs) {
+        if (sub && sub.id_submission) {
+            let subResult = {};
+            if (checker) {
+                subResult = await get_submission_details_checker(sub.tokens);
+            } else {
+                subResult = await get_submission_details_no_checker(sub.tokens, checker);
+            }
+            await models.submission.update(subResult, { where: { id_submission: sub.id_submission } })
+
+            // Add score to user if it's solved
+            const addScore = async () => {
+                const newScore = user.score + problem.dataValues.score;
+                let rank = 'Newbie';
+                if (newScore >= 1300) {
+                    rank = 'Master'
+                } else if (newScore >= 700 && newScore < 1000) {
+                    rank = 'Expert'
+                }
+                user.score = newScore;
+                user.rank = rank;
+                await models.user.update(user, { where: { id_user: user.id_user } })
+                    .then(() => {
+                        console.log('update successful')
+                    }).catch(err => {
+                        console.log('Error while adding new score to user')
+                        console.log(err)
+                    })
+            }
+
+            // Create status for the problem
+            const userProblem = await models.user_problem.findOne({
+                where: {
+                    id_problem: req.params.problemId,
+                    id_user: user.id_user
+                }
+            });
+            if (!userProblem) {
+                await models.user_problem.create({
+                    id_user: user.id_user,
+                    id_problem: req.params.problemId,
+                    status: subResult.result
+                }).then((newUserProblem) => {
+                    if (newUserProblem.dataValues.status === 'Accepted') {
+                        console.log('Submission accepted for the first time')
+                        addScore();
+                    }
+                }).catch(err => {
+                    console.log('Error while submitting for the first time')
+                    console.log(err)
+                });
+            } else {
+                if (userProblem.status !== 'Accepted') {
+                    await models.user_problem.update(
+                        { status: subResult.result },
+                        {
+                            where: {
+                                id_problem: req.params.problemId,
+                                id_user: user.id_user
+                            }
+                        }
+                    ).catch(error => console.log(error))
+
+                    if (subResult.result === 'Accepted') {
+                        console.log('Submission accepted for the first time')
+                        addScore();
+                    }
+                } else {
+                    console.log('Problem already solved')
+                }
+            }
+
+        }
+    }
 
     await models.submission.findAndCountAll({
         where: {
