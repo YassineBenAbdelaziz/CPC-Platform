@@ -4,6 +4,8 @@ import Axios from 'axios'
 import { useState } from 'react'
 import AddExamples from './AddExamples';
 import AddTags from './AddTags';
+import  RichText  from './RichText';
+
 
 export default function AddProblem() {
 
@@ -102,7 +104,10 @@ export default function AddProblem() {
                     </div>
                     <div className='input-field'>
                         <label htmlFor="topic">Topic : </label>
-                        <textarea required name="topic" id="topic" cols="100" rows="9" onChange={(e) => setTopic(e.target.value)}></textarea>
+                        <RichText setRich={setTopic}/>
+
+                        {/* <textarea required name="topic" id="topic" cols="100" rows="9" onChange={(e) => setTopic(e.target.value)}></textarea>
+                    */}
                     </div>
                     <div className='input-field'>
                         <label htmlFor="input">Input : </label>
