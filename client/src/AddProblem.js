@@ -4,7 +4,8 @@ import Axios from 'axios'
 import { useState } from 'react'
 import AddExamples from './AddExamples';
 import AddTags from './AddTags';
-import  RichText  from './RichText';
+import RichText from './RichText';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function AddProblem() {
@@ -32,6 +33,8 @@ export default function AddProblem() {
 
     const [chooseChcker, setChooseChecker] = useState(false);
 
+    const navigate = useNavigate();
+
     const tagsId = [];
     tags.map(tag => {
         tagsId.push(tag.id)
@@ -56,7 +59,7 @@ export default function AddProblem() {
     }
 
     function handleSubmit(e) {
-        // e.preventDefault();
+        e.preventDefault();
         // console.log(problem)
         if (chooseChcker) problem.checker = checker
         Axios.post(urlAddProblem, problem).then(res => {
@@ -66,6 +69,7 @@ export default function AddProblem() {
             console.log("Problem post error")
             console.log(err)
         })
+        navigate('/problemset', { replace: true })
     }
 
     const scores = [];
@@ -104,7 +108,7 @@ export default function AddProblem() {
                     </div>
                     <div className='input-field'>
                         <label htmlFor="topic">Topic : </label>
-                        <RichText setRich={setTopic}/>
+                        <RichText setRich={setTopic} />
 
                         {/* <textarea required name="topic" id="topic" cols="100" rows="9" onChange={(e) => setTopic(e.target.value)}></textarea>
                     */}
