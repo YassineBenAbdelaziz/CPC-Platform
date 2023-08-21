@@ -15,9 +15,8 @@ import ProtectedRoutes from './ProtectedRoutes';
 import ShowNavBar from './ShowNavbar';
 import AddProblem from './AddProblem';
 import Profile from './Profile';
+import UserSubmissions from './UserSubmissions';
 import RefrechUser from './RefreshUser';
-
-
 
 function App() {
   return (
@@ -40,10 +39,11 @@ function App() {
               <Route path='/contests' element={<Contests />}></Route>
               <Route element={<ProtectedRoutes />}>
                 {/* protected routes here */}
-                <Route path='/problemset/add-problem' element={<AddProblem />}></Route>
                 <Route path='/loggedin' element={<LoggedIn />}></Route>
-                <Route path='/profile' element={<Profile />}></Route>
               </Route>
+              <Route path='/problemset/add-problem' element={<AddProblem />}></Route>
+              <Route path='/profile/:username' element={<Profile />}></Route>
+              <Route path='/profile/:id/submissions' element={<UserSubmissions />}></Route>
               <Route path='*' element={<NotFound />}></Route>
             </Routes>
           </div>
@@ -57,7 +57,7 @@ function App() {
             </p>
           </footer>
         </ShowNavBar>
-        </RefrechUser>
+      </RefrechUser>
     </BrowserRouter>
   );
 }

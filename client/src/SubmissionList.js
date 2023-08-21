@@ -55,7 +55,7 @@ const SubmissionList = ({ submissions }) => {
                     {submissions && submissions.map((sub, i) => (
                         <span key={i}>
                             <div className='submission' onClick={(e) => handleDisplay(e, sub.id_submission)}>
-                                <Link to={`/profile/`} className="user" >{sub.user}</Link >
+                                <Link to={`/profile/${sub.user}`} className="user" >{sub.user}</Link >
                                 <Link to={`/problemset/${sub.problemIdProblem}`} className="problem-title" >{sub.problem}</Link >
                                 <div className="lang">{sub.lang}</div>
                                 <div className="time" >{sub.time + " ms"}</div>

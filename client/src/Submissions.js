@@ -3,7 +3,7 @@ import Pagination from "./Pagination";
 import { useEffect, useState } from "react";
 import Axios from "axios";
 
-export default function MySubmissions({ url }) {
+export default function Submissions({ url }) {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [submissionsPerPage, setSubmissionsPerPage] = useState(10);

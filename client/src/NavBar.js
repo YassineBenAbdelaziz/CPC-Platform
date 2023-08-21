@@ -3,6 +3,7 @@ import logo from "./imgs/logo-no-bg.png"
 import useAuth from "./hooks/useAuth";
 import user from "./imgs/user.png"
 import settings from "./imgs/settings.png"
+import submissions from "./imgs/submissions.png"
 import logout from "./imgs/logout.png"
 import help from "./imgs/question.png"
 import { useEffect, useRef, useState } from "react";
@@ -66,14 +67,18 @@ const NavBar = () => {
                         className="user-info" ref={menuRef}
                         style={showProfile ? { display: 'block' } : { display: 'none' }}
                     >
-                        <Link to={`/profile/${auth?.id}`} className="item" onClick={() => setShowProfile(false)}>
+                        <Link to={`/profile/${auth?.username}`} className="item" onClick={() => setShowProfile(false)}>
                             <img src={user} alt="" />
                             <h4 className="name">Profile</h4>
                         </Link>
                         <div className="item">
                             <img src={settings} alt="" />
-                            <h4 className="name">Settings</h4>
+                            <h4 className="name">Edit Profile</h4>
                         </div>
+                        <Link to={`/profile/${auth?.id}/submissions`} className="item" onClick={() => setShowProfile(false)}>
+                            <img src={submissions} alt="" />
+                            <h4 className="name">Submissions</h4>
+                        </Link>
                         <hr />
                         <div className="item">
                             <img src={help} alt="" />

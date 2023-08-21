@@ -15,10 +15,11 @@ const Scoreboard = ({ username }) => {
                     users && users.sort((a, b) => a.score < b.score ? 1 : -1).map((user, index) => (
                         < div className="profile" key={index} style={username === user.username ? { background: '#00800047' } : {}}>
                             <div className="item">
-                                <Link to={`/profile/${user.id_user}`}>
+                                <div style={{ fontWeight: '600', marginRight: '10px' }}>{index + 1}</div>
+                                <Link to={`/profile/${user.username}`}>
                                     <img src={'http://localhost:5000/' + user.imagePath} alt="img" />
                                 </Link>
-                                <Link to={`/profile/${user.id_user}`}>
+                                <Link to={`/profile/${user.username}`}>
                                     <h3 className="username">{user.username}</h3>
                                 </Link>
                             </div>
