@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const { models } = require('../sequelize');
+const sequelize = require('sequelize');
 const { unlink } = require('node:fs/promises');
 const bcrypt = require('bcrypt');
 
@@ -29,21 +30,113 @@ exports.getAll = async (req, res, next) => {
 }
 
 
-// exports.getUser = async (req, res, next) => {
-//     const id = req.params.id;
-//     await models.user.findByPk(id)
-//         .then(user => {
-//             if (!user) {
-//                 return res.status(404).json({
-//                     message: "User NOT FOUND"
-//                 });
-//             } else {
-//                 res.status(200).json(user);
-//             }
-//         }).catch(err => {
-//             res.status(500).json({ error: err });
-//         });
-// }
+exports.getUserProfile = async (req, res, next) => {
+    const username = req.params.username;
+    let user = {}
+    await models.user.findOne({
+        where: {
+            username: username
+        }
+    }).then((result) => {
+        user = result;
+    }).catch(err => {
+        console.log(err)
+        return res.status(500).json(err)
+    });
+
+    if (!user) {
+        res.status(404).json({ message: 'User Not Found' })
+    } else {
+        const userLangs = [];
+        await models.user_lang.findAll({ where: { id_user: user.dataValues.id_user } })
+            .then(langs => {
+                for (let lang of langs) {
+                    userLangs.push({
+                        lang: lang.dataValues.lang,
+                        count: lang.dataValues.count
+                    })
+                }
+            }).catch(err => {
+                console.log(err)
+                return res.status(500).json(err)
+            });
+
+        const userSkills = [];
+        await models.user_skill.findAll({ where: { id_user: user.dataValues.id_user } })
+            .then(skills => {
+                for (let skill of skills) {
+                    userSkills.push({
+                        skill: skill.dataValues.skill,
+                        count: skill.dataValues.count
+                    })
+                }
+            }).catch(err => {
+                console.log(err)
+                return res.status(500).json(err)
+            });
+
+        const difficultyCount = async (condition) => {
+            const count = {
+                easy: 0,
+                medium: 0,
+                hard: 0,
+            }
+            await models.problem.findAll(condition)
+                .then(problems => {
+                    for (let problem of problems) {
+                        if (problem.dataValues.score <= 100) {
+                            count.easy++;
+                        } else if (problem.dataValues.score > 100 && problem.dataValues.score <= 130) {
+                            count.medium++;
+                        } else {
+                            count.hard++;
+                        }
+                    }
+                }).catch(err => {
+                    console.log(err)
+                    return res.status(500).json(err)
+                });
+            return count;
+        }
+
+        let solved = [];
+        await models.user_problem.findAll({
+            where: {
+                id_user: user.id_user,
+                status: 'Accepted'
+            }
+        }).then((results) => {
+            solved = results;
+        }).catch(err => {
+            console.log(err)
+            return res.status(500).json(err)
+        });
+
+        const condition = []
+        for (let x of solved) {
+            condition.push({ id_problem: x.dataValues.id_problem })
+        }
+
+        const allCount = await difficultyCount();
+        const solvedCount = await difficultyCount({
+            where: {
+                [sequelize.Op.or]: condition
+            }
+        })
+
+        return res.status(200).json({
+            id_user: user.dataValues.id_user,
+            username: req.params.username,
+            score: user.dataValues.score,
+            rank: user.dataValues.rank,
+            imagePath: user.dataValues.imagePath,
+            langs: userLangs,
+            skills: userSkills,
+            allCount: allCount,
+            solvedCount: solvedCount,
+        })
+    }
+}
 
 
 exports.register = (req, res, next) => {
