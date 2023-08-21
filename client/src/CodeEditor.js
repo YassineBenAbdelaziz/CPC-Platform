@@ -2,7 +2,7 @@ import React from 'react'
 import Editor from "@monaco-editor/react"
 import { useState } from "react";
 import Axios from 'axios';
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import loading from "./imgs/loading.gif";
 import useAuth from './hooks/useAuth';
 
@@ -15,6 +15,8 @@ export default function CodeEditor({ handleSubmissions }) {
     const { auth } = useAuth();
 
     const problemId = useParams();
+
+    const navigate = useNavigate();
 
     const [lang, setLang] = useState("");
     const [script, setScript] = useState("");
@@ -64,23 +66,27 @@ export default function CodeEditor({ handleSubmissions }) {
 
     function handleSubmit(e) {
         e.preventDefault()
-        const submission = {
-            "langId": file.id,
-            "code": script,
-            "problemId": problemId.id,
-            "userId": auth?.id
-        }
-        Axios.post(urlAddSubmission, submission).then(res => {
-            console.log("Submission Created");
-            console.log(res.data);
-        }).catch(err => {
-            console.log("Submission Post Error")
-            console.log(err)
-        })
+        if (!auth?.id) {
+            navigate('/login')
+        } else {
+            const submission = {
+                "langId": file.id,
+                "code": script,
+                "problemId": problemId.id,
+                "userId": auth?.id
+            }
+            Axios.post(urlAddSubmission, submission).then(res => {
+                console.log("Submission Created");
+                console.log(res.data);
+            }).catch(err => {
+                console.log("Submission Post Error")
+                console.log(err)
+            })
 
-        setSubmittedDisplay('block')
-        setDisableButton(true)
-        setTimeout(handleSubmittion, 2000)
+            setSubmittedDisplay('block')
+            setDisableButton(true)
+            setTimeout(handleSubmittion, 2000)
+        }
     }
 
     return (
