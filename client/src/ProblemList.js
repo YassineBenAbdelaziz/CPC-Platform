@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import GetProblemStatus from "./GetProblemStatus";
+import useAuth from "./hooks/useAuth"
 
 const ProblemList = ({
     problemset,
@@ -18,6 +19,8 @@ const ProblemList = ({
         return inContests ? `/contests/${contestId}/${x}` : `/problemset/${x}`;
     }
 
+    const { auth } = useAuth();
+
     const diff = (score) => {
         if (score <= 100) {
             return (
@@ -34,7 +37,6 @@ const ProblemList = ({
         }
     }
 
-
     return (
         <div className="problem-list">
             <div className="problemlist-header">
@@ -43,7 +45,7 @@ const ProblemList = ({
             </div>
             <div className="table-titles">
                 <h3 className="title" onClick={() => handleTitleSort()}>Title</h3>
-                <h3 className="status">Status</h3>
+                {auth?.id ? <h3 className="status">Status</h3> : <h3 className="status"> </h3>}
                 <h3 className="diff" onClick={() => handleScoreSort()}>Difficulty</h3>
                 <h3 className="score" onClick={() => handleScoreSort()}>Score</h3>
             </div>
@@ -51,7 +53,7 @@ const ProblemList = ({
                 < Link to={fn(problem.id_problem)} key={index}>
                     <div className="problem">
                         <h2>{inContests && (ch[index] + '.')} {problem.title}</h2>
-                        <GetProblemStatus url={url + 'problem/problemStatus/' + problem.id_problem} />
+                        {auth?.id ? <GetProblemStatus url={url + 'problem/problemStatus/' + problem.id_problem} /> : <div className="problem-status"></div>}
                         {diff(problem.score)}
                         <div className="problem-score">{problem.score}</div>
                     </div>

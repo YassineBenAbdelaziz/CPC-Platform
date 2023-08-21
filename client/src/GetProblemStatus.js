@@ -24,13 +24,13 @@ const GetProblemStatus = ({ url }) => {
         return (
             <div className="problem-status" style={{ color: 'red', fontSize: '17px' }} title={status}>MLE</div>
         )
-    } else if (status === "In Queue" || status === 'Proccessing') {
+    } else if (status === "In Queue" || status === 'Processing') {
         return (
             <div className="problem-status" style={{ fontSize: '20px' }} title={status}>&#8987;</div>
         )
     } else {
         return (
-            <div className="problem-status" title={status}></div>
+            <div className="problem-status" title={status}>Unsolved</div>
         )
     }
 }
