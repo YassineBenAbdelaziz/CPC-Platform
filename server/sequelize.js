@@ -64,6 +64,33 @@ sequelize.models.tag.belongsToMany(sequelize.models.problem, { foreignKey: "id_t
 sequelize.models.user.belongsToMany(sequelize.models.contest, { foreignKey: "id_user", through: "participate" });
 sequelize.models.contest.belongsToMany(sequelize.models.user, { foreignKey: "id_contest", through: "participate" });
 
+const user_lang = sequelize.define('user_lang', {
+  id_user: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+  },
+  lang: {
+    type: DataTypes.STRING,
+    primaryKey: true,
+  },
+  count: {
+    type: DataTypes.INTEGER
+  }
+});
+const user_skill = sequelize.define('user_skill', {
+  id_user: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+  },
+  skill: {
+    type: DataTypes.STRING,
+    primaryKey: true,
+  },
+  count: {
+    type: DataTypes.INTEGER
+  }
+});
+
 //sync 
 sequelize.sync().then((data) => {
   console.log("Data Successfully Sync.");
