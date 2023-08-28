@@ -19,12 +19,10 @@ const EditProfile = () => {
 
     const [fname, setFname] = useState('');
     const [lname, setLname] = useState('');
-    const [password, setPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [rePwd, setRePwd] = useState('');
     const [pwdMsg, setPwdMsg] = useState('');
     const [rePwdMsg, setRePwdMsg] = useState('');
-    const [aVisible, setAVisible] = useState(true);
     const [nVisible, setNVisible] = useState(true);
     const [rVisible, setRVisible] = useState(true);
     const [changePicture, setChangePicture] = useState(false);
@@ -68,8 +66,6 @@ const EditProfile = () => {
 
         if (newPassword !== '') {
             formData.append('password', newPassword);
-        } else {
-            formData.append('password', password);
         }
         if (fname !== '') {
             formData.append('fname', fname);
@@ -119,18 +115,6 @@ const EditProfile = () => {
                                     <div className="input-field">
                                         <label htmlFor="email">Email : </label>
                                         <input type="text" id='email' defaultValue={user.email} disabled />
-                                    </div>
-                                    <div className="input-field">
-                                        <label htmlFor="password">Actual Password : </label>
-                                        <div className="password-field" >
-                                            <input required type={aVisible ? "password" : "text"} id='password' value={password} onChange={(e) => setPassword(e.target.value)} />
-                                            <img
-                                                className="password-icon"
-                                                src={aVisible ? eye : invisible}
-                                                alt=""
-                                                onClick={() => handleIconClick(aVisible, setAVisible)}
-                                            />
-                                        </div>
                                     </div>
                                     <div className="input-field">
                                         <label htmlFor="pwd">New Password : </label>
