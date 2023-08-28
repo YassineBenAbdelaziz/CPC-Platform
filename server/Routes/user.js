@@ -19,7 +19,7 @@ router.get('/logout', controller.logout);
 
 router.delete('/:id', controller.deleteUser);
 
-router.patch('/:id', multer, controller.updateUser);
+router.patch('/:id', isAuth, multer, controller.updateUser);
 
 
 module.exports = router;

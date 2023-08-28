@@ -126,6 +126,9 @@ exports.getUserProfile = async (req, res, next) => {
 
         return res.status(200).json({
             id_user: user.dataValues.id_user,
+            email: user.dataValues.email,
+            fname: user.dataValues.fname,
+            lname: user.dataValues.lname,
             username: req.params.username,
             score: user.dataValues.score,
             rank: user.dataValues.rank,
@@ -178,7 +181,7 @@ exports.deleteUser = async (req, res, next) => {
                     id_user: userId
                 }
             });
-        if (user.imagePath !== '../img/profile.jpg') {
+        if (user.imagePath !== '../uploads/profile.webp') {
             deletefile(user.imagePath);
         }
 
@@ -195,52 +198,57 @@ exports.deleteUser = async (req, res, next) => {
 exports.updateUser = (req, res, next) => {
 
     const userId = req.params.id;
-    const updatedFields = {};
 
-    for (const [key, val] of Object.entries(req.body)) {
-        updatedFields[key] = val;
-    }
+    if (req.user.id_user == userId) {
+        const updatedFields = {};
 
-    console.log(req.file);
-
-    if (req.file) {
-        updatedFields["imagePath"] = req.file.path;
-    }
-    else {
-        delete updatedFields.imagePath;
-    }
-
-    models.user.update(updatedFields,
-        {
-            where: {
-                id_user: req.params.id,
-            },
-            individualHooks: true,
-
-        })
-        .then((data) => {
-
-            if (data[0] == 0) {
-                return res.status(404).json(
-                    {
-                        error: 'User not found'
-                    });
-            }
-            else {
-                if (req.file && data[1][0]['_previousDataValues']['imagePath'] !== '../img/profile.jpg') {
-                    deletefile(data[1][0]['_previousDataValues']['imagePath']);
-                }
-
-                return res.status(200).json(
-                    {
-                        message: 'Update successful'
-                    });
-            }
-        })
-        .catch((err) => {
-            return res.status(500).json({ error: err });
+        for (const [key, val] of Object.entries(req.body)) {
+            updatedFields[key] = val;
         }
-        );
+
+        console.log(req.file);
+
+        if (req.file) {
+            updatedFields["imagePath"] = req.file.path;
+        }
+        else {
+            delete updatedFields.imagePath;
+        }
+
+        models.user.update(updatedFields,
+            {
+                where: {
+                    id_user: userId,
+                },
+                individualHooks: true,
+
+            })
+            .then((data) => {
+
+                if (data[0] == 0) {
+                    return res.status(404).json(
+                        {
+                            error: 'User not found'
+                        });
+                }
+                else {
+                    if (req.file && data[1][0]['_previousDataValues']['imagePath'] !== '../uploads/profile.webp') {
+                        deletefile(data[1][0]['_previousDataValues']['imagePath']);
+                    }
+
+                    return res.status(200).json(
+                        {
+                            message: 'Update successful'
+                        });
+                }
+            })
+            .catch((err) => {
+                return res.status(500).json({ error: err });
+            }
+            );
+    } else {
+        res.status(404).json({ message: "You are logged to another account" })
+    }
 };
 
 

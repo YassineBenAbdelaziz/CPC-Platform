@@ -70,25 +70,23 @@ module.exports = (sequelize) => {
                 }
             },
             hooks: {
-                beforeCreate: (user) => {
-                    return bcrypt
-                        .hash(user.password, 10)
-                        .then((hashedPassword) => {
-                            user.password = hashedPassword;
-                        })
-                        .catch((error) => {
-                            throw new Error("There was an error while trying to register");
-                        });
+                beforeCreate: async (user) => {
+                    try {
+                        const hashedPassword = await bcrypt
+                            .hash(user.password, 10);
+                        user.password = hashedPassword;
+                    } catch (error) {
+                        throw new Error("There was an error while trying to register");
+                    }
                 },
-                beforeUpdate: (user) => {
-                    return bcrypt
-                        .hash(user.password, 10)
-                        .then((hashedPassword) => {
-                            user.password = hashedPassword;
-                        })
-                        .catch((error) => {
-                            throw new Error("There was an error while trying to register");
-                        });
+                beforeUpdate: async (user) => {
+                    try {
+                        const hashedPassword = await bcrypt
+                            .hash(user.password, 10);
+                        user.password = hashedPassword;
+                    } catch (error) {
+                        throw new Error("There was an error while trying to register");
+                    }
                 },
             },
         },
