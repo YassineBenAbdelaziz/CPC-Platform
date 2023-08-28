@@ -71,10 +71,10 @@ const NavBar = () => {
                             <img src={user} alt="" />
                             <h4 className="name">Profile</h4>
                         </Link>
-                        <div className="item">
+                        <Link to={`/profile/${auth?.username}/edit`} className="item" onClick={() => setShowProfile(false)}>
                             <img src={settings} alt="" />
                             <h4 className="name">Edit Profile</h4>
-                        </div>
+                        </Link>
                         <Link to={`/profile/${auth?.id}/submissions`} className="item" onClick={() => setShowProfile(false)}>
                             <img src={submissions} alt="" />
                             <h4 className="name">Submissions</h4>

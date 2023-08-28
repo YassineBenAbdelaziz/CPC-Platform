@@ -71,14 +71,14 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-              {auth?.username === user.username && <button className="edit">Edit Profile</button>}
+              {auth?.username === user.username && <Link to={`/profile/${auth?.username}/edit`}><button className="edit">Edit Profile</button></Link>}
             </div>
             <hr style={{ margin: '10px 0' }} />
             <div className='item'>
               <div className='class-title'>Languages</div>
               <div className="subitems">
                 {user?.langs.map((lang, i) => (
-                  <div className="subitem" key={i}>{lang?.lang} {lang?.count}</div>
+                  <div className="subitem" key={i}>{lang?.lang} ({lang?.count})</div>
                 ))}
               </div>
             </div>
@@ -87,7 +87,7 @@ const Profile = () => {
               <div className='class-title'>Skills</div>
               <div className="subitems">
                 {user?.skills.map((skill, i) => (
-                  <div className="subitem" key={i}>{skill?.skill} {skill?.count}</div>
+                  <div className="subitem" key={i}>{skill?.skill} ({skill?.count})</div>
                 ))}
               </div>
             </div>
@@ -103,39 +103,39 @@ const Profile = () => {
                   onMouseLeave={() => setMouseOver(false)}
                 >
                   <div>
-                    <div className='solved-number'>{mouseOver ? (allSolved / allCount) + '%' : allSolved}</div>
+                    <div className='solved-number'>{mouseOver ? (allSolved / allCount) * 100 + '%' : allSolved}</div>
                     <div>solved</div>
                   </div>
                 </div>
                 <div className="difficulties">
-                  <div className="difficulty">
+                  <div className="difficulty" title={(easySolved / easyCount) * 100 + '%'}>
                     <div className="diff">
                       <div className="diff-name">Easy</div>
                       <div className="number">{easySolved}/{easyCount}</div>
                     </div>
-                    <div className="bar" title={(easySolved / easyCount) + '%'}>
+                    <div className="bar">
                       <div className="uncolored-bar" style={{ backgroundColor: '#00800063' }}></div>
                       <div className="colored-bar" style={{ backgroundColor: 'green', width: `${(easySolved / easyCount) * 100}%` }}></div>
                     </div>
                   </div>
 
-                  <div className="difficulty">
+                  <div className="difficulty" title={(mediumSolved / mediumCount) * 100 + '%'}>
                     <div className="diff">
                       <div className="diff-name">Medium</div>
                       <div className="number">{mediumSolved}/{mediumCount}</div>
                     </div>
-                    <div className="bar" title={(mediumSolved / mediumCount) + '%'}>
+                    <div className="bar" >
                       <div className="uncolored-bar" style={{ backgroundColor: '#ffa50057' }}></div>
                       <div className="colored-bar" style={{ backgroundColor: 'orange', width: `${(mediumSolved / mediumCount) * 100}%` }}></div>
                     </div>
                   </div>
 
-                  <div className="difficulty">
+                  <div className="difficulty" title={(hardSolved / hardCount) * 100 + '%'}>
                     <div className="diff">
                       <div className="diff-name">Hard</div>
                       <div className="number">{hardSolved}/{hardCount}</div>
                     </div>
-                    <div className="bar" title={(hardSolved / hardCount) + '%'}>
+                    <div className="bar" >
                       <div className="uncolored-bar" style={{ backgroundColor: '#ff000047' }}></div>
                       <div className="colored-bar" style={{ backgroundColor: 'red', width: `${(hardSolved / hardCount) * 100}%` }}></div>
                     </div>

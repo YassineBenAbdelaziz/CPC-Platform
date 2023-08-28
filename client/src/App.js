@@ -17,6 +17,7 @@ import AddProblem from './AddProblem';
 import Profile from './Profile';
 import UserSubmissions from './UserSubmissions';
 import RefrechUser from './RefreshUser';
+import EditProfile from './EditProfile';
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
               <Route path='/problemset/add-problem' element={<AddProblem />}></Route>
               <Route path='/profile/:username' element={<Profile />}></Route>
               <Route path='/profile/:id/submissions' element={<UserSubmissions />}></Route>
+              <Route path='/profile/:username/edit' element={<EditProfile />}></Route>
               <Route path='*' element={<NotFound />}></Route>
             </Routes>
           </div>
