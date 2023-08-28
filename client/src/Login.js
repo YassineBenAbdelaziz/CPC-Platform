@@ -13,12 +13,13 @@ const Login = () => {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const from = location.state?.from?.pathname || '/' ;
+    const from = location.state?.from?.pathname || '/';
 
-    const {setAuth} = useAuth();
+    const { setAuth } = useAuth();
     const [email, setEmail] = useState('');
     const [pwd, setPwd] = useState('');
     const [checked, setChecked] = useState(false);
+    const [msg, setMsg] = useState("");
 
     const [visible, setVisible] = useState(true)
 
@@ -31,19 +32,21 @@ const Login = () => {
         };
 
 
-        Axios.post(url + "user/login", user ,  )
-        .then( (res) => {
-            console.log(res.data.data);
-            setAuth(res.data.data);
-            setEmail('');
-            setPwd('');
-            navigate(from, {replace : true});
-            
-        })
-        .catch(err => {
-            if (err.response) {
-                console.log(err.response.data)
-            }
+        Axios.post(url + "user/login", user,)
+            .then((res) => {
+                console.log(res.data.data);
+                setAuth(res.data.data);
+                setEmail('');
+                setPwd('');
+                setMsg('')
+                navigate(from, { replace: true });
+
+            })
+            .catch(err => {
+                setMsg('Incorrect email or password')
+                if (err.response) {
+                    console.log(err.response.data)
+                }
 
                 if (err.request) {
                     console.log(err.request)
@@ -74,6 +77,11 @@ const Login = () => {
                             onClick={handleIconClick}
                         />
                     </div>
+                    <p style={{
+                        color: 'red',
+                        whiteSpace: 'pre-line',
+                        fontSize: '15px'
+                    }}>{msg}</p>
                     <div className="form-checkbox-container">
                         <input type="checkbox" name="remember" id="remember" checked={checked} onChange={(e) => setChecked(e.target.checked)} />
                         <label htmlFor="remember">Keep me logged in</label>
