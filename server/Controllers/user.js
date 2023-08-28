@@ -206,6 +206,9 @@ exports.updateUser = (req, res, next) => {
             updatedFields[key] = val;
         }
 
+        updatedFields.username = req.user.username;
+
+        console.log('updatedFields', updatedFields);
         console.log(req.file);
 
         if (req.file) {

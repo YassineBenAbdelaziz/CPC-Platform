@@ -14,22 +14,23 @@ const storage = multer.diskStorage({
 const fileFilter = (req, file, callback) => {
 
     if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg') {
-        const newUser = {
-            username: req.user.username,
-            fname: req.body.fname,
-            lname: req.body.lname,
-            password: req.body.password,
-        }
+        // const newUser = {
+        //     username: req.user.username,
+        //     fname: req.body.fname,
+        //     lname: req.body.lname,
+        //     password: req.body.password,
+        // }
 
-        const userInstance = models.user.build(newUser);
+        // const userInstance = models.user.build(newUser);
 
-        userInstance.validate()
-            .then((data) => {
-                callback(null, true);
-            })
-            .catch((err) => {
-                callback(err, false);
-            });
+        callback(null, true);
+        // userInstance.validate()
+        //     .then((data) => {
+        //         callback(null, true);
+        //     })
+        //     .catch((err) => {
+        //         callback(err, false);
+        //     });
 
 
     }
