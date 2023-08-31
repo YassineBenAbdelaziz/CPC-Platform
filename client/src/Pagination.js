@@ -44,7 +44,6 @@ const Pagination = ({
                     id="posts-per-page"
                     value={postsPerPage}
                     onChange={(e) => setPostsPerPage(e.target.value)}
-                    style={{ width: 'auto', textAlign: 'start', marginLeft: 'auto' }}
                 >
                     <option value={"5"}>5 / page</option>
                     <option value={"10"}>10 / page</option>

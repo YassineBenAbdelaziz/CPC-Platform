@@ -92,8 +92,8 @@ const ProblDetails = () => {
     return (
         <div className="problem-details">
             <div className="a">
-                <div className="prb-code" style={{ margin: '-20px 0' }} >
-                    <div className="prb-details" style={{ margin: '5px', width: '70%' }}>
+                <div className="prb-code">
+                    <div className="prb-details">
                         <div className="prb-navbar" style={{ margin: '-10px 0', padding: '10px', borderBottom: '1px solid #f2f2f2' }}>
 
                             <button className="prb-link" onClick={() => history(-1)} style={{ marginRight: '10px' }}>&lt;</button>
@@ -129,7 +129,7 @@ const ProblDetails = () => {
 
                     </div>
 
-                    <div className="code" style={{ margin: '5px', width: '70%' }}>
+                    <div className="code">
                         <CodeEditor handleSubmissions={handleMySubmissions} />
                     </div>
 

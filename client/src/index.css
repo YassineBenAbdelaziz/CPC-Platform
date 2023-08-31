@@ -13,20 +13,38 @@
 
 * {
   margin: 0;
+  /* padding: 0;
+  box-sizing: border-box; */
   font-family: "Quicksand";
   color: #333;
 }
 .navbar {
-  padding: 20px;
+  padding: 20px 10%;
   display: flex;
   align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
+  /* max-width: 1200px; */
+  /* margin: 0 auto; */
   border-bottom: 1px solid #f2f2f2;
   position: relative;
+  /* justify-content: space-between;
+  flex-wrap: wrap; */
+}
+.navbar .icons {
+  font-size: 2.5rem;
+  color: black;
+  position: absolute;
+  right: 5%;
+  cursor: pointer;
+  display: none;
 }
 .navbar .logo {
   width: 90px;
+}
+.navbar .routes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
 .navbar .links{
   margin-left: 20px;
@@ -52,7 +70,7 @@
   padding: 10px;
 }
 .navbar .auth {
-  margin-left: auto;
+  display: flex;
 }
 .navbar .user-img {
   width: 40px;
@@ -94,6 +112,84 @@
 .active {
   color: rgb(81, 95, 248);
   border-bottom: 3px solid rgb(81, 95, 248);
+}
+.navbar #check {
+  display: none;
+}
+
+/* NavBar PointBreaks */
+@media (max-width: 992px) {
+  .navbar {
+    padding:20px 5%;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar .icons {
+    display: inline-flex;
+  }
+
+  .navbar #check:checked~.icons #menu-icon {
+    display: none;
+  }
+
+  .navbar .icons #close-icon {
+    display: none;
+  }
+
+  .navbar #check:checked~.icons #close-icon {
+    display: block;
+  }
+
+  .navbar .routes {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 0;
+    background-color: white;
+    margin: 0;
+    border-top: 1px solid #f2f2f2;
+    border-bottom: 1px solid #f2f2f2;
+    z-index: 100;
+    overflow: hidden;
+    transition: .3s ease;
+  }
+  
+  .navbar .routes {
+    display: block;
+  }
+  .navbar .links {
+    margin: 0;
+    display: block;
+    border-bottom: 1px solid #f2f2f2;
+  }
+  .navbar .auth {
+    display: block;
+  }
+  .navbar .auth a,
+  .navbar .links a {
+    margin-left: 0;
+    display: block;
+    width: fit-content;
+    margin: 0.6rem 0;
+    text-align: center;
+  }
+
+  .navbar .dropdown {
+    margin: 0.6rem 0;
+    display: flex;
+    justify-content: center;
+  }
+  .navbar .user-info {
+    top: 266px;
+    right: unset;
+  }
+
+  .navbar .link-container {
+    display: flex;
+    justify-content: center;
+  }
 }
 
 
@@ -244,15 +340,13 @@ a {
 }
 .problemset {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 .problemset .problems {
   width: 1000px;
-  margin-left: 150px;
 }
 .problemset .sidebar {
   width: 175px;
-  margin-right: 80px;
   margin-top: 63px;
 }
 .sidebar .item-content{
@@ -272,6 +366,20 @@ a {
   background-color: #dddddd63;
   cursor: pointer;
 }
+
+@media (max-width: 768px) {
+  .problemset {
+    display: block;
+  }
+  .problemset .problems {
+    width: unset;
+  }
+  .problem,
+  .problem-list .table-titles {
+    padding: 10px 0;
+  }
+}
+
 .create {
   border: 2px solid #b3b3b3;
   border-radius: 10px;
@@ -371,15 +479,20 @@ a {
   border: 2px solid #b3b3b3;
   border-radius: 10px;
   padding: 20px;
+  margin: 5px;
+  width: 70%;
 }
 .code {
   height: 650px;
   border: 2px solid #b3b3b3;
   border-radius: 10px;
   padding: 20px;
+  margin: 5px;
+  width: 70%;
 }
 .prb-code {
   display: flex;
+  margin: -20px 0;
 }
 .prb-navbar .prb-link {
   margin: 5px;
@@ -425,6 +538,17 @@ a {
 .code-editor section span {
   font-family: Cascadia, monospace;
   /* font-family: courier, monospace; */
+}
+
+@media (max-width: 768px) {
+  .prb-code {
+    display: block;
+    margin: -16px 0;
+  }
+  .prb-details,
+  .prb-code .code {
+    width: unset;
+  }
 }
 
 /* contests */
@@ -575,9 +699,13 @@ footer {
   color: rgba(0, 0, 255, 0.601);
 }
 .submission-list .submission-details,
-.submission-list .submission-details div {
+.submission-list .submission-details .testcase,
+.submission-list .submission-details .testcase div {
   margin: 0;
   display: block;
+}
+.submission-details .mobile {
+  display: none;
 }
 .submission-details .testcase div{
   text-align: initial;
@@ -594,6 +722,17 @@ footer {
   border: 1px solid #d0cece;
   border-radius: 10px;
   padding: 10px;
+}
+@media (max-width: 992px) {
+  .submission-details .mobile {
+    display: block;
+    margin: 0;
+  }
+  .submission-details .mobile div {
+    margin: 0;
+    text-align: initial;
+    display: block;
+  }
 }
 
 
@@ -624,6 +763,12 @@ footer {
   background: #fff;
   color: rgb(81, 95, 248);
   border: 2px solid rgb(81, 95, 248);
+}
+@media (max-width: 768px) {
+  .icon-position {
+    right: 20px;
+    bottom: 50px;
+  }
 }
 /* @keyframes movebtn {
   0%{
@@ -658,7 +803,7 @@ footer {
   align-items: center;
 }
 .board .profiles {
-  margin: 0 250px;
+  width: -webkit-fill-available;;
   background-color: #dddddd26;
   border: 1px solid #efefef;
   border-radius: 15px;
@@ -702,8 +847,7 @@ footer {
   padding-top: 20px;
 }
 .pagination .page-link,
-.pagination .page-link-active,
-.pagination #posts-per-page {
+.pagination .page-link-active {
   margin: 5px;
   padding: 8px;
   border: 1px solid #b3b3b3;
@@ -718,6 +862,26 @@ footer {
 }
 .pagination .page-link-active {
   background-color: #dddddd63;
+}
+.pagination select {
+  margin: 5px;
+  padding: 8px;
+  border: 1px solid #b3b3b3;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 21px;
+  width: auto;
+  text-align: start;
+  margin-left: auto;
+}
+
+@media (max-width: 768px) {
+  .pagination {
+    display: block;
+  }
+  .pagination select {
+    margin: 20px 5px 5px 5px;
+  }
 }
 
 /* Profile */
@@ -835,13 +999,36 @@ footer {
 
 .sidebar2 .view-all {
   margin-left: auto;
-  margin-right: 10px;
+  /* margin-right: 10px; */
 }
 .sidebar2 .view-all:hover {
   color: rgb(81, 95, 248);
   cursor: pointer;
 }
 
+@media (max-width: 992px) {
+  .profile-content {
+    display: block;
+  }
+
+  .profile-content .sidebar1 {
+    width: unset;
+    margin: 0 0 10px 0;
+  }
+
+  .sidebar2 .lang,
+  .sidebar2 .memory,
+  .sidebar2 .created,
+  .sidebar2 .time {
+    display: none;
+  }
+  .submission-list .lang, 
+  .submission-list .time, 
+  .submission-list .memory, 
+  .submission-list .created {
+    display: none;
+  }
+}
 
 
 .password-field {
@@ -923,3 +1110,5 @@ footer {
   position: absolute;
   left: 0;
 }
+
+

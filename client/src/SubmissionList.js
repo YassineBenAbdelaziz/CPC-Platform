@@ -63,7 +63,7 @@ const SubmissionList = ({ submissions }) => {
                                 <div className="created" >{created(sub.createdAt)}</div>
                                 {result(sub.result)}
                             </div>
-                            {subId === sub.id_submission && <SubmissionDetails submissionId={sub.id_submission} display={display} />}
+                            {subId === sub.id_submission && <SubmissionDetails sub={sub} display={display} />}
                         </span>
                     ))}
                 </div>

@@ -147,7 +147,7 @@ const Profile = () => {
             <div className="recent-submissions">
               <div className='class-title'>
                 Recent Submissions
-                <Link to={`/profile/${user?.id_user}/submissions`} className='view-all'>View All Submissions &gt;</Link>
+                <Link to={`/profile/${user?.id_user}/submissions`} className='view-all'>View All &gt;</Link>
               </div>
               <SubmissionList submissions={subs} />
             </div>

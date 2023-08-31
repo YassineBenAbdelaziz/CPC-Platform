@@ -36,8 +36,10 @@ const Scoreboard = ({ username }) => {
     return (
         <div className="board">
             <h2>Scoreboard</h2>
-            <div className="profiles">
-                {item()}
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <div className="profiles">
+                    {item()}
+                </div>
             </div>
         </div>
     );

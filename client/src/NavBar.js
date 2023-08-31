@@ -14,6 +14,7 @@ const NavBar = () => {
 
     const { auth, setAuth } = useAuth();
     const [showProfile, setShowProfile] = useState(false)
+    const [openMenu, setOpenMenu] = useState(false)
 
     const navigate = useNavigate();
 
@@ -31,12 +32,25 @@ const NavBar = () => {
         navigate('/login', { replace: true })
     }
 
+    let userInfoRef = useRef();
     let menuRef = useRef();
 
     useEffect(() => {
         let handler = (e) => {
-            if (auth?.username && !menuRef.current.contains(e.target)) {
+            if (auth?.username && !userInfoRef.current.contains(e.target)) {
                 setShowProfile(false)
+            }
+        }
+        document.addEventListener('mousedown', handler)
+        return () => {
+            document.removeEventListener('mousedown', handler)
+        }
+    })
+
+    useEffect(() => {
+        let handler = (e) => {
+            if (menuRef.current && e.target.id !== 'close-icon' && e.target.className !== 'user-img') {
+                setOpenMenu(false)
             }
         }
         document.addEventListener('mousedown', handler)
@@ -48,55 +62,66 @@ const NavBar = () => {
     return (
         <nav className="navbar">
             <img className="logo" src={logo} alt="Logo" />
-            <div className="links">
-                <NavLink to="/" className={({ isActive }) => (isActive ? "active" : 'none')}>Home</NavLink>
-                <NavLink to="/problemset" className={({ isActive }) => (isActive ? "active" : 'none')}>Problemset</NavLink>
-                <NavLink to="/contests" className={({ isActive }) => (isActive ? "active" : 'none')}>Contests</NavLink>
-                <NavLink to="/about" className={({ isActive }) => (isActive ? "active" : 'none')}>About Us</NavLink>
+
+            <input type="checkbox" id="check" checked={openMenu} onChange={() => openMenu ? setOpenMenu(false) : setOpenMenu(true)} />
+            <label htmlFor="check" className="icons">
+                <i className='bx bx-menu' id="menu-icon" ></i>
+                <i className='bx bx-x' id="close-icon" ></i>
+            </label>
+
+            <div className="routes" ref={menuRef}
+                style={openMenu && showProfile ? { height: '32rem' } :
+                    openMenu && auth?.username ? { height: '17rem' } : openMenu && !auth?.username ? { height: '21rem' } : {}}
+            >
+                <div className="links">
+                    <div className="link-container"><NavLink to="/" className={({ isActive }) => (isActive ? "active" : 'none')}>Home</NavLink></div>
+                    <div className="link-container"><NavLink to="/problemset" className={({ isActive }) => (isActive ? "active" : 'none')}>Problemset</NavLink></div>
+                    <div className="link-container"><NavLink to="/contests" className={({ isActive }) => (isActive ? "active" : 'none')}>Contests</NavLink></div>
+                    <div className="link-container"><NavLink to="/about" className={({ isActive }) => (isActive ? "active" : 'none')}>About Us</NavLink></div>
+                </div>
+                {auth?.username ?
+                    <div className="dropdown">
+                        <img
+                            className="user-img"
+                            src={'http://localhost:5000/' + auth?.img}
+                            alt="user-img"
+                            onClick={() => setShowProfile(!showProfile)}
+                        />
+                        <div
+                            className="user-info" ref={userInfoRef}
+                            style={showProfile ? { display: 'block' } : { display: 'none' }}
+                        >
+                            <Link to={`/profile/${auth?.username}`} className="item" onClick={() => setShowProfile(false)}>
+                                <img src={user} alt="" />
+                                <h4 className="name">Profile</h4>
+                            </Link>
+                            <Link to={`/profile/${auth?.username}/edit`} className="item" onClick={() => setShowProfile(false)}>
+                                <img src={settings} alt="" />
+                                <h4 className="name">Edit Profile</h4>
+                            </Link>
+                            <Link to={`/profile/${auth?.id}/submissions`} className="item" onClick={() => setShowProfile(false)}>
+                                <img src={submissions} alt="" />
+                                <h4 className="name">Submissions</h4>
+                            </Link>
+                            <hr />
+                            <div className="item">
+                                <img src={help} alt="" />
+                                <h4 className="name">Help Center</h4>
+                            </div>
+                            <hr />
+                            <div className="item" onClick={() => handleLogout()}>
+                                <img src={logout} alt="" />
+                                <h4 className="name">Logout</h4>
+                            </div>
+
+                        </div>
+
+                    </div> :
+                    <div className="auth">
+                        <div className="link-container"><Link to="/login" className="login">Login</Link></div>
+                        <div className="link-container"><Link to="/signup" id="signup">Sign Up</Link></div>
+                    </div>}
             </div>
-            {auth?.username ?
-                <div className="dropdown" style={{ marginLeft: 'auto' }}>
-                    <img
-                        className="user-img"
-                        src={'http://localhost:5000/' + auth?.img}
-                        alt="user-img"
-
-                        onClick={() => setShowProfile(!showProfile)}
-                    />
-                    <div
-                        className="user-info" ref={menuRef}
-                        style={showProfile ? { display: 'block' } : { display: 'none' }}
-                    >
-                        <Link to={`/profile/${auth?.username}`} className="item" onClick={() => setShowProfile(false)}>
-                            <img src={user} alt="" />
-                            <h4 className="name">Profile</h4>
-                        </Link>
-                        <Link to={`/profile/${auth?.username}/edit`} className="item" onClick={() => setShowProfile(false)}>
-                            <img src={settings} alt="" />
-                            <h4 className="name">Edit Profile</h4>
-                        </Link>
-                        <Link to={`/profile/${auth?.id}/submissions`} className="item" onClick={() => setShowProfile(false)}>
-                            <img src={submissions} alt="" />
-                            <h4 className="name">Submissions</h4>
-                        </Link>
-                        <hr />
-                        <div className="item">
-                            <img src={help} alt="" />
-                            <h4 className="name">Help Center</h4>
-                        </div>
-                        <hr />
-                        <div className="item" onClick={() => handleLogout()}>
-                            <img src={logout} alt="" />
-                            <h4 className="name">Logout</h4>
-                        </div>
-
-                    </div>
-
-                </div> :
-                <div className="auth">
-                    <Link to="/login" className="login">Login</Link>
-                    <Link to="/signup" id="signup">Sign Up</Link>
-                </div>}
         </nav>
     );
 }

@@ -17,7 +17,7 @@ const ShowNavBar = ({ children }) => {
     }, [location]);
 
     return (
-        <div>{show && children}</div>
+        <>{show && children}</>
     );
 }
 
