@@ -81,9 +81,13 @@ module.exports = (sequelize) => {
                 },
                 beforeUpdate: async (user) => {
                     try {
-                        const hashedPassword = await bcrypt
+                        if (user.dataValues.password !==
+                            user._previousDataValues.password) {
+                            const hashedPassword = await bcrypt
                             .hash(user.password, 10);
-                        user.password = hashedPassword;
+                            user.password = hashedPassword;
+                        }
+
                     } catch (error) {
                         throw new Error("There was an error while trying to register");
                     }
