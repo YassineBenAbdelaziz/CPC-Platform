@@ -60,17 +60,20 @@ const SignUp = () => {
                     navigate('/login');
                 }).catch(err => {
                     console.log(err)
-                    if (err.response.data.error.errors[0].message === "username must be unique") {
-                        setUsernameMsg('Username already exists.')
-                        setUsernameBorder('1px solid red')
-                        setEmailBorder('1px solid #ddd')
-                        setEmailMsg('');
-                    } else if (err.response.data.error.errors[0].message === "email must be unique") {
-                        setEmailMsg('Email already exists.');
-                        setEmailBorder('1px solid red')
-                        setUsernameBorder('1px solid #ddd')
-                        setUsernameMsg('')
+                    if (err.reponse) {
+                        if (err.response.data.error.errors[0].message === "username must be unique") {
+                            setUsernameMsg('Username already exists.')
+                            setUsernameBorder('1px solid red')
+                            setEmailBorder('1px solid #ddd')
+                            setEmailMsg('');
+                        } else if (err.response.data.error.errors[0].message === "email must be unique") {
+                            setEmailMsg('Email already exists.');
+                            setEmailBorder('1px solid red')
+                            setUsernameBorder('1px solid #ddd')
+                            setUsernameMsg('')
+                        }
                     }
+                    
                     console.log("User creation error")
                 })
         }
