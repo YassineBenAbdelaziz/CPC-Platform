@@ -816,7 +816,8 @@ footer {
   align-items: center;
 }
 .board .profiles {
-  width: -webkit-fill-available;;
+  width: -webkit-fill-available;
+  width: -moz-available; ;
   background-color: #dddddd26;
   border: 1px solid #efefef;
   border-radius: 15px;
@@ -942,6 +943,7 @@ footer {
   color: white;
   padding: 10px;
   width: -webkit-fill-available;
+  width: -moz-available; 
   margin: 10px 0;
   font-weight: bold;
   cursor: pointer;
@@ -967,6 +969,7 @@ footer {
 
 .sidebar2 {
   width: -webkit-fill-available;
+  width: -moz-available; 
 }
 .profile-content .solved-problems {
   margin-bottom: 10px;
@@ -978,6 +981,8 @@ footer {
   padding: 10px;
   background-color: #dddddd26;
 }
+
+
 .solved-details .solved-pourcentage {
   border: 1px solid rgb(81, 95, 248);
   border-radius: 50%;
@@ -996,6 +1001,7 @@ footer {
 }
 .solved-details .difficulties {
   width: -webkit-fill-available;
+  width: -moz-available; 
 }
 .solved-details .difficulty {
   padding: 5px;
