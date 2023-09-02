@@ -396,6 +396,7 @@ a {
   display: flex;
   align-items: center;
   margin-top: 20px;
+  flex-wrap: wrap;
 }
 .create .input-field label {
   margin-right: 5px;
@@ -451,6 +452,18 @@ a {
 .create #multiple,
 .create #single {
   margin: 0 10px;
+}
+.create .example-input {
+  margin-left: 65px;
+}
+@media (max-width: 1000px) {
+  .create .input-field #unused-label {
+    display: none;
+  }
+  .create .example-input,
+  .create .tags {
+    margin-left: 0;
+  }
 }
 
 /* problem details */
@@ -1006,16 +1019,18 @@ footer {
   cursor: pointer;
 }
 
+@media (max-width: 768px) {
+.profile-content {
+  display: block;
+}
+
+.profile-content .sidebar1 {
+  width: unset;
+  margin: 0 0 10px 0;
+}
+}
+
 @media (max-width: 992px) {
-  .profile-content {
-    display: block;
-  }
-
-  .profile-content .sidebar1 {
-    width: unset;
-    margin: 0 0 10px 0;
-  }
-
   .sidebar2 .lang,
   .sidebar2 .memory,
   .sidebar2 .created,

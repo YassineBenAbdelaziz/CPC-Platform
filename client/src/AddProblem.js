@@ -161,11 +161,15 @@ export default function AddProblem() {
                         <textarea required name="solution" id="solution" cols="100" rows="15" onChange={(e) => setSolutionFile(e.target.value)}></textarea>
                     </div>
                     <div className='input-field'>
-                        <label> </label>
-                        <input type="radio" id='multiple' value='multiple' name='checker' onClick={() => setChooseChecker(true)} />
-                        <label htmlFor="multiple">Multiple Answers </label>
-                        <input type="radio" id='single' value='single' name='checker' onClick={() => setChooseChecker(false)} />
-                        <label htmlFor="single">Single Answer </label>
+                        <label id='unused-label'> </label>
+                        <div className="radio">
+                            <input type="radio" id='multiple' value='multiple' name='checker' onClick={() => setChooseChecker(true)} />
+                            <label htmlFor="multiple">Multiple Answers </label>
+                        </div>
+                        <div className="radio">
+                            <input type="radio" id='single' value='single' name='checker' onClick={() => setChooseChecker(false)} />
+                            <label htmlFor="single">Single Answer </label>
+                        </div>
                     </div>
                     <div className='input-field' style={chooseChcker ? {} : { display: 'none' }}>
                         <label htmlFor="checker">Checker : </label>

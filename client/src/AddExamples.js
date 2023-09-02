@@ -40,7 +40,7 @@ export default function AddExamples(props) {
             }} alt="add" onClick={handleClick} />
             {/* <button onClick={handleClick}>+</button> */}
 
-            <div style={{ marginLeft: '65px' }}>
+            <div className='example-input'>
 
                 {
                     data.map((val, i) =>

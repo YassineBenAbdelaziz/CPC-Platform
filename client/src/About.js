@@ -6,6 +6,8 @@ import bissen from "./imgs/bissen.jpg";
 import boxy from "./imgs/boxy.jpg";
 import ahmed from "./imgs/ahmed.jpg";
 import louay from "./imgs/louay.jpg";
+import ala from "./imgs/ala.png";
+import ezzou from "./imgs/239844742_1718367641886800_5589512442401609340_n.jpg";
 
 const About = () => (
     <div className="content">
@@ -79,19 +81,31 @@ const About = () => (
                                 <p>Vice Chair</p>
                             </li>
                             <li>
-                                <img src={bissen} alt="Team Member 1" />
+                                <img src={bissen} alt="Team Member 3" />
                                 <h3>Bissen Abbassi</h3>
-                                <p>Web Master</p>
-                            </li>
-                            <li>
-                                <img src={louay} alt="Team Member 2" />
-                                <h3>Louay Dhkar</h3>
                                 <p>General Secretary</p>
                             </li>
                             <li>
-                                <img src={boxy} alt="Team Member 2" />
+                                <img src={louay} alt="Team Member 4" />
+                                <h3>Louay Dhkar</h3>
+                                <p>Web Master</p>
+                            </li>
+                        </ul> {/* satrin ethouma */}
+                        <ul> {/* juste bch ywali star fih 4 abed khw */}
+                            <li>
+                                <img src={boxy} alt="Team Member 5" />
                                 <h3>Seif Bouslama</h3>
                                 <p>HR Manager</p>
+                            </li>
+                            <li>
+                                <img src={ala} alt="Team Member 6" />
+                                <h3>Ala Ben Mimoun</h3>
+                                <p>Treasurer</p>
+                            </li>
+                            <li>
+                                <img src={ezzou} alt="Team Member 7" />
+                                <h3>Ezzeddine Wertani</h3>
+                                <p>Event Manager</p>
                             </li>
                         </ul>
                     </section>

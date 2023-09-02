@@ -61,7 +61,7 @@ const NavBar = () => {
 
     return (
         <nav className="navbar">
-            <img className="logo" src={logo} alt="Logo" />
+            <Link to="/"><img className="logo" src={logo} alt="Logo" /></Link>
 
             <input type="checkbox" id="check" checked={openMenu} onChange={() => openMenu ? setOpenMenu(false) : setOpenMenu(true)} />
             <label htmlFor="check" className="icons">
