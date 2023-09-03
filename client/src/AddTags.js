@@ -2,11 +2,11 @@
 import React, { useState } from 'react'
 import useFetch from './useFetch';
 import close from "./imgs/close.png";
-
+import url from './Url';
 
 export default function AddTags(props) {
 
-    const { data: Tags } = useFetch('http://localhost:5000/tag');
+    const { data: Tags } = useFetch(url + 'tag');
 
     const tags = [];
     Tags && Tags.sort((a, b) => a.tag > b.tag ? 1 : -1).map((tag) => {

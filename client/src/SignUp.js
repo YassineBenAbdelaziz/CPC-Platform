@@ -3,10 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import Axios from 'axios'
 import eye from "./imgs/eye.png";
 import invisible from "./imgs/invisible.png";
+import url from './Url';
 
 const SignUp = () => {
-
-    const url = "http://localhost:5000/";
 
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
@@ -73,7 +72,7 @@ const SignUp = () => {
                             setUsernameMsg('')
                         }
                     }
-                    
+
                     console.log("User creation error")
                 })
         }

@@ -7,9 +7,9 @@ import invisible from "./imgs/invisible.png";
 import camera from "./imgs/icon-photograph-profile-picture_689723-498-removebg-preview.png";
 import useAuth from "./hooks/useAuth";
 import NotFound from "./NotFound";
+import url from './Url';
 
 const EditProfile = () => {
-    const url = "http://localhost:5000/";
 
     const { username } = useParams();
 

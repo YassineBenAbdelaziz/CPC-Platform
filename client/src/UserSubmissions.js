@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
 import Submissions from "./Submissions";
+import url from './Url';
 
 const UserSubmissions = () => {
     const { id } = useParams();
-    const url = "http://localhost:5000/";
     const urlMySubmissions = url + 'submission/findByUser/' + id;
 
     return (

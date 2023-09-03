@@ -1,13 +1,14 @@
 import { useParams } from "react-router-dom";
 import useFetch from "./useFetch";
 import ProblemList from "./ProblemList";
+import url from './Url';
 
 const ContestDetails = () => {
     const { id } = useParams();
-    const { data: contest, isPending, error } = useFetch('http://localhost:5000/contest/' + id);
+    const { data: contest, isPending, error } = useFetch(url + 'contest/' + id);
 
     // eslint-disable-next-line
-    const { data: problems, isPending1, error1 } = useFetch('http://localhost:5000/problem/findByContest/' + id);
+    const { data: problems, isPending1, error1 } = useFetch(url + 'problem/findByContest/' + id);
 
     //Sorting problems 
     problems && problems.sort((a, b) => a.score > b.score ? 1 : -1);

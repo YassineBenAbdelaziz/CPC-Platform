@@ -1,7 +1,7 @@
 import useFetch from "./useFetch";
+import url from './Url';
 
 const SubmissionDetails = ({ sub, display }) => {
-    const url = 'http://localhost:5000/';
 
     const { data: submission, isPending, error } = useFetch(url + 'submission/' + sub.id_submission);
 

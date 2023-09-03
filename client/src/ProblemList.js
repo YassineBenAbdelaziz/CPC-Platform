@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import GetProblemStatus from "./GetProblemStatus";
 import useAuth from "./hooks/useAuth"
+import url from './Url';
 
 const ProblemList = ({
     problemset,
@@ -11,8 +12,6 @@ const ProblemList = ({
     handleTitleSort = function () { },
     handleScoreSort = function () { }
 }) => {
-    const url = "http://localhost:5000/";
-
     const ch = 'ABDEFGHIJKLMNOPQRSTUVWXYZ';
 
     const fn = (x) => {

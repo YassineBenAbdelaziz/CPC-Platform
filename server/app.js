@@ -13,7 +13,7 @@ const user = require('./Routes/user');
 const passport = require('passport');
 const session = require('express-session');
 const RedisStore = require("connect-redis").default
-const {createClient} = require('redis');
+const { createClient } = require('redis');
 
 
 /*
@@ -34,10 +34,10 @@ let redisStore = new RedisStore({
 */
 
 app.use(session({
-  secret : process.env.SECRET_SESSION ,
+  secret: process.env.SECRET_SESSION,
   resave: false,
   saveUninitialized: false,
-  store : redisStore,
+  store: redisStore,
 }));
 
 
@@ -59,15 +59,14 @@ app.use(passport.session());
 
 
 
-
 app.use(morgan('dev'));
 app.use(cors({
-  origin : ['http://localhost:3000'],
-  methods : ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
-  allowedHeaders : ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
-  credentials : true,
+  origin: [process.env.React_Url],
+  methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
+  credentials: true,
 }));
-app.use('/uploads',express.static('./uploads'));
+app.use('/uploads', express.static('./uploads'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 

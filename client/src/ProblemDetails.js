@@ -5,9 +5,9 @@ import CodeEditor from "./CodeEditor";
 import Submissions from "./Submissions";
 import useFetch from "./useFetch";
 import useAuth from "./hooks/useAuth";
+import url from './Url';
 
 const ProblDetails = () => {
-    const url = 'http://localhost:5000/';
 
     const { id } = useParams();
     const { auth } = useAuth()
@@ -123,7 +123,8 @@ const ProblDetails = () => {
                             </div> : null
                         }
 
-                        {showMySubmissions ? <Submissions url={urlMySubmissions} /> : null}
+                        {showMySubmissions && auth?.id ? <Submissions url={urlMySubmissions} /> :
+                            showMySubmissions && !auth?.id ? <div>not connected</div> : null}
 
                         {showAllSubmissions ? <Submissions url={urlAllSubmissions} /> : null}
 

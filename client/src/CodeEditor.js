@@ -5,10 +5,9 @@ import Axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
 import loading from "./imgs/loading.gif";
 import useAuth from './hooks/useAuth';
+import url from './Url';
 
 export default function CodeEditor({ handleSubmissions }) {
-
-    const url = "http://localhost:5000/";
 
     const urlAddSubmission = url + "submission/";
 

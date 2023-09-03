@@ -8,9 +8,9 @@ import logout from "./imgs/logout.png"
 import help from "./imgs/question.png"
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import url from './Url';
 
 const NavBar = () => {
-    const url = "http://localhost:5000/";
 
     const { auth, setAuth } = useAuth();
     const [showProfile, setShowProfile] = useState(false)
@@ -83,7 +83,7 @@ const NavBar = () => {
                     <div className="dropdown">
                         <img
                             className="user-img"
-                            src={'http://localhost:5000/' + auth?.img}
+                            src={url + auth?.img}
                             alt="user-img"
                             onClick={() => setShowProfile(!showProfile)}
                         />

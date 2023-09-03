@@ -3,10 +3,9 @@ import cpyBtn from './imgs/copy-icon.jpg'
 import useFetch from "./useFetch";
 import { useParams } from "react-router-dom";
 import { DisplayRichText } from "./RichText";
+import url from './Url';
 
 const Problem = ({ problem, isPending, error }) => {
-
-    const url = 'http://localhost:5000/';
 
     const { id } = useParams();
 
@@ -103,7 +102,7 @@ const Problem = ({ problem, isPending, error }) => {
                             {memory(problem.memory_limit)}
                         </div>
                     </article>
-                    <DisplayRichText content={problem.topic}  />
+                    <DisplayRichText content={problem.topic} />
                     {/*<div>{problem.topic}</div>*/}
                     <div className="inp" style={{ fontWeight: "bold" }}>Input :</div>
                     <div className="inp-text">{problem.input}</div>

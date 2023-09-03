@@ -5,10 +5,10 @@ import useAuth from "./hooks/useAuth";
 import { useNavigate, useLocation } from "react-router-dom";
 import eye from "./imgs/eye.png";
 import invisible from "./imgs/invisible.png";
+import url from './Url';
 
 const Login = () => {
 
-    const url = "http://localhost:5000/";
     Axios.defaults.withCredentials = true;
 
     const navigate = useNavigate();

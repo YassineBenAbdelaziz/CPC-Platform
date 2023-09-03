@@ -6,11 +6,10 @@ import AddExamples from './AddExamples';
 import AddTags from './AddTags';
 import RichText from './RichText';
 import { useNavigate } from 'react-router-dom';
+import url from './Url';
 
 
 export default function AddProblem() {
-
-    const url = "http://localhost:5000/";
 
     const urlAddProblem = url + "problem/create";
 

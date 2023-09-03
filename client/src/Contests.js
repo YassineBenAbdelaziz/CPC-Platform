@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import useFetch from "./useFetch";
+import url from './Url';
 
 const Contests = () => {
-    const { data: contests, isPending, error } = useFetch('http://localhost:5000/contest');
+    const { data: contests, isPending, error } = useFetch(url + 'contest');
 
     return (
         <div className="content">

@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import useFetch from "./useFetch";
+import url from './Url';
 
 const Scoreboard = ({ username }) => {
 
-    const { data: users, isPending, error } = useFetch('http://localhost:5000/user');
+    const { data: users, isPending, error } = useFetch(url + 'user');
 
     function item() {
         return (
@@ -17,7 +18,7 @@ const Scoreboard = ({ username }) => {
                             <div className="item">
                                 <div style={{ fontWeight: '600', marginRight: '10px' }}>{index + 1}</div>
                                 <Link to={`/profile/${user.username}`}>
-                                    <img src={'http://localhost:5000/' + user.imagePath} alt="img" />
+                                    <img src={url + user.imagePath} alt="img" />
                                 </Link>
                                 <Link to={`/profile/${user.username}`}>
                                     <h3 className="username">{user.username}</h3>

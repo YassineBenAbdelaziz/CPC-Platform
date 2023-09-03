@@ -4,10 +4,9 @@ import { useEffect, useState, useCallback } from "react";
 import Pagination from "./Pagination";
 import Axios from 'axios'
 import close from "./imgs/close.png";
+import url from './Url';
 
 const Problemset = () => {
-
-    const url = "http://localhost:5000/";
 
     const urlGetPage = url + 'problem/problemPage'
 

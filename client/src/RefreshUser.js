@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react";
 import useAuth from "./hooks/useAuth";
 import Axios from 'axios'
-
+import url from './Url';
 
 const RefrechUser = ({ children }) => {
 
     const [isLoading, setIsLoading] = useState(true);
     const { auth, setAuth } = useAuth();
 
-    const url = "http://localhost:5000/";
     Axios.defaults.withCredentials = true;
 
     useEffect(() => {

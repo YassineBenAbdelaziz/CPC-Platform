@@ -4,10 +4,9 @@ import useAuth from './hooks/useAuth';
 import SubmissionList from './SubmissionList';
 import { useEffect, useState } from 'react';
 import Axios from 'axios';
+import url from './Url';
 
 const Profile = () => {
-
-  const url = "http://localhost:5000/";
 
   const { auth } = useAuth();
 
