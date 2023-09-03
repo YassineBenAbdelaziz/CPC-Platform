@@ -9,7 +9,7 @@ module.exports = (sequelize) => {
                 autoIncrement: true,
             },
             tokens: {
-                type: DataTypes.STRING,
+                type: DataTypes.STRING(3000),
                 allowNull: false,
             },
             lang: {
@@ -17,7 +17,7 @@ module.exports = (sequelize) => {
                 allowNull: false,
             },
             code: {
-                type: DataTypes.STRING(2000),
+                type: DataTypes.STRING(5000),
                 allowNull: false,
             },
             time: {
@@ -29,7 +29,7 @@ module.exports = (sequelize) => {
                 allowNull: false,
             },
             result: {
-                type: DataTypes.STRING,
+                type: DataTypes.STRING(2000),
                 allowNull: false,
             },
         }
