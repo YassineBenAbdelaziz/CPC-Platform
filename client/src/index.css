@@ -477,6 +477,9 @@ a {
 .prb-details div {
   white-space: pre-line;
   margin: 20px 0;
+  padding: 0;
+  font-size: initial;
+  text-align: justify;
 }
 .problem-details .submit {
   background-color: rgb(81, 95, 248);

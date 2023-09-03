@@ -115,18 +115,21 @@ export default function AddProblem() {
                     </div>
                     <div className='input-field'>
                         <label htmlFor="input">Input : </label>
-                        <textarea required name="input" id="input" cols="100" rows="7" onChange={(e) => setInput(e.target.value)}></textarea>
+                        <RichText setRich={setInput} />
+                        {/*<textarea required name="input" id="input" cols="100" rows="7" onChange={(e) => setInput(e.target.value)}></textarea>*/}
                     </div>
                     <div className='input-field'>
                         <label htmlFor="output">Output : </label>
-                        <textarea required name="output" id="output" cols="100" rows="3" onChange={(e) => setOutput(e.target.value)}></textarea>
+                        <RichText setRich={setOutput} />
+                        {/*<textarea required name="output" id="output" cols="100" rows="3" onChange={(e) => setOutput(e.target.value)}></textarea>*/}
                     </div>
 
                     <AddExamples name="Example(s)" getData={getExemples} />
 
                     <div className='input-field'>
                         <label htmlFor="note">Note : </label>
-                        <textarea requiredname="note" id="note" cols="100" rows="3" onChange={(e) => setNote(e.target.value)}></textarea>
+                        <RichText setRich={setNote} />
+                        {/*<textarea requiredname="note" id="note" cols="100" rows="3" onChange={(e) => setNote(e.target.value)}></textarea>*/}
                     </div>
                     <div className='input-field'>
                         <label htmlFor="score">Score : </label>
@@ -154,11 +157,13 @@ export default function AddProblem() {
 
                     <div className='input-field'>
                         <label htmlFor="tutorial">Tutorial : </label>
-                        <textarea name="tutorial" id="tutorial" cols="100" rows="7" onChange={(e) => setTutorial(e.target.value)}></textarea>
+                        <RichText setRich={setTutorial} />
+                        {/*<textarea name="tutorial" id="tutorial" cols="100" rows="7" onChange={(e) => setTutorial(e.target.value)}></textarea>*/}
                     </div>
                     <div className='input-field'>
                         <label htmlFor="solution">Solution : </label>
-                        <textarea required name="solution" id="solution" cols="100" rows="15" onChange={(e) => setSolutionFile(e.target.value)}></textarea>
+                        <RichText setRich={setSolutionFile} />
+                        {/*<textarea required name="solution" id="solution" cols="100" rows="15" onChange={(e) => setSolutionFile(e.target.value)}></textarea>*/}
                     </div>
                     <div className='input-field'>
                         <label id='unused-label'> </label>
