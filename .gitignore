@@ -8,6 +8,8 @@ package-lock.json
 /server/package.lock.json
 
 
+/client/src/Url.js
+
 /server/.env
 /server/.env.test
 /server/uploads/
