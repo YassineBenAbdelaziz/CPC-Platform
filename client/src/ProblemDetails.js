@@ -6,6 +6,7 @@ import Submissions from "./Submissions";
 import useFetch from "./useFetch";
 import useAuth from "./hooks/useAuth";
 import url from './Url';
+import { DisplayRichText } from "./RichText";
 
 const ProblDetails = () => {
 
@@ -108,18 +109,19 @@ const ProblDetails = () => {
                         {
                             showTutorial ? <div className="tutorial">
                                 {
-                                    problem.tutorial ? <div className="source_code">
-                                        {problem.tutorial}
-                                    </div> : <div>There Is No Tutorial Available</div>
+                                    problem.tutorial ?
+                                        <DisplayRichText content={problem.tutorial} />
+                                        : <div>There Is No Tutorial Available</div>
                                 }
                             </div> : null
                         }
 
                         {
                             showSolution ? <div className="solution">
-                                <div className="source_code">
+                                {/*<div className="source_code">
                                     {problem.solution}
-                                </div>
+                                </div>*/}
+                                <DisplayRichText content={problem.solution} />
                             </div> : null
                         }
 

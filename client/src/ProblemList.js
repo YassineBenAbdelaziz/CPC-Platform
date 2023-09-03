@@ -23,15 +23,15 @@ const ProblemList = ({
     const diff = (score) => {
         if (score <= 100) {
             return (
-                <div className="problem-diff" style={{ color: '#02b102' }} >easy</div>
+                <div className="problem-diff" style={{ color: '#02b102' }} >Easy</div>
             )
         } else if (score > 100 && score < 130) {
             return (
-                <div className="problem-diff" style={{ color: 'orange' }} >miduim</div>
+                <div className="problem-diff" style={{ color: 'orange' }} >Medium</div>
             )
         } else {
             return (
-                <div className="problem-diff" style={{ color: 'red' }} >hard</div>
+                <div className="problem-diff" style={{ color: 'red' }} >Hard</div>
             )
         }
     }

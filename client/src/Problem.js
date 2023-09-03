@@ -21,7 +21,8 @@ const Problem = ({ problem, isPending, error }) => {
             return (
                 <span>
                     <div className="note" style={{ fontWeight: "bold" }}>Note :</div>
-                    <div className="note-text">{problem.note}</div>
+                    {/*<div className="note-text">{problem.note}</div>*/}
+                    <DisplayRichText content={problem.note}  />
                 </span>
             )
         }
@@ -105,9 +106,11 @@ const Problem = ({ problem, isPending, error }) => {
                     <DisplayRichText content={problem.topic} />
                     {/*<div>{problem.topic}</div>*/}
                     <div className="inp" style={{ fontWeight: "bold" }}>Input :</div>
-                    <div className="inp-text">{problem.input}</div>
+                    {/*<div className="inp-text">{problem.input}</div>*/}
+                    <DisplayRichText content={problem.input}  />
                     <div className="outp" style={{ fontWeight: "bold" }}>Output :</div>
-                    <div className="outp-text">{problem.output}</div>
+                    {/*<div className="outp-text">{problem.output}</div>*/}
+                    <DisplayRichText content={problem.output}  />
                     {exp()}
                     {note()}
                     {tag()}
