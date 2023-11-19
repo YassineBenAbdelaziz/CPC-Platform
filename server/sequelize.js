@@ -9,7 +9,7 @@ const sequelize = new Sequelize(
   {
     host: 'localhost',
     dialect: 'postgres',
-    logging: false
+    logging: false,
   });
 
 const entitiesDefiners = [
@@ -18,7 +18,8 @@ const entitiesDefiners = [
   require('./Entities/example'),
   require('./Entities/submission'),
   require('./Entities/tag'),
-  require('./Entities/user',)
+  require('./Entities/user'),
+  require('./Entities/role'),
 ];
 
 // We define all models according to their files.
@@ -90,6 +91,26 @@ const user_skill = sequelize.define('user_skill', {
     type: DataTypes.INTEGER
   }
 });
+
+
+sequelize.models.role.hasMany(sequelize.models.user, { 
+  foreignKey: {
+    name : 'id_role',
+    allowNull: false,
+    defaultValue : 1,
+  }
+});
+
+sequelize.models.user.belongsTo(sequelize.models.role, { 
+  foreignKey: {
+    name : 'id_role',
+    allowNull: false,
+    defaultValue : 1,
+  }
+});
+
+ 
+sequelize.models.problem.belongsTo(sequelize.models.user,{ targetKey: 'username', foreignKey: 'owner' });
 
 //sync 
 sequelize.sync().then((data) => {

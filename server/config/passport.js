@@ -53,7 +53,11 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((userID, done) => {
     models.user.findByPk(userID,{
-        attributes : ['id_user','username','score','rank','imagePath']
+        attributes : ['id_user','username','score','rank'],
+        include :{ 
+        model : models.role,
+        attributes : ['description']
+    }
     }).then(
         (user) => {
             done(null, user.toJSON());

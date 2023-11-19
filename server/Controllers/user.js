@@ -18,6 +18,7 @@ async function deletefile(path) {
 
 
 exports.getAll = async (req, res, next) => {
+    console.log(req.user)
     await models.user.findAll({
         attributes: ['id_user', 'username', 'score', 'rank', 'imagePath']
     })
@@ -206,7 +207,9 @@ exports.updateUser = (req, res, next) => {
             updatedFields[key] = val;
         }
 
+
         updatedFields.username = req.user.username;
+        delete updatedFields.id_role;
 
         console.log('updatedFields', updatedFields);
         console.log(req.file);
