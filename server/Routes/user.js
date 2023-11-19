@@ -13,7 +13,7 @@ router.post('/login', passport.authenticate('local'), controller.login);
 
 router.get('/logout', controller.logout );
 
-router.delete('/:id', controller.deleteUser);
+router.delete('/:id', isAuth, checkRole(['mod','admin']) , controller.deleteUser);
 
 router.patch('/:id', multer, controller.updateUser);
 

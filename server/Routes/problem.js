@@ -19,6 +19,6 @@ router.get('/findByContest/:contestId', ProblemController.get_problems_by_contes
 
 router.patch('/:problemId', isAuth, checkRole(['mod','admin']) , ProblemController.update_problem);
 
-router.delete('/:problemId',  ProblemController.delete_problem);
+router.delete('/:problemId', isAuth, checkRole(['mod','admin']),  ProblemController.delete_problem);
 
 module.exports = router; 
