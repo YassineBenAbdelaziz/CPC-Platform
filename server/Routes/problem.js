@@ -9,9 +9,11 @@ router.get('/', ProblemController.get_all);
 
 router.post('/problemPage', ProblemController.getPage);
 
-router.post('/create', ProblemController.create_problem);
+router.get('/problemStatus/:problemId', isAuth,  ProblemController.get_problem_status);
 
-router.post('/:problemId/add-tag', ProblemController.add_tag);
+router.post('/create', isAuth, checkRole(['mod','admin']) , ProblemController.create_problem);
+
+router.post('/:problemId/add-tag', isAuth, checkRole(['mod','admin']) , ProblemController.add_tag);
 
 router.get('/:problemId', ProblemController.get_problem);
 
