@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('../middlewares/multerMiddleware');
 const passport = require('passport');
-const { isAuth } = require('../middlewares/authMiddlewares');
+const {isAuth, checkRole} = require('../middlewares/authMiddlewares');
 
 router.get('/', controller.getAll);
 

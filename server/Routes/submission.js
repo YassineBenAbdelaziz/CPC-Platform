@@ -1,5 +1,4 @@
 const express = require('express');
-const { isAuth } = require('../middlewares/authMiddlewares');
 const router = express.Router();
 
 const {isAuth, checkRole} = require('../middlewares/authMiddlewares');
