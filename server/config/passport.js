@@ -9,6 +9,10 @@ const validateUser = async (email, password, done) => {
         const user = await models.user.findOne({
             where: {
                 email: email,
+            },
+            include :{ 
+                model : models.role,
+                attributes : ['description']
             }
         });
 

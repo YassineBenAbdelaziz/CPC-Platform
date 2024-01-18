@@ -18,7 +18,7 @@ async function deletefile(path) {
 
 
 exports.getAll = async (req, res, next) => {
-    console.log(req.user)
+    
     await models.user.findAll({
         attributes: ['id_user', 'username', 'score', 'rank', 'imagePath']
     })
@@ -267,10 +267,12 @@ exports.login = (req, res, next) => {
         // Set cookie age to 1 week
         req.session.cookie.maxAge = 604800000;
     }
+    
     const user = {
         id: req.user.id_user,
         username: req.user.username,
         img: req.user.imagePath,
+        role : req.user.role,
     }
     return res.status(200).json({
         message: "Login successful",
@@ -302,6 +304,7 @@ exports.getCurrentUser = (req, res, next) => {
             id: req.user.id_user,
             username: req.user.username,
             img: req.user.imagePath,
+            role : req.user.role,
         }
         return res.status(200).json({
             status: 'OK',
