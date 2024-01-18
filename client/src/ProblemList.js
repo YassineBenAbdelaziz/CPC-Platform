@@ -38,10 +38,7 @@ const ProblemList = ({
 
     return (
         <div className="problem-list">
-            <div className="problemlist-header">
-                <h2>{title} ({problemset.length})</h2>
-                {inProblemset && <Link to="/problemset/add-problem" className="add-problem">Add Problem</Link>}
-            </div>
+
             <div className="table-titles">
                 <h3 className="title" onClick={() => handleTitleSort()}>Title</h3>
                 {auth?.id ? <h3 className="status">Status</h3> : <h3 className="status"> </h3>}

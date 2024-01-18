@@ -5,6 +5,7 @@ import Pagination from "./Pagination";
 import Axios from 'axios'
 import close from "./imgs/close.png";
 import url from './Url';
+import ProblemListHeader from "./ProblemListHeader";
 
 const Problemset = () => {
 
@@ -109,7 +110,8 @@ const Problemset = () => {
         <div className="problemset-content">
             <div className="problemset">
                 <div className="problems">
-                    {problems && count === 0 && <h2>No Problems Available</h2>}
+                    {problems && count === 0 && <ProblemListHeader message={"No Problems Available"}></ProblemListHeader> }
+                    {problems && count !== 0 && <ProblemListHeader message={"Problems" + `(${count}) : `}></ProblemListHeader> }
                     {problems && count !== 0 && <ProblemList
                         problemset={problems}
                         title="Problems"
