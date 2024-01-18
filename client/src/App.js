@@ -18,6 +18,8 @@ import Profile from './Profile';
 import UserSubmissions from './UserSubmissions';
 import RefrechUser from './RefreshUser';
 import EditProfile from './EditProfile';
+import PublicRoutes from './PublicRoutes';
+import RoleBasedRoute from './RoleBasedRoute';
 
 function App() {
   return (
@@ -31,21 +33,33 @@ function App() {
             <Routes>
               <Route path='/' element={<Home />}></Route>
               <Route path='/about' element={<About />}></Route>
-              <Route path='/login' element={<Login />}></Route>
-              <Route path='/signup' element={<SignUp />}></Route>
               <Route path='/problemset' element={<Problemset />}></Route>
               <Route path='/problemset/:id' element={<ProblemDetails />}></Route>
               <Route path='/contests/:id/:id' element={<ProblemDetails />}></Route>
               <Route path='/contests/:id' element={<ContestDetails />}></Route>
               <Route path='/contests' element={<Contests />}></Route>
+
               <Route element={<ProtectedRoutes />}>
                 {/* protected routes here */}
                 <Route path='/loggedin' element={<LoggedIn />}></Route>
+                <Route element={<RoleBasedRoute roles={['mod','admin']} />} >
+                  <Route path='/problemset/add-problem' element={<AddProblem />}></Route>
+                </Route>
+                
+                <Route path='/profile/:username/edit' element={<EditProfile />}></Route>
               </Route>
-              <Route path='/problemset/add-problem' element={<AddProblem />}></Route>
+              
               <Route path='/profile/:username' element={<Profile />}></Route>
               <Route path='/profile/:id/submissions' element={<UserSubmissions />}></Route>
-              <Route path='/profile/:username/edit' element={<EditProfile />}></Route>
+              
+
+
+              <Route element={<PublicRoutes />}>
+                {/* public routes here */}
+                <Route path='/login' element={<Login />}></Route>
+                <Route path='/signup' element={<SignUp />}></Route>
+              </Route>
+
               <Route path='*' element={<NotFound />}></Route>
             </Routes>
           </div>
