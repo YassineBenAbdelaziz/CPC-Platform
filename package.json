@@ -6,9 +6,10 @@
   "scripts": {
     "client-install": "cd client && npm install",
     "server-install": "cd server && npm install",
+    "redis": "redis-server",
     "server": "npm start --prefix server",
     "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run redis\" \"npm run server\" \"npm run client\""
   },
   "author": "Yassine Ben Abdelaziz",
   "license": "ISC",

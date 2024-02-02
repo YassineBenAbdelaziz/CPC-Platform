@@ -144,9 +144,18 @@ exports.getUserProfile = async (req, res, next) => {
 
 
 exports.register = (req, res, next) => {
+    if (req.body.username.trim().includes(' '))
+        return res.status(401).json({
+            message: "Username must not contain spaces."
+        })
+    if (req.body.email.trim().includes(' '))
+        return res.status(401).json({
+            message: "Email must not contain spaces."
+        })  
+     
     models.user.create({
-        email: req.body.email,
-        username: req.body.username,
+        email: req.body.email.trim(),
+        username: req.body.username.trim(),
         password: req.body.password,
     })
         .then((data) => {
@@ -155,6 +164,7 @@ exports.register = (req, res, next) => {
             });
         })
         .catch((err) => {
+            console.log(err)
             res.status(500).json({
                 error: err,
             });
@@ -210,9 +220,6 @@ exports.updateUser = (req, res, next) => {
 
         updatedFields.username = req.user.username;
         delete updatedFields.id_role;
-
-        console.log('updatedFields', updatedFields);
-        console.log(req.file);
 
         if (req.file) {
             updatedFields["imagePath"] = req.file.path;

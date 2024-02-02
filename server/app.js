@@ -61,7 +61,7 @@ app.use(passport.session());
 
 app.use(morgan('dev'));
 app.use(cors({
-  origin: [process.env.React_Url],
+  origin: [process.env.CLIENT_URL],
   methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
   allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
   credentials: true,

@@ -33,7 +33,7 @@ module.exports = (sequelize) => {
                     // Minimum eight and maximum 10 characters, at least one uppercase letter,
                     // one lowercase letter, one number and one special character:
                     is: {
-                        args: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$/i,
+                        args: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/i,
                         msg: "Minimum eight and maximum 10 characters, at least one uppercase letter, one lowercase letter, one number and one special character",
                     }
 

@@ -27,7 +27,7 @@ const SignUp = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         let test = true;
-        const regExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$/i;
+        const regExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/i;
         if (!regExp.test(password)) {
             test = false;
             setPwdMsg('Minimum eight and maximum 10 characters,\nat least one uppercase letter,\none lowercase letter, one number\nand one special character.');
@@ -36,6 +36,11 @@ const SignUp = () => {
             setPwdMsg('');
             setPwdBorder('1px solid #ddd')
         }
+        if (username.trim().includes(' ')) {
+            test = false;
+            setUsernameBorder('1px solid red')
+            setUsernameMsg('Username must not contain spaces.');
+        } 
         if (rePwd !== password) {
             test = false;
             setRePwdBorder('1px solid red')
@@ -46,7 +51,7 @@ const SignUp = () => {
         }
 
         const user = {
-            "username": username,
+            "username": username.trim(),
             "email": email,
             "password": password
         };
@@ -55,26 +60,22 @@ const SignUp = () => {
             Axios.post(url + "user/register", user)
                 .then(res => {
                     console.log("User Created");
-                    console.log(res.data);
+                    // console.log(res.data);
                     navigate('/login');
                 }).catch(err => {
-                    console.log(err)
-                    if (err.reponse) {
-                        if (err.response.data.error.errors[0].message === "username must be unique") {
-                            setUsernameMsg('Username already exists.')
-                            setUsernameBorder('1px solid red')
-                            setEmailBorder('1px solid #ddd')
-                            setEmailMsg('');
-                        } else if (err.response.data.error.errors[0].message === "email must be unique") {
-                            setEmailMsg('Email already exists.');
-                            setEmailBorder('1px solid red')
-                            setUsernameBorder('1px solid #ddd')
-                            setUsernameMsg('')
-                        }
+                    console.log("User creation error", err)
+                    if (err.response.data.error.errors[0].message === "username must be unique") {
+                        setUsernameMsg('Username already exists.')
+                        setUsernameBorder('1px solid red')
+                        setEmailBorder('1px solid #ddd')
+                        setEmailMsg('');
+                    } else if (err.response.data.error.errors[0].message === "email must be unique") {
+                        setEmailMsg('Email already exists.');
+                        setEmailBorder('1px solid red')
+                        setUsernameBorder('1px solid #ddd')
+                        setUsernameMsg('')
                     }
-
-                    console.log("User creation error")
-                })
+                });
         }
     }
 
