@@ -34,7 +34,6 @@ const Login = () => {
 
         Axios.post(url + "user/login", user,)
             .then((res) => {
-                console.log(res.data.data);
                 setAuth(res.data.data);
                 setEmail('');
                 setPwd('');
@@ -44,13 +43,7 @@ const Login = () => {
             })
             .catch(err => {
                 setMsg('Incorrect email or password')
-                if (err.response) {
-                    console.log(err.response.data)
-                }
-
-                if (err.request) {
-                    console.log(err.request)
-                }
+                console.log(err)
             })
 
     }
@@ -72,7 +65,7 @@ const Login = () => {
                         <input type={visible ? "password" : "text"} id="pwd" placeholder="Password" value={pwd} onChange={(e) => setPwd(e.target.value)} />
                         <img
                             className="password-icon"
-                            src={visible ? eye : invisible}
+                            src={!visible ? eye : invisible}
                             alt=""
                             onClick={handleIconClick}
                         />

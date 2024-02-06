@@ -63,16 +63,16 @@ function App() {
               <Route path='*' element={<NotFound />}></Route>
             </Routes>
           </div>
+          <ShowNavBar>
+            <footer>
+              <p>
+                &copy;  2023 CPC Enicarthage <br />
+                All rights reserved.
+              </p>
+            </footer>
+          </ShowNavBar>
         </div>
         <ScrollToTop />
-        <ShowNavBar>
-          <footer>
-            <p>
-              &copy;  2023 CPC Enicarthage <br />
-              All rights reserved.
-            </p>
-          </footer>
-        </ShowNavBar>
       </RefrechUser>
     </BrowserRouter>
   );

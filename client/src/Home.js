@@ -1,3 +1,4 @@
+import AdminDashboard from "./AdminDashboard";
 import Scoreboard from "./Scoreboard";
 import useAuth from "./hooks/useAuth";
 
@@ -9,6 +10,7 @@ const Home = () => {
                 <h2>Welcome <span className="name">{auth?.username}</span> !</h2>
                 {/* <h3>Anouncements</h3> */}
                 <Scoreboard username={auth?.username} />
+                {auth?.role?.description === "admin" ? <AdminDashboard></AdminDashboard> : <></> }
             </div>
         </div>
     );

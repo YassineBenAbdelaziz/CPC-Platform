@@ -107,7 +107,7 @@ const SignUp = () => {
                         <input type={visible ? "password" : "text"} required id="pwd" value={password} style={{ border: pwdBorder }} onChange={(e) => setPassword(e.target.value)} />
                         <img
                             className="password-icon"
-                            src={visible ? eye : invisible}
+                            src={!visible ? eye : invisible}
                             alt=""
                             onClick={handleIconClick}
                         />
@@ -122,7 +122,7 @@ const SignUp = () => {
                         <input type={visible ? "password" : "text"} required id="re-pwd" value={rePwd} style={{ border: rePwdBorder }} onChange={(e) => setRePwd(e.target.value)} />
                         <img
                             className="password-icon"
-                            src={visible ? eye : invisible}
+                            src={!visible ? eye : invisible}
                             alt=""
                             onClick={handleIconClick}
                         />
