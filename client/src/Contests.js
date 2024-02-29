@@ -1,9 +1,14 @@
 import { Link } from "react-router-dom";
-import useFetch from "./useFetch";
-import url from './Url';
+import { getContests } from "./services/contests";
+import { useQuery } from "@tanstack/react-query";
 
 const Contests = () => {
-    const { data: contests, isPending, error } = useFetch(url + 'contest');
+    const { data: contests, isPending, isError, error } = useQuery({
+        queryKey : ['contests'],
+        queryFn : async () => {
+            return getContests();
+        }
+    });
 
     return (
         <div className="content">

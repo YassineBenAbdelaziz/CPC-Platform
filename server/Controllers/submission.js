@@ -44,14 +44,15 @@ exports.create_submission = async (req, res, next) => {
         let memoryLimit = "";
         let testFile = "";
         let checker = "";
-        await models.problem.findByPk(problemId)
-            .then(data => {
-                const problem = data.dataValues;
-                timeLimit = problem.time_limit;
-                memoryLimit = problem.memory_limit;
-                testFile = problem.test_file;
-                checker = problem.checker;
-            })
+
+        console.log("The problem id :" + problemId);
+        const data = await models.problem.findByPk(problemId);
+        console.log("data selected : " + data)
+        const problem = data.dataValues;
+        timeLimit = problem.time_limit;
+        memoryLimit = problem.memory_limit;
+        testFile = problem.test_file;
+        checker = problem.checker;
 
         const tests = testFile.split("\nexpected\n");
         const inputs = tests[0].split("\nnext\n");

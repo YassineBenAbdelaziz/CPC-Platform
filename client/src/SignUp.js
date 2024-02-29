@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Axios from 'axios'
 import eye from "./imgs/eye.png";
 import invisible from "./imgs/invisible.png";
-import url from './Url';
+import { useMutation } from "@tanstack/react-query";
+import { signup } from "./services/user";
 
 const SignUp = () => {
 
@@ -23,6 +23,38 @@ const SignUp = () => {
     const [visible, setVisible] = useState(true)
 
     const navigate = useNavigate();
+
+
+    const {data, mutate, isPending, isError} = useMutation({
+        mutationFn : async (user) => {
+            return await signup(user);
+        },
+        onSuccess : () => {
+            setUsername('');
+            setEmail('');
+            setPassword('');
+            setRePwd('');
+            navigate('/login');
+        },
+        onError : (err) => {
+            if (err.response.data.error.errors[0].message === "username must be unique") {
+                setUsernameMsg('Username already exists.')
+                setUsernameBorder('1px solid red')
+                setEmailBorder('1px solid #ddd')
+                setEmailMsg('');
+            } else if (err.response.data.error.errors[0].message === "email must be unique") {
+                setEmailMsg('Email already exists.');
+                setEmailBorder('1px solid red')
+                setUsernameBorder('1px solid #ddd')
+                setUsernameMsg('')
+            }
+        }
+    })
+
+
+
+
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -57,25 +89,7 @@ const SignUp = () => {
         };
 
         if (test) {
-            Axios.post(url + "user/register", user)
-                .then(res => {
-                    console.log("User Created");
-                    // console.log(res.data);
-                    navigate('/login');
-                }).catch(err => {
-                    console.log("User creation error", err)
-                    if (err.response.data.error.errors[0].message === "username must be unique") {
-                        setUsernameMsg('Username already exists.')
-                        setUsernameBorder('1px solid red')
-                        setEmailBorder('1px solid #ddd')
-                        setEmailMsg('');
-                    } else if (err.response.data.error.errors[0].message === "email must be unique") {
-                        setEmailMsg('Email already exists.');
-                        setEmailBorder('1px solid red')
-                        setUsernameBorder('1px solid #ddd')
-                        setUsernameMsg('')
-                    }
-                });
+            mutate(user);
         }
     }
 

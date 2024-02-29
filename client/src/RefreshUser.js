@@ -1,43 +1,41 @@
-import { useState, useEffect } from "react";
 import useAuth from "./hooks/useAuth";
-import Axios from 'axios'
-import url from './Url';
+import { useQuery } from "@tanstack/react-query";
+import { getCurrentUser } from "./services/user";
 
 const RefrechUser = ({ children }) => {
 
-    const [isLoading, setIsLoading] = useState(true);
     const { auth, setAuth } = useAuth();
+    const {data  , isPending, isError, error} = useQuery({
+        queryKey : ['currentUser'],
+        queryFn : getCurrentUser,
+        retry : 1,
+        enabled : !auth?.username,
+    });
 
-    Axios.defaults.withCredentials = true;
 
-    useEffect(() => {
-
-        const refreshData = () => {
-            Axios.get(url + 'user/current').then(res => {
-                if (res.data.status === 'OK') {
-                    setAuth(res.data.data);
-                    console.log("Refreshing data");
-                }
-                setIsLoading(false);
-            }).catch(err => {
-                console.log(err);
-                setIsLoading(false);
-            });
-        };
-
-        !auth?.username ? refreshData() : setIsLoading(false);
-    }, [auth?.username, setAuth]);
-
-    return (
+    if (isPending) {
+        return ( <p>Loading...</p> )
+    }
+    
+    if(isError) {
+        return (                 
         <>
-            {isLoading ?
-                <p>Loading...</p>
-                : <>
-                    {children}
-                </>
-            }
-        </>
-    )
+            {children}
+        </>)
+    }
+
+    if (!isPending && !isError ) {
+        if (data.status === 'OK') {
+            setAuth(data.data);
+        }
+        return (                 
+        <>
+            {children}
+        </>)
+    }
+
+
+   
 }
 
 export default RefrechUser;

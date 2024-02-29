@@ -1,12 +1,17 @@
 /* eslint-disable array-callback-return */
 import React, { useState } from 'react'
-import useFetch from './useFetch';
 import close from "./imgs/close.png";
-import url from './Url';
+import { getAlltags } from './services/tag';
+import { useQuery } from '@tanstack/react-query';
 
 export default function AddTags(props) {
 
-    const { data: Tags } = useFetch(url + 'tag');
+    const { data: Tags, isPending, isError, error } = useQuery({
+        queryKey : ['tags'],
+        queryFn : async () => {
+            return getAlltags();
+        }
+    });
 
     const tags = [];
     Tags && Tags.sort((a, b) => a.tag > b.tag ? 1 : -1).map((tag) => {

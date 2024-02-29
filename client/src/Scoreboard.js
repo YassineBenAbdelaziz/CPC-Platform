@@ -1,10 +1,20 @@
 import { Link } from "react-router-dom";
-import useFetch from "./useFetch";
 import url from './Url';
+import { useQuery } from "@tanstack/react-query";
+import { getAllUsers } from "./services/user";
+import Error from "./Error";
 
 const Scoreboard = ({ username }) => {
 
-    const { data: users, isPending, error } = useFetch(url + 'user');
+    const { data : users, isError, error, isLoading,  } = useQuery({
+        queryKey : ['users'],
+        queryFn : async () => { 
+            const res = await getAllUsers();
+            return (await res).data
+        }
+    }
+    );
+
 
     function setCurrentUserStyle(index) {
         const style = {}
@@ -19,14 +29,16 @@ const Scoreboard = ({ username }) => {
         }
         return style;
     }
-
+    
     function item() {
         return (
 
             <>
-                {error && <div>{error}</div>}
-                {isPending && <div>Loading...</div>}
+                {isError && <Error err={error}/>}
+                {isLoading && <div>Loading...</div>}
+                {!isLoading && !isError && !users && <div>No users Found</div>}
                 {
+                    !isLoading && !isError && 
                     users && users.sort((a, b) => a.score < b.score ? 1 : -1).map((user, index) => (
                         < div className="profile" key={index} style={username === user.username ? setCurrentUserStyle(index) : {}}>
                             <div className="item">

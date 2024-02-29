@@ -1,7 +1,8 @@
 import SubmissionList from "./SubmissionList";
 import Pagination from "./Pagination";
 import { useEffect, useState } from "react";
-import Axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import { getAllSubmissions } from "./services/submission";
 
 export default function Submissions({ url }) {
 
@@ -12,30 +13,33 @@ export default function Submissions({ url }) {
     const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
     const [minPageNumberLimit, setMinPageNumberLimit] = useState(1);
 
-    const [subs, setSubs] = useState([]);
     const [count, setCount] = useState(0);
 
-    useEffect(() => {
-        const pageRequest = {
-            "page": currentPage,
-            "limit": submissionsPerPage
+    const { data : subs, isPending, isError, error} = useQuery({
+        queryKey : ["submissionsPage",currentPage,submissionsPerPage,url ],
+        queryFn : async () => {
+            const pageRequest = {
+                "page": currentPage,
+                "limit": submissionsPerPage
+            };
+
+            const res = getAllSubmissions(url, pageRequest);
+            const data = await res ;
+            setCount(data.count);
+            return await res ;
         }
-        Axios.post(url, pageRequest)
-            .then(res => {
-                console.log('Submission Page Fetched')
-                const newData = res.data.rows;
-                setSubs(newData);
-                setCount(res.data.count)
-            }).catch(err => {
-                console.log("Fetching Submissions Error")
-                console.log(err)
-            });
-        if (!subs.length && count) {
+    });
+
+
+
+    useEffect(() => {
+
+        if ( count) {
             setCurrentPage(Math.ceil(count / submissionsPerPage))
             setMinPageNumberLimit(Math.ceil(currentPage / pageNumberLimit))
             setMaxPageNumberLimit(minPageNumberLimit + pageNumberLimit - 1)
         }
-    }, [currentPage, count, submissionsPerPage, url, subs.length, minPageNumberLimit, pageNumberLimit])
+    }, [count])
 
     //Change Page
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -60,7 +64,7 @@ export default function Submissions({ url }) {
 
     return (
         <>
-            {subs && <SubmissionList submissions={subs} />}
+            {subs && <SubmissionList submissions={subs.rows} />}
             {subs && count !== 0 &&
                 <Pagination
                     postsPerPage={submissionsPerPage}

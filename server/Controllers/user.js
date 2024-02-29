@@ -241,7 +241,7 @@ exports.updateUser = (req, res, next) => {
                 if (data[0] == 0) {
                     return res.status(404).json(
                         {
-                            error: 'User not found'
+                            error: 'Data not found'
                         });
                 }
                 else {
@@ -281,6 +281,7 @@ exports.login = (req, res, next) => {
         img: req.user.imagePath,
         role : req.user.role,
     }
+    res.setHeader('Content-Type', 'application/json');
     return res.status(200).json({
         message: "Login successful",
         data: user,

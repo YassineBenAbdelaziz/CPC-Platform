@@ -1,8 +1,16 @@
-import useFetch from './useFetch';
+import { useQuery } from '@tanstack/react-query';
+import { getProblemStatus } from './services/problems';
 
-const GetProblemStatus = ({ url }) => {
 
-    const { data } = useFetch(url);
+const GetProblemStatus = ({ id }) => {
+
+    const {data, isPending, isError, error} = useQuery({
+        queryKey : ['status',id],
+        queryFn :  () => {
+            return getProblemStatus(id);
+        }
+    });
+    
     const status = data?.status
     if (status === "Accepted") {
         return (

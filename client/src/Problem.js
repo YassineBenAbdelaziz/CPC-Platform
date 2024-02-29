@@ -1,17 +1,32 @@
 import CopyToClipboard from "react-copy-to-clipboard";
 import cpyBtn from './imgs/copy-icon.jpg'
-import useFetch from "./useFetch";
 import { useParams } from "react-router-dom";
 import { DisplayRichText } from "./RichText";
-import url from './Url';
+import { useQuery } from "@tanstack/react-query";
+import { findByProblem } from "./services/example";
+import { findByProblem as findTagByProblem } from "./services/tag";
 
 const Problem = ({ problem, isPending, error }) => {
 
     const { id } = useParams();
 
-    const { data: examples, examplesArePending, examplesError } = useFetch(url + 'example/findByProblem/' + id);
 
-    const { data: Tags, tagsArePending, tagsError } = useFetch(url + 'tag/findByProblem/' + id);
+
+
+    const { data: Tags, isPending : tagsArePending, isError : tagsError } = useQuery({
+        queryKey : ['tags', id],
+        queryFn : async () => {
+            return findTagByProblem(id);
+        }
+    })
+
+    const { data: examples, isPending : examplesArePending, isError : isExamplesError, error : examplesError} = useQuery({
+        queryKey : ['examples', id],
+        queryFn : async () => {
+            return findByProblem(id);
+        }
+    })
+
 
     const tags = [];
     Tags && Tags.tags.map((tag) => tags.push(tag.tag));

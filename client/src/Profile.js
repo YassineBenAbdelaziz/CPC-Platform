@@ -1,10 +1,11 @@
 import { Link, useParams } from 'react-router-dom';
-import useFetch from './useFetch';
 import useAuth from './hooks/useAuth';
 import SubmissionList from './SubmissionList';
-import { useEffect, useState } from 'react';
-import Axios from 'axios';
+import { useState } from 'react';
 import url from './Url';
+import { useQuery } from '@tanstack/react-query';
+import { getProfile } from './services/user';
+import { getAllSubmissions } from './services/submission';
 
 const Profile = () => {
 
@@ -12,29 +13,26 @@ const Profile = () => {
 
   const { username } = useParams()
 
-  const { data: user, isPending, error } = useFetch(url + 'user/profile/' + username);
-
-  const urlMySubmissions = url + 'submission/findByUser/' + user?.id_user;
-
-  const [subs, setSubs] = useState([]);
-
-  useEffect(() => {
-    const pageRequest = {
-      "page": 1,
-      "limit": 3
+  const { data: user, isPending, error, isFetched } = useQuery({
+    queryKey : ['profile',username],
+    queryFn : async () => {
+      return getProfile(username);
     }
-    if (!isPending && !error) {
-      Axios.post(urlMySubmissions, pageRequest)
-        .then(res => {
-          console.log('Submission Page Fetched')
-          const newData = res.data.rows;
-          setSubs(newData);
-        }).catch(err => {
-          console.log("Fetching Submissions Error")
-          console.log(err)
-        });
-    }
-  }, [urlMySubmissions, isPending, error])
+  })
+  
+  const urlMySubmissions = 'findByUser/' + user?.id_user;
+
+  const { data : subs, subsArePending, subsIsError, subsError} = useQuery({
+    queryKey : ["submissionsProfile", urlMySubmissions],
+    queryFn : () => {
+      const pageRequest = {
+        "page": 1,
+        "limit": 3
+      }
+      return getAllSubmissions(urlMySubmissions, pageRequest);
+    },
+    enabled: isFetched
+  });
 
   const easyCount = user?.allCount?.easy;
   const mediumCount = user?.allCount?.medium;
@@ -148,7 +146,7 @@ const Profile = () => {
                 Recent Submissions
                 <Link to={`/profile/${user?.id_user}/submissions`} className='view-all'>View All &gt;</Link>
               </div>
-              <SubmissionList submissions={subs} />
+              <SubmissionList submissions={subs?.rows} />
             </div>
 
           </div>

@@ -1,9 +1,16 @@
-import useFetch from "./useFetch";
-import url from './Url';
+import { useQuery } from "@tanstack/react-query";
+import {  getSubmission } from "./services/submission";
+
 
 const SubmissionDetails = ({ sub, display }) => {
 
-    const { data: submission, isPending, error } = useFetch(url + 'submission/' + sub.id_submission);
+    
+    const { data: submission, isPending, isError, error } = useQuery({
+        queryKey : ["submissionsDetails",sub.id_submission],
+        queryFn : async () => {
+            return getSubmission(sub.id_submission);
+        }
+    })
 
     const result = (result) => {
         const color = result === "Accepted" ?

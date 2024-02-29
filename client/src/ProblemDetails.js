@@ -3,20 +3,26 @@ import { useNavigate, useParams } from "react-router-dom";
 import Problem from "./Problem";
 import CodeEditor from "./CodeEditor";
 import Submissions from "./Submissions";
-import useFetch from "./useFetch";
 import useAuth from "./hooks/useAuth";
-import url from './Url';
 import { DisplayRichText } from "./RichText";
+import { useQuery } from "@tanstack/react-query";
+import { getProblem } from "./services/problems";
 
 const ProblDetails = () => {
 
     const { id } = useParams();
     const { auth } = useAuth()
 
-    const { data: problem, isPending, error } = useFetch(url + 'problem/' + id);
 
-    const urlAllSubmissions = url + 'submission/findByProblem/' + id;
-    const urlMySubmissions = url + 'submission/findByProblemAndUser/' + id + "/" + auth?.id;
+    const {data: problem, isPending, isError, error } = useQuery({
+        queryKey : ['problem', id],
+        queryFn :  async () => {
+            return getProblem(id);
+        }
+    })
+
+    const urlAllSubmissions =  'findByProblem/' + id;
+    const urlMySubmissions =  'findByProblemAndUser/' + id + "/" + auth?.id;
 
     const [showProblem, setShowProblem] = useState(true);
     const [showSolution, setShowSolution] = useState(false);

@@ -15,6 +15,7 @@ exports.getPage = async (req, res, next) => {
     try {
 
         const params = []
+        console.log(req.body);
         if (!req.body.page || !req.body.limit) {
             return res.status(404).json({
                 error: "Missing params",
@@ -58,7 +59,7 @@ exports.getPage = async (req, res, next) => {
             queryParams
 
         );
-        return res.status(200).json({ results });
+        return res.status(200).json({ ...results });
     }
 
     catch (err) {

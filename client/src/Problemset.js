@@ -1,17 +1,13 @@
-import useFetch from "./useFetch";
 import ProblemList from "./ProblemList";
 import { useEffect, useState, useCallback } from "react";
 import Pagination from "./Pagination";
-import Axios from 'axios'
 import close from "./imgs/close.png";
-import url from './Url';
 import ProblemListHeader from "./ProblemListHeader";
+import { useQuery } from "@tanstack/react-query";
+import { getTagCount } from "./services/tag";
+import { getProblems } from "./services/problems";
 
 const Problemset = () => {
-
-    const urlGetPage = url + 'problem/problemPage'
-
-    const { data: tags, tagIsPending, tagError } = useFetch(url + 'tag/count');
 
     const [currentPage, setCurrentPage] = useState(1);
     const [problemsPerPage, setProblemsPerPage] = useState(10);
@@ -23,8 +19,29 @@ const Problemset = () => {
     const [column, setColumn] = useState("title");
     const [type, setType] = useState("asc");
     const [tagsFilter, setTagsFilter] = useState("");
-    const [problems, setProblems] = useState([]);
-    const [count, setCount] = useState(0);
+
+
+    const { data: tags, IsLoading : tagIsPending ,  isError : isErrorTags , error : tagError } = useQuery({
+        queryKey : ['tagCount'],
+        queryFn : getTagCount,
+    });
+
+    const { data : problems, isPending, isError, error } = useQuery({
+        queryKey : ["problems", currentPage, problemsPerPage, column, type, tagsFilter],
+        queryFn : () => {
+            const pageRequest = {
+                "page": currentPage,
+                "limit": problemsPerPage,
+                "column": column,
+                "type": type,
+                "tags": tagsFilter
+            }
+
+            return getProblems(pageRequest);
+        }
+    });
+
+
 
     const handleTagClick = useCallback((tag) => {
         const onChangeVal = tagsFilter === "" ? [tag] : [...tagsFilter, tag];
@@ -51,28 +68,10 @@ const Problemset = () => {
     }, [tagsFilter])
 
     useEffect(() => {
-        const pageRequest = {
-            "page": currentPage,
-            "limit": problemsPerPage,
-            "column": column,
-            "type": type,
-            "tags": tagsFilter
-        }
-        Axios.post(urlGetPage, pageRequest).then(res => {
-            console.log('Problem Page Fetched')
-            setCount(res.data.results.count)
-            const newData = res.data.results.rows;
-            setProblems(newData);
-        }).catch(err => {
-            console.log("Fetching Problems Error")
-            console.log(err)
-        });
-        if (!problems.length && count) {
-            setCurrentPage(Math.ceil(count / problemsPerPage))
+
             setMinPageNumberLimit(Math.ceil(currentPage / pageNumberLimit))
             setMaxPageNumberLimit(minPageNumberLimit + pageNumberLimit)
-        }
-    }, [column, count, currentPage, minPageNumberLimit, pageNumberLimit, problems.length, problemsPerPage, tagsFilter, type, urlGetPage])
+    }, [ currentPage ])
 
     //Change Page
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -86,7 +85,7 @@ const Problemset = () => {
         }
     }
     const nextPage = () => {
-        if (problems && currentPage !== Math.ceil(count / problemsPerPage)) {
+        if (problems && currentPage !== Math.ceil(problems.count / problemsPerPage)) {
             setCurrentPage(currentPage + 1);
             if (currentPage + 1 > maxPageNumberLimit) {
                 setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit)
@@ -105,25 +104,27 @@ const Problemset = () => {
         setColumn("title")
         type === "asc" ? setType("desc") : setType("asc")
     }
-
+    // Change  tags color darker to mark them being selected for filtering
     return (
         <div className="problemset-content">
             <div className="problemset">
                 <div className="problems">
-                    {problems && count === 0 && <ProblemListHeader message={"No Problems Available"}></ProblemListHeader> }
-                    {problems && count !== 0 && <ProblemListHeader message={"Problems" + `(${count}) : `}></ProblemListHeader> }
-                    {problems && count !== 0 && <ProblemList
-                        problemset={problems}
+                    {problems && problems.count === 0 && <ProblemListHeader message={"No Problems Available"}></ProblemListHeader> }
+                    {problems && problems.count !== 0 && <ProblemListHeader message={"Problems " + `(${problems.count}) : `}></ProblemListHeader> }
+
+                    {problems && problems.count !== 0 && <ProblemList
+                        problemset={problems.rows}
                         title="Problems"
                         handleScoreSort={handleScoreSort}
                         handleTitleSort={handleTitleSort}
                         inProblemset={true}
                     />}
-                    {problems && count !== 0 &&
+
+                    {problems && problems.count !== 0 &&
                         < Pagination
                             postsPerPage={problemsPerPage}
                             setPostsPerPage={setProblemsPerPage}
-                            totalPosts={count}
+                            totalPosts={problems.count}
                             paginate={paginate}
                             previousPage={previousPage}
                             nextPage={nextPage}
@@ -136,6 +137,9 @@ const Problemset = () => {
                 <div className="sidebar">
                     <div className="item">
                         <h3>Tags :</h3>
+                        {isErrorTags && <div>{tagError}</div>}
+                        {tagIsPending && <div>Loading...</div>}
+                        {!tagIsPending && !isErrorTags && tags && tags.length!==0 &&
                         <div className="item-content" >
                             {tagsFilter !== "" && tagsFilter.map((tagName, i) => (
                                 <div className="tag"
@@ -156,10 +160,7 @@ const Problemset = () => {
                                     />
                                 </div>
                             ))}
-                        </div>
-                        {tagError && <div>{tagError}</div>}
-                        {tagIsPending && <div>Loading...</div>}
-                        {tags &&
+                            
                             <div className="item-content">
                                 {tags.sort((a, b) => a.tag > b.tag ? 1 : -1).map((tag, i) => (
                                     <div className="tag" key={i + 55} onClick={() => handleTagClick(tag.tag)}>
@@ -168,8 +169,10 @@ const Problemset = () => {
                                     </div>
                                 ))}
                             </div>
+                        
+                        </div>
                         }
-                    </div>
+                    </div>      
                 </div>
             </div>
         </div >

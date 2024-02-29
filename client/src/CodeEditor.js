@@ -1,15 +1,14 @@
 import React from 'react'
 import Editor from "@monaco-editor/react"
 import { useState } from "react";
-import Axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
 import loading from "./imgs/loading.gif";
 import useAuth from './hooks/useAuth';
-import url from './Url';
+import { useMutation } from "@tanstack/react-query";
+import { createSubmission } from './services/submission';
 
 export default function CodeEditor({ handleSubmissions }) {
 
-    const urlAddSubmission = url + "submission/";
 
     const { auth } = useAuth();
 
@@ -56,36 +55,43 @@ export default function CodeEditor({ handleSubmissions }) {
     }
 
     const file = files[lang];
+    const {data : res, mutate , isPending, isError, } = useMutation({
+        mutationFn : async (body) => {
+            console.log(body);
+            return await createSubmission(body);
+        },
 
-    function handleSubmittion() {
-        setSubmittedDisplay('none')
-        handleSubmissions()
-        setDisableButton(false)
+        onSettled : () => {
+            unblock()
+        }
+    })
+
+    function unblock() {
+        setSubmittedDisplay('none');
+        
+        setDisableButton(false);
+        //handleSubmissions();
     }
 
     function handleSubmit(e) {
         e.preventDefault()
         if (!auth?.id) {
             navigate('/login')
-        } else {
-            const submission = {
-                "langId": file.id,
-                "code": script,
-                "problemId": problemId.id,
-                "userId": auth?.id
-            }
-            Axios.post(urlAddSubmission, submission).then(res => {
-                console.log("Submission Created");
-                console.log(res.data);
-            }).catch(err => {
-                console.log("Submission Post Error")
-                console.log(err)
-            })
+        } 
 
-            setSubmittedDisplay('block')
-            setDisableButton(true)
-            setTimeout(handleSubmittion, 2000)
+        const submission = {
+            "langId": file.id,
+            "code": script,
+            "problemId": problemId.id,
+            "userId": auth?.id
         }
+        setSubmittedDisplay('block');
+        setDisableButton(true);
+        mutate(submission);
+
+
+            //setTimeout(handleSubmittion, 2000)
+        
     }
 
     return (

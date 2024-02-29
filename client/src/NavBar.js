@@ -4,33 +4,44 @@ import useAuth from "./hooks/useAuth";
 import user from "./imgs/user.png"
 import settings from "./imgs/settings.png"
 import submissions from "./imgs/submissions.png"
-import logout from "./imgs/logout.png"
+import logoutImg  from "./imgs/logoutImg.png";
 import help from "./imgs/question.png"
 import { useEffect, useRef, useState } from "react";
-import axios from "axios";
-import url from './Url';
+import { useQuery } from "@tanstack/react-query";
+import { logout } from "./services/user";
+import url from "./Url";
 
 const NavBar = () => {
 
     const { auth, setAuth } = useAuth();
     const [showProfile, setShowProfile] = useState(false)
     const [openMenu, setOpenMenu] = useState(false)
-
+    const [ isLogout, setIsLogout ] = useState(false);
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        axios.get(url + 'user/logout').then(res => {
-            console.log(res.data)
-            setAuth({})
-        }).catch(err => {
-            console.log(err)
-        });
 
         // window.location.reload()
-        setShowProfile(false);
+        setIsLogout(true);
         document.cookie = "connect.sid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
-        navigate('/login', { replace: true })
+        
     }
+
+    const {data, isPending, isError, error} = useQuery({
+        queryKey : ['logout'],
+        queryFn : async () => {
+            logout();
+            setAuth({});
+            setShowProfile(false);
+            setIsLogout(false);
+            navigate('/login', { replace: true })  ;
+            return await  true ;
+        },
+        enabled : isLogout
+    });
+
+
+
 
     let userInfoRef = useRef();
     let menuRef = useRef();
@@ -110,7 +121,7 @@ const NavBar = () => {
                             </div>
                             <hr />
                             <div className="item" onClick={() => handleLogout()}>
-                                <img src={logout} alt="" />
+                                <img src={logoutImg} alt="" />
                                 <h4 className="name">Logout</h4>
                             </div>
 

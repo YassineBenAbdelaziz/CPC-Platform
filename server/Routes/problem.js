@@ -7,11 +7,11 @@ const ProblemController = require("../Controllers/problem");
 
 router.get('/', ProblemController.get_all);
 
+router.post('/', isAuth, checkRole(['mod','admin']) , ProblemController.create_problem);
+
 router.post('/problemPage', ProblemController.getPage);
 
 router.get('/problemStatus/:problemId', isAuth,  ProblemController.get_problem_status);
-
-router.post('/create', isAuth, checkRole(['mod','admin']) , ProblemController.create_problem);
 
 router.post('/:problemId/add-tag', isAuth, checkRole(['mod','admin']) , ProblemController.add_tag);
 

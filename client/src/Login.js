@@ -1,15 +1,14 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import Axios from 'axios'
 import useAuth from "./hooks/useAuth";
 import { useNavigate, useLocation } from "react-router-dom";
 import eye from "./imgs/eye.png";
 import invisible from "./imgs/invisible.png";
-import url from './Url';
+import { useMutation } from "@tanstack/react-query";
+import { login } from "./services/user";
 
 const Login = () => {
 
-    Axios.defaults.withCredentials = true;
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -23,6 +22,24 @@ const Login = () => {
 
     const [visible, setVisible] = useState(true)
 
+    const {data : res, mutate , isPending, isError, } = useMutation({
+        mutationFn : async (user) => {
+            return await login(user)  ;
+        },
+        onSuccess : (data) => {
+            setAuth(data.data);
+            setEmail('');
+            setPwd('');
+            setMsg('')
+            navigate(from, { replace: true });
+        },
+        onError : (err) => {
+            console.log(err);
+            setMsg('Incorrect email or password');
+        }
+    })
+
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const user = {
@@ -31,20 +48,7 @@ const Login = () => {
             "remember": checked
         };
 
-
-        Axios.post(url + "user/login", user,)
-            .then((res) => {
-                setAuth(res.data.data);
-                setEmail('');
-                setPwd('');
-                setMsg('')
-                navigate(from, { replace: true });
-
-            })
-            .catch(err => {
-                setMsg('Incorrect email or password')
-                console.log(err)
-            })
+        mutate(user);
 
     }
 

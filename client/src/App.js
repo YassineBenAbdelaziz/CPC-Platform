@@ -20,10 +20,18 @@ import RefrechUser from './RefreshUser';
 import EditProfile from './EditProfile';
 import PublicRoutes from './PublicRoutes';
 import RoleBasedRoute from './RoleBasedRoute';
+import { QueryClient, QueryClientProvider  } from '@tanstack/react-query' ;
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools' ;
+
+
+const queryClient = new QueryClient();
+
 
 function App() {
   return (
+    <QueryClientProvider client={queryClient}>
     <BrowserRouter>
+    
       <RefrechUser>
         <div className="App" style={{ minHeight: '633px' }}>
           <ShowNavBar>
@@ -74,7 +82,11 @@ function App() {
         </div>
         <ScrollToTop />
       </RefrechUser>
+      <ReactQueryDevtools initialIsOpen />
+    
     </BrowserRouter>
+    </QueryClientProvider>
+
   );
 }
 

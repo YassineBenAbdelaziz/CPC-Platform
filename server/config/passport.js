@@ -28,11 +28,13 @@ const validateUser = async (email, password, done) => {
         }
         else {
             return done(null, false, {
+                
                 message: "Wrong email or password",
             });
         }
 
     } catch (error) {
+        console.log(error);
         done(error);
     }
 }

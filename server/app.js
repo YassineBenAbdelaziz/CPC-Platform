@@ -62,7 +62,7 @@ app.use(passport.session());
 app.use(morgan('dev'));
 app.use(cors({
   origin: [process.env.CLIENT_URL],
-  methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
+  methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE','OPTIONS'],
   allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
   credentials: true,
 }));
@@ -89,7 +89,7 @@ app.use('/user', user);
 */
 
 app.use((req, res, next) => {
-  const error = new Error("NOT FOUND");
+  const error = new Error("404 NOT FOUND");
   error.status = 404;
   next(error);
 });

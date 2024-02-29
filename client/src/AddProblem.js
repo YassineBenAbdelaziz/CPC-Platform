@@ -1,17 +1,16 @@
 /* eslint-disable array-callback-return */
 import React from 'react'
-import Axios from 'axios'
 import { useState } from 'react'
 import AddExamples from './AddExamples';
 import AddTags from './AddTags';
 import RichText from './RichText';
 import { useNavigate } from 'react-router-dom';
-import url from './Url';
+import { useMutation } from "@tanstack/react-query";
+import { addproblem } from './services/problems';
 
 
 export default function AddProblem() {
 
-    const urlAddProblem = url + "problem/create";
 
     const [title, setTitle] = useState("");
     const [topic, setTopic] = useState("");
@@ -57,18 +56,18 @@ export default function AddProblem() {
         "tags": tagsId
     }
 
+    const {data : res, mutate , isPending, isError, } = useMutation({
+        mutationFn : async (body) => {
+            return await addproblem(body);
+        }
+    });
+
+
     function handleSubmit(e) {
         e.preventDefault();
-        // console.log(problem)
-        if (chooseChcker) problem.checker = checker
-        Axios.post(urlAddProblem, problem).then(res => {
-            console.log("Problem Created");
-            console.log(res.data);
-        }).catch(err => {
-            console.log("Problem post error")
-            console.log(err)
-        })
-        navigate('/problemset', { replace: true })
+        if (chooseChcker) problem.checker = checker ;
+        mutate(problem);
+        navigate('/problemset', { replace: true });
     }
 
     const scores = [];

@@ -1,13 +1,13 @@
 import { useParams } from "react-router-dom";
-import useFetch from "./useFetch";
 import { useRef, useState } from "react";
-import Axios from 'axios'
 import eye from "./imgs/eye.png";
 import invisible from "./imgs/invisible.png";
 import camera from "./imgs/icon-photograph-profile-picture_689723-498-removebg-preview.png";
 import useAuth from "./hooks/useAuth";
 import NotFound from "./NotFound";
 import url from './Url';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { editProfile, getProfile } from './services/user';
 
 const EditProfile = () => {
 
@@ -15,7 +15,12 @@ const EditProfile = () => {
 
     const { auth } = useAuth();
 
-    const { data: user, isPending, error } = useFetch(url + 'user/profile/' + username);
+    const { data: user, isPending, isError, error } = useQuery({
+        queryKey : ['editProfile',username],
+        queryFn : async () => {
+            return getProfile(username);
+        }
+    })
 
     const [fname, setFname] = useState('');
     const [lname, setLname] = useState('');
@@ -29,6 +34,16 @@ const EditProfile = () => {
     const [image, setImage] = useState("");
 
     const fileRef = useRef(null);
+
+    const { data, mutate, mutationIsPending, mutationIsError, mutationError } = useMutation({
+        mutationFn: async ({userId, body}) => {
+            console.log(userId, body);
+            return editProfile(userId, body);
+        },
+        onSuccess: () => {
+            window.location.pathname = '/profile/' + username;
+        }
+    });
 
     const handleIconClick = (visible, setVisible) => {
         visible ? setVisible(false) : setVisible(true)
@@ -78,14 +93,10 @@ const EditProfile = () => {
         }
 
         if (test && !isPending) {
-            Axios.patch(url + "user/" + user?.id_user, formData)
-                .then(res => {
-                    console.log(res.data);
-                    window.location.pathname = '/profile/' + username
-                }).catch(err => {
-                    console.log(err)
-                });
-            console.log('User Updated', formData)
+            mutate({
+                userId: auth?.id,
+                body: formData
+            });
         }
     }
 
