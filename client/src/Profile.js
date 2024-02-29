@@ -42,6 +42,10 @@ const Profile = () => {
   const mediumSolved = user?.solvedCount?.medium;
   const hardSolved = user?.solvedCount?.hard;
 
+  const easyPercentage = easyCount ? ((easySolved / easyCount) * 100).toFixed(1) : 0;
+  const mediumPercentage = mediumCount ? ((mediumSolved / mediumCount) * 100).toFixed(1) : 0;
+  const hardPercentage = hardCount ? ((hardSolved / hardCount) * 100).toFixed(1) : 0;
+
   const allSolved = easySolved + mediumSolved + hardSolved
   const allCount = easyCount + mediumCount + hardCount
   const [mouseOver, setMouseOver] = useState(false);
@@ -100,41 +104,41 @@ const Profile = () => {
                   onMouseLeave={() => setMouseOver(false)}
                 >
                   <div>
-                    <div className='solved-number'>{mouseOver ? (allSolved / allCount) * 100 + '%' : allSolved}</div>
+                    <div className='solved-number'>{mouseOver ? ((allSolved / allCount) * 100).toFixed(1) + '%' : allSolved}</div>
                     <div>solved</div>
                   </div>
                 </div>
                 <div className="difficulties">
-                  <div className="difficulty" title={(easySolved / easyCount) * 100 + '%'}>
+                  <div className="difficulty" title={easyPercentage + '%'}>
                     <div className="diff">
                       <div className="diff-name">Easy</div>
                       <div className="number">{easySolved}/{easyCount}</div>
                     </div>
                     <div className="bar">
                       <div className="uncolored-bar" style={{ backgroundColor: '#00800063' }}></div>
-                      <div className="colored-bar" style={{ backgroundColor: 'green', width: `${(easySolved / easyCount) * 100}%` }}></div>
+                      <div className="colored-bar" style={{ backgroundColor: 'green', width: `${easyPercentage}%` }}></div>
                     </div>
                   </div>
 
-                  <div className="difficulty" title={(mediumSolved / mediumCount) * 100 + '%'}>
+                  <div className="difficulty" title={mediumPercentage + '%'}>
                     <div className="diff">
                       <div className="diff-name">Medium</div>
                       <div className="number">{mediumSolved}/{mediumCount}</div>
                     </div>
                     <div className="bar" >
                       <div className="uncolored-bar" style={{ backgroundColor: '#ffa50057' }}></div>
-                      <div className="colored-bar" style={{ backgroundColor: 'orange', width: `${(mediumSolved / mediumCount) * 100}%` }}></div>
+                      <div className="colored-bar" style={{ backgroundColor: 'orange', width: `${mediumPercentage}%` }}></div>
                     </div>
                   </div>
 
-                  <div className="difficulty" title={(hardSolved / hardCount) * 100 + '%'}>
+                  <div className="difficulty" title={hardPercentage + '%'}>
                     <div className="diff">
                       <div className="diff-name">Hard</div>
                       <div className="number">{hardSolved}/{hardCount}</div>
                     </div>
                     <div className="bar" >
                       <div className="uncolored-bar" style={{ backgroundColor: '#ff000047' }}></div>
-                      <div className="colored-bar" style={{ backgroundColor: 'red', width: `${(hardSolved / hardCount) * 100}%` }}></div>
+                      <div className="colored-bar" style={{ backgroundColor: 'red', width: `${hardPercentage}%` }}></div>
                     </div>
                   </div>
                 </div>
