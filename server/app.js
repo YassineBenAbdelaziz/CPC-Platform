@@ -20,7 +20,10 @@ const { createClient } = require('redis');
 * ---------------- Redis Store SETUP ----------------
 */
 
-let redisClient = createClient();
+let redisClient = createClient({
+  url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`
+});
+
 redisClient.connect().catch(console.error);
 
 let redisStore = new RedisStore({
