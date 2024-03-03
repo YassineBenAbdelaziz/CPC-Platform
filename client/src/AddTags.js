@@ -20,7 +20,6 @@ export default function AddTags(props) {
             name: tag.tag
         });
     });
-    // console.log(tags)
 
     const [data, setData] = useState([]);
 
@@ -38,15 +37,11 @@ export default function AddTags(props) {
             if (onChangeVal[i].id === id)
                 test = false;
         }
-        // console.log(test)
         if (test || onChangeVal.length === 1) {
             setData(onChangeVal);
             props.getData(onChangeVal);
         }
         test = true
-        // setData([...data, { id: id, name: value }])
-        // console.log({ id: id, name: value })
-        // console.log(onChangeVal)
     }
 
     const handleDelete = (i) => {
@@ -94,8 +89,6 @@ export default function AddTags(props) {
                     )
                 }
             </div>
-            {/* {console.log(data)} */}
-
         </div>
     )
 }

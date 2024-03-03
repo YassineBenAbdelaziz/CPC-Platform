@@ -217,17 +217,17 @@ exports.updateUser = (req, res, next) => {
             updatedFields[key] = val;
         }
 
-
+        
         updatedFields.username = req.user.username;
         delete updatedFields.id_role;
-
+        
         if (req.file) {
             updatedFields["imagePath"] = req.file.path;
         }
         else {
             delete updatedFields.imagePath;
         }
-
+        
         models.user.update(updatedFields,
             {
                 where: {
@@ -237,11 +237,10 @@ exports.updateUser = (req, res, next) => {
 
             })
             .then((data) => {
-
                 if (data[0] == 0) {
-                    return res.status(404).json(
+                    return res.status(400).json(
                         {
-                            error: 'Data not found'
+                            error: 'No data provided for user update.'
                         });
                 }
                 else {

@@ -17,7 +17,6 @@ export default function AddExamples(props) {
         onChangeVal[i][name] = value;
         setData(onChangeVal);
         props.getData(onChangeVal);
-        // console.log(onChangeVal);
     }
 
     const handleDelete = (i) => {

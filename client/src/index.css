@@ -73,7 +73,7 @@
   display: flex;
 }
 .navbar .user-img {
-  width: 40px;
+  width: 50px;
   border-radius: 50%;
   cursor: pointer;
 }
@@ -1084,7 +1084,7 @@ footer {
   padding: 10px 0;
 }
 .edit form .photo img {
-  border-radius: 15px;
+  border-radius: 50%;
   width: 250px;
   height: 250px;
 }
@@ -1128,11 +1128,9 @@ footer {
   position: absolute;
   top: 0;
   background-color: #00000042;
-  border-radius: 15px;
+  border-radius: 50%;
 }
 .edit .camera-img {
   position: absolute;
   left: 0;
-}
-
-
+} 

@@ -1,7 +1,5 @@
 const multer = require('multer');
 
-const { models } = require('../sequelize');
-
 const storage = multer.diskStorage({
     destination: function (req, file, callback) {
         callback(null, './uploads/');
@@ -12,7 +10,6 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, callback) => {
-
     if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg') {
         // const newUser = {
         //     username: req.user.username,
@@ -31,17 +28,10 @@ const fileFilter = (req, file, callback) => {
         //     .catch((err) => {
         //         callback(err, false);
         //     });
-
-
     }
     else {
         callback(new Error('File is not an image'), false);
     }
-
-
-
-
-
 };
 
 const upload = multer({

@@ -57,7 +57,6 @@ export default function CodeEditor({ handleSubmissions }) {
     const file = files[lang];
     const {data : res, mutate , isPending, isError, } = useMutation({
         mutationFn : async (body) => {
-            console.log(body);
             return await createSubmission(body);
         },
 
