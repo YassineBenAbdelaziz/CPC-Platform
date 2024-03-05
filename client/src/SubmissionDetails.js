@@ -44,9 +44,9 @@ const SubmissionDetails = ({ sub, display }) => {
 
     return (
         <div className={`submission-details`} style={subDetailsStyles}>
-            {error && <div>{error}</div>}
+            {isError && <div>{error}</div>}
             {isPending && <div>Loading...</div>}
-            {submission && (
+            {!isError && !isPending && submission && (
                 <>
                     <div className="mobile">
                         <div> <span style={{ fontWeight: '700', fontSize: '15px' }}>Language :</span> {sub.lang}</div>

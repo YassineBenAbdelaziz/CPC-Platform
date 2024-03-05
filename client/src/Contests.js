@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import { getContests } from "./services/contests";
 import { useQuery } from "@tanstack/react-query";
+import { getContests } from "./services/contests";
+import Error from './Error'
 
 const Contests = () => {
     const { data: contests, isPending, isError, error } = useQuery({
@@ -15,9 +16,9 @@ const Contests = () => {
             <h2>Contests</h2>
             <br />
             <div className="contests">
-                {error && <div>{error}</div>}
+                {isError && <Error err={error} />}
                 {isPending && <div>Loading...</div>}
-                {contests && contests.sort((a, b) => a.date > b.date ? 1 : -1).map((contest, index) => (
+                {!isError && !isPending && contests && contests.sort((a, b) => a.date > b.date ? 1 : -1).map((contest, index) => (
                     <Link to={`/contests/${contest.id_contest}`} key={index}>
                         <div className="contest">
                             <h2>{contest.title}</h2>

@@ -5,22 +5,20 @@ import { DisplayRichText } from "./RichText";
 import { useQuery } from "@tanstack/react-query";
 import { findByProblem } from "./services/example";
 import { findByProblem as findTagByProblem } from "./services/tag";
+import Error from './Error'
 
-const Problem = ({ problem, isPending, error }) => {
+const Problem = ({ problem, isPending, error, isError }) => {
 
     const { id } = useParams();
 
-
-
-
-    const { data: Tags, isPending : tagsArePending, isError : tagsError } = useQuery({
+    const { data: Tags, isPending: tagsArePending, isError: isTagsError, error: tagsError } = useQuery({
         queryKey : ['tags', id],
         queryFn : async () => {
             return findTagByProblem(id);
         }
     })
 
-    const { data: examples, isPending : examplesArePending, isError : isExamplesError, error : examplesError} = useQuery({
+    const { data: examples, isPending: examplesArePending, isError: isExamplesError, error: examplesError } = useQuery({
         queryKey : ['examples', id],
         queryFn : async () => {
             return findByProblem(id);
@@ -44,7 +42,7 @@ const Problem = ({ problem, isPending, error }) => {
     }
 
     const exp = () => {
-        if (examplesError) return (<div>{examplesError}</div>)
+        if (isExamplesError) return (<Error err={examplesError} />)
         if (examplesArePending) return (<div>Loading...</div>)
         if (examples && examples.length) {
             return (
@@ -80,7 +78,7 @@ const Problem = ({ problem, isPending, error }) => {
     }
 
     const tag = () => {
-        if (tagsError) return (<div>{tagsError}</div>)
+        if (isTagsError) return (<Error err={tagsError} />)
         if (tagsArePending) return (<div>Loading...</div>)
         if (tags && tags.length) {
             return (
@@ -107,9 +105,9 @@ const Problem = ({ problem, isPending, error }) => {
 
     return (
         <div>
-            {error && <div>{error}</div>}
+            {isError && <Error err={error} />}
             {isPending && <div>Loading...</div>}
-            {problem && (
+            {!isPending && !isError && problem && (
                 <div className="prb">
                     <article>
                         <div className="problem-head" style={{ textAlign: 'center', margin: '30px 0' }} >

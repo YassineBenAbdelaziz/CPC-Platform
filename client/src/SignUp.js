@@ -25,7 +25,7 @@ const SignUp = () => {
     const navigate = useNavigate();
 
 
-    const {data, mutate, isPending, isError} = useMutation({
+    const { data, mutate, isPending } = useMutation({
         mutationFn : async (user) => {
             return await signup(user);
         },
@@ -50,11 +50,6 @@ const SignUp = () => {
             }
         }
     })
-
-
-
-
-
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -146,7 +141,7 @@ const SignUp = () => {
                         whiteSpace: 'pre-line',
                         fontSize: '15px'
                     }}>{rePwdMsg}</p>
-                    <button>Sign Up</button>
+                    <button disabled={isPending}>Sign Up</button>
                     <p style={{ marginBottom: '15px' }}>
                         You already have an account ?
                         <Link to="/login" style={{ fontWeight: 'bold' }}> Login</Link>

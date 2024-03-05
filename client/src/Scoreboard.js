@@ -6,11 +6,10 @@ import Error from "./Error";
 
 const Scoreboard = ({ username }) => {
 
-    const { data : users, isError, error, isLoading,  } = useQuery({
+    const { data : users, isError, error, isPending } = useQuery({
         queryKey : ['users'],
         queryFn : async () => { 
-            const res = await getAllUsers();
-            return (await res).data
+            return (await getAllUsers())?.data;
         }
     }
     );
@@ -35,10 +34,10 @@ const Scoreboard = ({ username }) => {
 
             <>
                 {isError && <Error err={error}/>}
-                {isLoading && <div>Loading...</div>}
-                {!isLoading && !isError && !users && <div>No users Found</div>}
+                {isPending && <div>Loading...</div>}
+                {!isPending && !isError && !users && <div>No users Found</div>}
                 {
-                    !isLoading && !isError && 
+                    !isPending && !isError && 
                     users && users.sort((a, b) => a.score < b.score ? 1 : -1).map((user, index) => (
                         < div className="profile" key={index} style={username === user.username ? setCurrentUserStyle(index) : {}}>
                             <div className="item">

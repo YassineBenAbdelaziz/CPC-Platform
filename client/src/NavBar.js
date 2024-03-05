@@ -14,14 +14,14 @@ import url from "./Url";
 const NavBar = () => {
 
     const { auth, setAuth } = useAuth();
-    const [showProfile, setShowProfile] = useState(false)
-    const [openMenu, setOpenMenu] = useState(false)
+    const [ showProfile, setShowProfile ] = useState(false)
+    const [ openMenu, setOpenMenu ] = useState(false)
     const [ isLogout, setIsLogout ] = useState(false);
     const navigate = useNavigate();
 
     const handleLogout = () => {
 
-        // window.location.reload()
+        window.location.reload()
         setIsLogout(true);
         document.cookie = "connect.sid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
         
@@ -30,12 +30,11 @@ const NavBar = () => {
     const {data, isPending, isError, error} = useQuery({
         queryKey : ['logout'],
         queryFn : async () => {
-            logout();
             setAuth({});
             setShowProfile(false);
             setIsLogout(false);
             navigate('/login', { replace: true })  ;
-            return await  true ;
+            return await logout();
         },
         enabled : isLogout
     });

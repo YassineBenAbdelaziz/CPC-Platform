@@ -6,6 +6,7 @@ import url from './Url';
 import { useQuery } from '@tanstack/react-query';
 import { getProfile } from './services/user';
 import { getAllSubmissions } from './services/submission';
+import Error from './Error'
 
 const Profile = () => {
 
@@ -13,8 +14,8 @@ const Profile = () => {
 
   const { username } = useParams()
 
-  const { data: user, isPending, error, isFetched } = useQuery({
-    queryKey : ['profile',username],
+  const { data: user, isPending, isError, error, isFetched } = useQuery({
+    queryKey : ['profile', username],
     queryFn : async () => {
       return getProfile(username);
     }
@@ -22,9 +23,9 @@ const Profile = () => {
   
   const urlMySubmissions = 'findByUser/' + user?.id_user;
 
-  const { data : subs, subsArePending, subsIsError, subsError} = useQuery({
-    queryKey : ["submissionsProfile", urlMySubmissions],
-    queryFn : () => {
+  const { data: subs, isPending: subsArePending, isError: subsIsError, error: subsError} = useQuery({
+    queryKey: ["submissionsProfile", urlMySubmissions],
+    queryFn: () => {
       const pageRequest = {
         "page": 1,
         "limit": 3
@@ -53,8 +54,8 @@ const Profile = () => {
   return (
     <div className="content">
       {isPending && <div>Loading...</div>}
-      {error && <div>{error}</div>}
-      {user &&
+      {isError && <Error err={error} />}
+      {!isPending && !isError && user &&
         <div className="profile-content">
           <div className="sidebar1">
             <div className="profile">
@@ -150,7 +151,9 @@ const Profile = () => {
                 Recent Submissions
                 <Link to={`/profile/${user?.id_user}/submissions`} className='view-all'>View All &gt;</Link>
               </div>
-              <SubmissionList submissions={subs?.rows} />
+              {subsIsError && <Error err={subsError} />}
+              {subsArePending && <div>Loading...</div>}
+              {!subsIsError && !subsArePending && subs && <SubmissionList submissions={subs?.rows} />}
             </div>
 
           </div>

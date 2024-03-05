@@ -847,11 +847,11 @@ footer {
   font-size: 15px;
 }
 
-.submission .btn {
+.submit-btn {
   display: flex;
   align-items: center;
 } 
-.btn button {
+.submit-btn button {
   padding: 10px;
   font-size: medium;
 }
@@ -1134,3 +1134,10 @@ footer {
   position: absolute;
   left: 0;
 } 
+
+
+
+.error {
+  color: red;
+  padding: 10px 0;
+}

@@ -22,7 +22,7 @@ const Login = () => {
 
     const [visible, setVisible] = useState(true)
 
-    const {data : res, mutate , isPending, isError, } = useMutation({
+    const {data: res, mutate , isPending } = useMutation({
         mutationFn : async (user) => {
             return await login(user)  ;
         },
@@ -83,7 +83,7 @@ const Login = () => {
                         <input type="checkbox" name="remember" id="remember" checked={checked} onChange={(e) => setChecked(e.target.checked)} />
                         <label htmlFor="remember">Keep me logged in</label>
                     </div>
-                    <button className="login-button" type="submit" >Login</button>
+                    <button className="login-button" type="submit" disabled={isPending}>Login</button>
                     <p style={{ marginBottom: '15px' }}>
                         You don't have an account ?
                         <Link to="/signup" style={{ fontWeight: 'bold' }}> Sign Up</Link>

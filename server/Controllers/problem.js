@@ -93,7 +93,6 @@ exports.create_problem = async (req, res, next) => {
     try {
 
         // Verify the existence of tag IDs before creating the problem
-
         const tags = await models.tag.findAll({ where: { id_tag: req.body.tags } });
 
         if (tags.length !== req.body.tags.length) {
@@ -101,11 +100,7 @@ exports.create_problem = async (req, res, next) => {
             throw new Error(`Invalid tag IDs`);
         }
 
-        const problem = await models.problem.create(attributes,
-            {
-                include: [models.example],
-            });
-
+        const problem = await models.problem.create(attributes, { include: [models.example] });
 
         await problem.setTags(req.body.tags);
 

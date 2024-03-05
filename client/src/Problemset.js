@@ -6,6 +6,7 @@ import ProblemListHeader from "./ProblemListHeader";
 import { useQuery } from "@tanstack/react-query";
 import { getTagCount } from "./services/tag";
 import { getProblems } from "./services/problems";
+import Error from './Error'
 
 const Problemset = () => {
 
@@ -21,12 +22,12 @@ const Problemset = () => {
     const [tagsFilter, setTagsFilter] = useState("");
 
 
-    const { data: tags, IsLoading : tagIsPending ,  isError : isErrorTags , error : tagError } = useQuery({
+    const { data: tags, isPending: tagIsPending, isError: isErrorTags, error: tagsError } = useQuery({
         queryKey : ['tagCount'],
         queryFn : getTagCount,
     });
 
-    const { data : problems, isPending, isError, error } = useQuery({
+    const { data: problems, isPending, isError, error } = useQuery({
         queryKey : ["problems", currentPage, problemsPerPage, column, type, tagsFilter],
         queryFn : () => {
             const pageRequest = {
@@ -40,8 +41,6 @@ const Problemset = () => {
             return getProblems(pageRequest);
         }
     });
-
-
 
     const handleTagClick = useCallback((tag) => {
         const onChangeVal = tagsFilter === "" ? [tag] : [...tagsFilter, tag];
@@ -108,36 +107,40 @@ const Problemset = () => {
     return (
         <div className="problemset-content">
             <div className="problemset">
-                <div className="problems">
-                    {problems && problems.count === 0 && <ProblemListHeader message={"No Problems Available"}></ProblemListHeader> }
-                    {problems && problems.count !== 0 && <ProblemListHeader message={"Problems " + `(${problems.count}) : `}></ProblemListHeader> }
+                {isError && <Error err={error} />}
+                {isPending && <div>Loading...</div>}
+                {!isError && !isPending && problems &&
+                    <div className="problems">
+                        {problems && problems.count === 0 && <ProblemListHeader message={"No Problems Available"}></ProblemListHeader> }
+                        {problems && problems.count !== 0 && <ProblemListHeader message={"Problems " + `(${problems.count}) : `}></ProblemListHeader> }
 
-                    {problems && problems.count !== 0 && <ProblemList
-                        problemset={problems.rows}
-                        title="Problems"
-                        handleScoreSort={handleScoreSort}
-                        handleTitleSort={handleTitleSort}
-                        inProblemset={true}
-                    />}
-
-                    {problems && problems.count !== 0 &&
-                        < Pagination
-                            postsPerPage={problemsPerPage}
-                            setPostsPerPage={setProblemsPerPage}
-                            totalPosts={problems.count}
-                            paginate={paginate}
-                            previousPage={previousPage}
-                            nextPage={nextPage}
-                            currentPage={currentPage}
-                            maxPageNumberLimit={maxPageNumberLimit}
-                            minPageNumberLimit={minPageNumberLimit}
+                        {problems && problems.count !== 0 && <ProblemList
+                            problemset={problems.rows}
+                            title="Problems"
+                            handleScoreSort={handleScoreSort}
+                            handleTitleSort={handleTitleSort}
+                            inProblemset={true}
                         />}
-                </div>
+
+                        {problems && problems.count !== 0 &&
+                            < Pagination
+                                postsPerPage={problemsPerPage}
+                                setPostsPerPage={setProblemsPerPage}
+                                totalPosts={problems.count}
+                                paginate={paginate}
+                                previousPage={previousPage}
+                                nextPage={nextPage}
+                                currentPage={currentPage}
+                                maxPageNumberLimit={maxPageNumberLimit}
+                                minPageNumberLimit={minPageNumberLimit}
+                            />}
+                    </div>
+                }
 
                 <div className="sidebar">
                     <div className="item">
                         <h3>Tags :</h3>
-                        {isErrorTags && <div>{tagError}</div>}
+                        {isErrorTags && <Error err={tagsError} />}
                         {tagIsPending && <div>Loading...</div>}
                         {!tagIsPending && !isErrorTags && tags && tags.length!==0 &&
                         <div className="item-content" >

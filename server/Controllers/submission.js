@@ -86,7 +86,7 @@ exports.create_submission = async (req, res, next) => {
     } else {
         submission.result = "No Code"
     }
-
+    
     await models.submission.create(submission)
         .then(res.status(201).json({
             message: "Submission Created",

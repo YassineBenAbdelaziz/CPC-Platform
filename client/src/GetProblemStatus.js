@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { getProblemStatus } from './services/problems';
-
+import Error from './Error'
 
 const GetProblemStatus = ({ id }) => {
 
@@ -10,7 +10,17 @@ const GetProblemStatus = ({ id }) => {
             return getProblemStatus(id);
         }
     });
-    
+
+    if (isPending)
+        return <div className='problem-status'>Loading...</div>
+        
+    if (isError)
+        return (
+            <div className='problem-status' > 
+                <Error err={error} /> 
+            </div>
+        )
+
     const status = data?.status
     if (status === "Accepted") {
         return (

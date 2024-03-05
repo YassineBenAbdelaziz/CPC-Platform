@@ -3,6 +3,7 @@ import Pagination from "./Pagination";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getAllSubmissions } from "./services/submission";
+import Error from './Error'
 
 export default function Submissions({ url }) {
 
@@ -15,18 +16,17 @@ export default function Submissions({ url }) {
 
     const [count, setCount] = useState(0);
 
-    const { data : subs, isPending, isError, error} = useQuery({
-        queryKey : ["submissionsPage",currentPage,submissionsPerPage,url ],
-        queryFn : async () => {
+    const { data: subs, isPending, isError, error } = useQuery({
+        queryKey: ["submissionsPage", currentPage, submissionsPerPage, url ],
+        queryFn: async () => {
             const pageRequest = {
                 "page": currentPage,
                 "limit": submissionsPerPage
             };
 
-            const res = getAllSubmissions(url, pageRequest);
-            const data = await res ;
-            setCount(data.count);
-            return await res ;
+            const res = await getAllSubmissions(url, pageRequest);
+            setCount(res.count);
+            return res;
         }
     });
 
@@ -64,8 +64,10 @@ export default function Submissions({ url }) {
 
     return (
         <>
-            {subs && <SubmissionList submissions={subs.rows} />}
-            {subs && count !== 0 &&
+            {isError && <Error err={error} />}
+            {isPending && <div>Loading...</div>}
+            {!isError && !isPending && subs && <SubmissionList submissions={subs.rows} />}
+            {!isError && !isPending && subs && count !== 0 &&
                 <Pagination
                     postsPerPage={submissionsPerPage}
                     setPostsPerPage={setSubmissionsPerPage}

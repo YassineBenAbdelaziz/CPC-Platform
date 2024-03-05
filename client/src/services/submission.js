@@ -19,7 +19,7 @@ export const getSubmission = async (id) => {
 
 
 export const createSubmission = async (body) => {
-    const res = axios.post(url,body);
+    const res = await axios.post(url,body);
     return res.data ;
 };
 

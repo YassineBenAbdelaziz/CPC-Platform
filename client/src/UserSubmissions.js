@@ -1,10 +1,9 @@
 import { useParams } from "react-router-dom";
 import Submissions from "./Submissions";
-import url from './Url';
 
 const UserSubmissions = () => {
     const { id } = useParams();
-    const urlMySubmissions = url + 'submission/findByUser/' + id;
+    const urlMySubmissions = 'findByUser/' + id;
 
     return (
         <div className="content">

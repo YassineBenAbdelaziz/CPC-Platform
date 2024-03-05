@@ -110,7 +110,7 @@ const ProblDetails = () => {
 
                         </div>
 
-                        {showProblem ? <Problem problem={problem} error={error} isPending={isPending} /> : null}
+                        {showProblem ? <Problem problem={problem} isError={isError} error={error} isPending={isPending} /> : null}
 
                         {
                             showTutorial ? <div className="tutorial">

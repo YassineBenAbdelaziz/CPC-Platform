@@ -1,14 +1,14 @@
 import React from 'react'
-import Editor from "@monaco-editor/react"
 import { useState } from "react";
+import Editor from "@monaco-editor/react"
+import { useMutation } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
+import { createSubmission } from './services/submission';
 import loading from "./imgs/loading.gif";
 import useAuth from './hooks/useAuth';
-import { useMutation } from "@tanstack/react-query";
-import { createSubmission } from './services/submission';
+import Error from './Error'
 
 export default function CodeEditor({ handleSubmissions }) {
-
 
     const { auth } = useAuth();
 
@@ -18,8 +18,7 @@ export default function CodeEditor({ handleSubmissions }) {
 
     const [lang, setLang] = useState("");
     const [script, setScript] = useState("");
-    const [submittedDisplay, setSubmittedDisplay] = useState("none");
-    const [disableButton, setDisableButton] = useState(false);
+    // const [disableButton, setDisableButton] = useState(false);
 
     const files = {
         "": {
@@ -55,21 +54,21 @@ export default function CodeEditor({ handleSubmissions }) {
     }
 
     const file = files[lang];
-    const {data : res, mutate , isPending, isError, } = useMutation({
-        mutationFn : async (body) => {
+    const { data: res, mutate , isPending, isError, error} = useMutation({
+        mutationFn: async (body) => {
             return await createSubmission(body);
         },
-
-        onSettled : () => {
-            unblock()
+        onSuccess: () => {
+            setTimeout(unblock, 2000);
+        },
+        onError: (error) => {
+            console.log(error);
         }
-    })
+    });
 
     function unblock() {
-        setSubmittedDisplay('none');
-        
-        setDisableButton(false);
-        //handleSubmissions();
+        // setDisableButton(false);
+        handleSubmissions();
     }
 
     function handleSubmit(e) {
@@ -84,13 +83,8 @@ export default function CodeEditor({ handleSubmissions }) {
             "problemId": problemId.id,
             "userId": auth?.id
         }
-        setSubmittedDisplay('block');
-        setDisableButton(true);
-        mutate(submission);
-
-
-            //setTimeout(handleSubmittion, 2000)
-        
+        // setDisableButton(true);
+        mutate(submission);        
     }
 
     return (
@@ -99,7 +93,7 @@ export default function CodeEditor({ handleSubmissions }) {
                 className="select-lang"
                 name="lang"
                 value={lang}
-                onChange={(e) => { setLang(e.target.value); setSubmittedDisplay('none') }}
+                onChange={(e) => setLang(e.target.value)}
                 required
             >
                 <option value={""} disabled>Select your language</option>
@@ -122,9 +116,10 @@ export default function CodeEditor({ handleSubmissions }) {
                         onChange={(e) => setScript(e)}
                     />
                 </div>
-                <div className="btn">
-                    <button className="submit" disabled={disableButton}>Submit</button>
-                    <img src={loading} alt="" style={{ width: '30px', display: submittedDisplay, marginLeft: '10px' }} />
+                <div className="submit-btn">
+                    <button className="submit" disabled={isPending}>Submit</button>
+                    <img src={loading} alt="" style={{ width: '30px', display: isPending ? 'block' : 'none', marginLeft: '10px' }} />
+                    {isError && <Error err={error} />}
                 </div>
             </div>
         </form>

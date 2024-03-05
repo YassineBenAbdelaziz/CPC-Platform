@@ -207,7 +207,7 @@ exports.deleteUser = async (req, res, next) => {
 
 
 exports.updateUser = (req, res, next) => {
-
+    
     const userId = req.params.id;
 
     if (req.user.id_user == userId) {

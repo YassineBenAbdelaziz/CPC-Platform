@@ -1,16 +1,18 @@
 import { useParams } from "react-router-dom";
 import { useRef, useState } from "react";
+import { useMutation, useQuery } from '@tanstack/react-query';
 import eye from "./imgs/eye.png";
 import invisible from "./imgs/invisible.png";
 import camera from "./imgs/icon-photograph-profile-picture_689723-498-removebg-preview.png";
 import useAuth from "./hooks/useAuth";
 import NotFound from "./NotFound";
 import url from './Url';
-import { useMutation, useQuery } from '@tanstack/react-query';
 import { editProfile, getProfile } from './services/user';
 import { UpdateImage } from './imageCrop/UpdateImagePopup';
 import { getOrientation } from 'get-orientation/browser'
 import { getRotatedImage } from './imageCrop/CropImage'
+import Error from './Error'
+import loading from "./imgs/loading.gif";
 
 const EditProfile = () => {
 
@@ -39,9 +41,9 @@ const EditProfile = () => {
 
     const fileRef = useRef(null);
 
-    const { data, mutate, mutationIsPending, mutationIsError, mutationError } = useMutation({
+    const { data, mutate, isPending: mutationIsPending, isError: mutationIsError, error: mutationError } = useMutation({
         mutationFn: async ({userId, body}) => {
-            return editProfile(userId, body);
+            return await editProfile(userId, body);
         },
         onSuccess: () => {
             window.location.pathname = '/profile/' + username;
@@ -50,7 +52,7 @@ const EditProfile = () => {
             console.log(err.response.data);
         }
     });
-
+    
     const handleIconClick = (visible, setVisible) => {
         visible ? setVisible(false) : setVisible(true)
     }
@@ -130,16 +132,16 @@ const EditProfile = () => {
                 userId: auth?.id,
                 body: formData
             });
-        }console.log(formData.length);
+        }
     }
 
     return (
         <>
             {auth?.username === username ?
                 <div className="content">
+                    {isError && <Error err={error} />}
                     {isPending && <div>Loading...</div>}
-                    {error && <div>{error}</div>}
-                    {user &&
+                    {!isError && !isPending && user &&
                         <div className="edit">
                             {
                                 !imageChosen ?
@@ -196,7 +198,11 @@ const EditProfile = () => {
                                                 color: 'red',
                                                 fontSize: '15px'
                                             }}>{rePwdMsg}</p>
-                                            <button className="save-btn">Save</button>
+                                            <div className="submit-btn">
+                                                <button className="save-btn" disabled={mutationIsPending}>Save</button>
+                                                <img src={loading} alt="" style={{ width: '30px', display: mutationIsPending ? 'block' : 'none', margin: '20px 0 0 10px' }} />
+                                            </div>
+                                            {mutationIsError && <Error err={mutationError} />}
                                         </div>
 
                                         <div

@@ -5,12 +5,11 @@ import axios  from "../api/axios";
 const url = 'user/' ;
 
 export const getAllUsers = async () => {
-     
-    return axios.get(url); 
+    return await axios.get(url); 
 };
 
 export const getUser = async (id) => {
-    const res = axios.get(url);
+    const res = await axios.get(url);
     return res.data ;
 };
 
