@@ -8,7 +8,7 @@ export default function AddTags(props) {
 
     const { data: Tags, isPending, isError, error } = useQuery({
         queryKey : ['tags'],
-        queryFn : async () => {
+        queryFn : () => {
             return getAlltags();
         }
     });

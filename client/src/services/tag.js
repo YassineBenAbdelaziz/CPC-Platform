@@ -4,9 +4,9 @@ import axios  from "../api/axios";
 
 const url = 'tag/' ;
 
-export const getAlltags = async (id) => {
-    const res = axios.get(url);
-    return res.data ;
+export const getAlltags = async () => {
+    const res = await axios.get(url);
+    return await res.data ;
 };
 
 export const getTag = async (id) => {

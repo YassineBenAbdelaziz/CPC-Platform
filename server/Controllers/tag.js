@@ -1,8 +1,8 @@
 const { models } = require('../sequelize');
 const sequelize = require('../sequelize');
 
-exports.get_all = async (req, res, next) => {
-    await models.tag.findAll()
+exports.get_all = (req, res, next) => {
+    models.tag.findAll()
         .then((results) => {
             res.status(200).json(results);
         })
@@ -40,12 +40,12 @@ exports.countByTag = async (req, res, next) => {
 }
 
 
-exports.create_tag = async (req, res, next) => {
+exports.create_tag = (req, res, next) => {
     const tag = {
         tag: req.body.tag
     }
 
-    await models.tag.create(tag)
+    models.tag.create(tag)
         .then(res.status(201).json({
             message: "Tag Created",
             tag: tag
@@ -56,9 +56,9 @@ exports.create_tag = async (req, res, next) => {
 }
 
 
-exports.get_tag = async (req, res, next) => {
+exports.get_tag = (req, res, next) => {
     const id = req.params.tagId;
-    await models.tag.findByPk(id)
+    models.tag.findByPk(id)
         .then(tag => {
             if (!tag) {
                 return res.status(404).json({
@@ -98,49 +98,46 @@ exports.get_tags_by_problem = async (req, res, next) => {
 
 
 exports.update_tag = async (req, res, next) => {
-    const id = req.params.tagId;
-
-    await models.tag.findByPk(id)
-        .then(async tag => {
-            if (!tag) {
-                return res.status(404).json({
-                    message: "Tag NOT FOUND"
-                });
-            } else {
-                const tagBody = {
-                    tag: req.body.tag
-                }
-
-                await models.tag.update(tagBody, { where: { id_tag: id } })
-                    .then(() => {
-                        res.status(200).json({
-                            message: "Updated tag with id : " + id
-                        });
-                    })
+    try {
+        const id = req.params.tagId;
+        const tag = await models.tag.findByPk(id);
+        if (!tag) {
+            return res.status(404).json({
+                message: "Tag NOT FOUND"
+            });
+        }
+        else {
+            const tagBody = {
+                tag: req.body.tag
             }
-        }).catch(err => {
-            res.status(500).json({ error: err });
+        }
+        await models.tag.update(tagBody, { where: { id_tag: id } });
+        res.status(200).json({
+            message: "Updated tag with id : " + id
         });
+
+    } catch (error) {
+        res.status(500).json({ error: err });
+    }
+
 }
 
 
 exports.delete_tag = async (req, res, next) => {
-    const id = req.params.tagId;
-    await models.tag.findByPk(id)
-        .then(async tag => {
-            if (!tag) {
-                return res.status(404).json({
-                    message: "Tag NOT FOUND"
-                });
-            } else {
-                await models.tag.destroy({ where: { id_tag: id } })
-                    .then(() => {
-                        res.status(200).json({
-                            message: "Deleted tag with id : " + id
-                        });
-                    })
-            }
-        }).catch(err => {
-            res.status(500).json({ error: err });
+    try {
+        const id = req.params.tagId;
+        const tag = await models.tag.findByPk(id);
+        if (!tag) {
+            return res.status(404).json({
+                message: "Tag NOT FOUND"
+            });
+        }
+        await models.tag.destroy({ where: { id_tag: id } });
+        res.status(200).json({
+            message: "Deleted tag with id : " + id
         });
+    } catch (error) {
+        res.status(500).json({ error: err });
+    }
+
 }

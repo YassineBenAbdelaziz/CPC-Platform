@@ -6,7 +6,7 @@ const SubmissionController = require("../Controllers/submission");
 
 router.get('/', SubmissionController.get_all);
 
-router.post('/', isAuth, checkRole(['mod','admin']) , SubmissionController.create_submission);
+router.post('/', isAuth, SubmissionController.create_submission);
 
 router.post('/findByProblem/:problemId', SubmissionController.get_submissions_by_problem);
 
