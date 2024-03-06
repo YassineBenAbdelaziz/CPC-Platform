@@ -1,8 +1,8 @@
 const { models } = require('../sequelize');
 const { Op } = require("sequelize");
 
-exports.get_all = async (req, res, next) => {
-    await models.problem.findAll()
+exports.get_all = (req, res, next) => {
+    models.problem.findAll()
         .then((results) => {
             res.status(200).json(results);
         })
@@ -13,9 +13,7 @@ exports.get_all = async (req, res, next) => {
 
 exports.getPage = async (req, res, next) => {
     try {
-
         const params = []
-        console.log(req.body);
         if (!req.body.page || !req.body.limit) {
             return res.status(404).json({
                 error: "Missing params",
@@ -81,7 +79,7 @@ exports.create_problem = async (req, res, next) => {
         score: req.body.score,
         time_limit: req.body.time_limit,
         memory_limit: req.body.memory_limit,
-        owner : req.user.username,
+        owner: req.user.username,
         test_file: req.body.test_file,
         solution: req.body.solution,
         tutorial: req.body.tutorial,
@@ -114,16 +112,16 @@ exports.create_problem = async (req, res, next) => {
 }
 
 
-exports.get_problem = async (req, res, next) => {
+exports.get_problem =  (req, res, next) => {
     const id = req.params.problemId;
-    await models.problem.findByPk(id)
+    models.problem.findByPk(id)
         .then(problem => {
             if (!problem) {
                 return res.status(404).json({
                     message: "Problem NOT FOUND"
                 });
             } else {
-                res.status(200).json(problem);
+                return res.status(200).json(problem);
             }
         }).catch(err => {
             res.status(500).json({ error: err });
@@ -131,8 +129,8 @@ exports.get_problem = async (req, res, next) => {
 }
 
 
-exports.get_problems_by_contest = async (req, res, next) => {
-    await models.problem.findAll({
+exports.get_problems_by_contest = (req, res, next) => {
+    models.problem.findAll({
         where: {
             id_contest: req.params.contestId
         }
@@ -152,52 +150,50 @@ exports.get_problems_by_contest = async (req, res, next) => {
 
 
 exports.get_problem_status = async (req, res, next) => {
-    const userProblem = await models.user_problem.findOne({
-        where: {
-            id_problem: req.params.problemId,
-            id_user: req.user.id_user
+    try {
+        const userProblem = await models.user_problem.findOne({
+            where: {
+                id_problem: req.params.problemId,
+                id_user: req.user.id_user
+            }
+        });
+        if (userProblem) {
+            res.status(200).json({ status: userProblem.dataValues.status })
+        } else {
+            res.status(200).json({ status: "" })
         }
-    });
-    if (userProblem) {
-        res.status(200).json({ status: userProblem.dataValues.status })
-    } else {
-        res.status(200).json({ status: "" })
+        
+    } catch (err) {
+        res.status(500).json({ error : err })
     }
 }
 
 
 exports.add_tag = async (req, res, next) => {
-    const id = req.params.problemId;
-    await models.problem.findByPk(id)
-        .then(async problem => {
-            if (!problem) {
-                return res.status(404).json({
-                    message: "Problem NOT FOUND"
-                });
-            } else {
-                const problem_tag = {
-                    id_problem: id,
-                    id_tag: req.body.id_tag
-                }
+    try {
+        const id = req.params.problemId;
+        const problem = await models.problem.findByPk(id)
+        if (!problem) {
+            return res.status(404).json({
+                message: "Problem NOT FOUND"
+            });
+        }
+        const problem_tag = {
+            id_problem: id,
+            id_tag: req.body.id_tag
+        }
 
-                await models.problem_tag.create(problem_tag)
-                    .then((problem_tag => {
-                        res.status(201).json(problem_tag)
-                    }))
-                    .catch(err => {
-                        res.status(500).json({ error: err });
-                    });
-            }
-        }).catch(err => {
-            res.status(500).json({ error: err });
-        });
+        const problemTag = await models.problem_tag.create(problem_tag)
+        return res.status(201).json(problemTag);
+    } catch (error) {
+        res.status(500).json({ error: err });
+    }
+
 }
 
 
 exports.update_problem = async (req, res, next) => {
     const id = req.params.problemId;
-
-
     try {
         const problem = await models.problem.findByPk(id)
 
@@ -207,7 +203,7 @@ exports.update_problem = async (req, res, next) => {
             });
         } else {
 
-            if (req.user.role.description === 'mod' && problem.toJSON().owner !== req.user.username ) {
+            if (req.user.role.description === 'mod' && problem.toJSON().owner !== req.user.username) {
                 return res.status(401).json({
                     message: "Ownership needed"
                 });
@@ -254,22 +250,22 @@ exports.update_problem = async (req, res, next) => {
 
 
 exports.delete_problem = async (req, res, next) => {
-    const id = req.params.problemId;
-    await models.problem.findByPk(id)
-        .then(async problem => {
-            if (!problem) {
-                return res.status(404).json({
-                    message: "Problem NOT FOUND"
-                });
-            } else {
-                await models.problem.destroy({ where: { id_problem: id } })
-                    .then(() => {
-                        res.status(200).json({
-                            message: "Deleted problem with id : " + id
-                        });
-                    })
-            }
-        }).catch(err => {
-            res.status(500).json({ error: err });
+    try {
+        const id = req.params.problemId;
+        const problem = await models.problem.findByPk(id);
+        if (!problem) {
+            return res.status(404).json({
+                message: "Problem NOT FOUND"
+            });
+        }
+        await models.problem.destroy({ where: { id_problem: id } });
+        return res.status(200).json({
+            message: "Deleted problem with id : " + id
         });
+
+    } catch (error) {
+        res.status(500).json({ error: err });
+    }
+
+
 }

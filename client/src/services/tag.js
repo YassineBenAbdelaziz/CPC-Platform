@@ -6,7 +6,7 @@ const url = 'tag/' ;
 
 export const getAlltags = async () => {
     const res = await axios.get(url);
-    return res.data ;
+    return await res.data ;
 };
 
 export const getTag = async (id) => {

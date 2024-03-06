@@ -73,7 +73,6 @@ exports.deleteContest = (req, res, next) => {
 
 exports.updateContest = (req, res, next) => {
     const updatedFields = {};
-    console.log(req.body)
     for (const [key, val] of Object.entries(req.body)) {
         updatedFields[key] = val;
     }
