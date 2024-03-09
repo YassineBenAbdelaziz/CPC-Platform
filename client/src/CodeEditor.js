@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from "react";
 import Editor from "@monaco-editor/react"
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { createSubmission } from './services/submission';
 import loading from "./imgs/loading.gif";
@@ -11,6 +11,7 @@ import Error from './Error'
 export default function CodeEditor({ handleSubmissions }) {
 
     const { auth } = useAuth();
+    const queryClient = useQueryClient();
 
     const problemId = useParams();
 
@@ -60,10 +61,12 @@ export default function CodeEditor({ handleSubmissions }) {
         },
         onSuccess: () => {
             setTimeout(unblock, 2000);
+            queryClient.invalidateQueries(["submissionsPage"]);
         },
         onError: (error) => {
             console.log(error);
-        }
+        },
+        
     });
 
     function unblock() {
@@ -86,6 +89,7 @@ export default function CodeEditor({ handleSubmissions }) {
         // setDisableButton(true);
         mutate(submission);        
     }
+
 
     return (
         <form onSubmit={(e) => handleSubmit(e)}>
