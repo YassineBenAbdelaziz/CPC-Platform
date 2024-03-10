@@ -7,7 +7,13 @@ const RefrechUser = ({ children }) => {
     const { auth, setAuth } = useAuth();
     const {data  , isPending, isError, error} = useQuery({
         queryKey : ['currentUser'],
-        queryFn : getCurrentUser,
+        queryFn :  async () => {
+            const res = await getCurrentUser();
+            if (res.status === 'OK') {
+                setAuth(res.data);
+            }
+            return await res ;
+        },
         retry : 1,
         enabled : !auth?.username,
     });
@@ -25,9 +31,6 @@ const RefrechUser = ({ children }) => {
     }
 
     if (!isPending && !isError ) {
-        if (data.status === 'OK') {
-            setAuth(data.data);
-        }
         return (                 
         <>
             {children}
