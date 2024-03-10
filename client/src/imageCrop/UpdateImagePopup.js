@@ -1,13 +1,9 @@
 import React, { useState, useCallback } from 'react'
 import Cropper from 'react-easy-crop'
-import Slider from '@material-ui/core/Slider'
-import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
-import { withStyles } from '@material-ui/core/styles'
 import { getCroppedImg } from './CropImage'
-import { styles } from './styles'
+import './styles.css'
 
-const Demo = ({ classes, imageSrc, setImage, setChosen }) => {
+export const UpdateImage = ({ classes, imageSrc, setImage, setChosen }) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 })
   const [rotation, setRotation] = useState(0)
   const [zoom, setZoom] = useState(1)
@@ -53,9 +49,9 @@ const Demo = ({ classes, imageSrc, setImage, setChosen }) => {
   }
 
   return (
-    <div>
+    <div className='cropping'>
       <React.Fragment>
-        <div className={classes.cropContainer}>
+        <div className='cropContainer'>
           <Cropper
             image={imageSrc}
             crop={crop}
@@ -70,61 +66,20 @@ const Demo = ({ classes, imageSrc, setImage, setChosen }) => {
             onZoomChange={setZoom}
           />
         </div>
-        <div className={classes.controls}>
-          <div className={classes.sliderContainer}>
-            <Typography
-              variant="overline"
-              classes={{ root: classes.sliderLabel }}
-            >
-              Zoom
-            </Typography>
-            <Slider
-              value={zoom}
-              min={1}
-              max={3}
-              step={0.1}
-              aria-labelledby="Zoom"
-              classes={{ root: classes.slider }}
-              onChange={(e, zoom) => setZoom(zoom)}
-            />
+        <div className='controls'>
+          <div className='sliderContainer'>
+          <span> Zoom </span>
+            <input className='slider' type="range" min="1" max="3" step="0.1" value={zoom} onChange={(e) => setZoom(e.target.value)} />
           </div>
-          <div className={classes.sliderContainer}>
-            <Typography
-              variant="overline"
-              classes={{ root: classes.sliderLabel }}
-            >
-              Rotation
-            </Typography>
-            <Slider
-              value={rotation}
-              min={0}
-              max={360}
-              step={1}
-              aria-labelledby="Rotation"
-              classes={{ root: classes.slider }}
-              onChange={(e, rotation) => setRotation(rotation)}
-            />
+          <div className='sliderContainer'>
+            <span> Rotation </span>
+            <input className='slider' type="range" min="0" max="360" step="1" value={rotation} onChange={(e) => setRotation(e.target.value)} />
           </div>
-          <Button
-            onClick={showCroppedImage}
-            variant="contained"
-            color="primary"
-            classes={{ root: classes.cropButton }}
-          >
-            Save
-          </Button>
-          <Button
-            onClick={onClose}
-            variant="contained"
-            color="inherit"
-            classes={{ root: classes.cropButton }}
-          >
-            Cancel
-          </Button>
+          <button className='save' onClick={showCroppedImage}> Save </button>
+          <button className='cancel' onClick={onClose}> Cancel </button>
         </div>
       </React.Fragment>
     </div>
   )
 }
 
-export const UpdateImage = withStyles(styles)(Demo)
