@@ -56,6 +56,7 @@ const user_problem = sequelize.define('user_problem', {
     allowNull: false
   }
 });
+
 sequelize.models.problem.belongsToMany(sequelize.models.user, { foreignKey: "id_problem", through: "user_problem" });
 sequelize.models.user.belongsToMany(sequelize.models.problem, { foreignKey: "id_user", through: "user_problem" });
 
@@ -70,6 +71,10 @@ const user_lang = sequelize.define('user_lang', {
     type: DataTypes.INTEGER,
     primaryKey: true,
   },
+  id_problem: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+  },
   lang: {
     type: DataTypes.STRING,
     primaryKey: true,
@@ -78,6 +83,7 @@ const user_lang = sequelize.define('user_lang', {
     type: DataTypes.INTEGER
   }
 });
+
 const user_skill = sequelize.define('user_skill', {
   id_user: {
     type: DataTypes.INTEGER,
@@ -91,7 +97,6 @@ const user_skill = sequelize.define('user_skill', {
     type: DataTypes.INTEGER
   }
 });
-
 
 sequelize.models.role.hasMany(sequelize.models.user, { 
   foreignKey: {

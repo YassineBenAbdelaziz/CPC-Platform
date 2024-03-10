@@ -166,7 +166,7 @@ get_submission_details_checker = async (tokens, checker) => {
 }
 
 // Add score to user if it's solved 
-async function addScore  (problem,user)  {
+async function addScore(problem,user) {
     const newScore = user.score + problem.dataValues.score;
     let rank = 'Newbie';
     if (newScore >= 1300) {
@@ -181,36 +181,27 @@ async function addScore  (problem,user)  {
 
 
 //Add langs to user profile
-async function addLangs (user,sub)  {
+async function addLangs(user, sub, problem) {
     const result = await models.user_lang.findOne({
         where: {
             id_user: user.id_user,
+            id_problem: problem.dataValues.id_problem,
             lang: sub.lang,
         }
     });
     if (!result) {
         await models.user_lang.create({
             id_user: user.id_user,
+            id_problem: problem.dataValues.id_problem,
             lang: sub.lang,
             count: 1
         });
-    } else {
-        await models.user_lang.update({
-            id_user: user.id_user,
-            lang: sub.lang,
-            count: result.dataValues.count + 1
-        }, {
-            where: {
-                id_user: user.id_user,
-                lang: sub.lang,
-            }
-        })
     }
 }
 
 
 //Add skills to user profile
-async function addSkills (problem,user)  {
+async function addSkills(problem,user) {
     let tags = [];
     const problemTags = await models.problem_tag.findAll({
         where: {
@@ -315,49 +306,49 @@ exports.get_submissions_by_problem_and_user = async (req, res, next) => {
                 }
 
                 // Create status for the problem
-            const userProblem = await models.user_problem.findOne({
-                where: {
-                    id_problem: req.params.problemId,
-                    id_user: user.id_user
-                }
-            });
-            if (!userProblem) {
-                const newUserProblem = await models.user_problem.create({
-                    id_user: user.id_user,
-                    id_problem: req.params.problemId,
-                    status: subResult.result,
+                const userProblem = await models.user_problem.findOne({
+                    where: {
+                        id_problem: req.params.problemId,
+                        id_user: user.id_user
+                    }
                 });
-                if (newUserProblem.dataValues.status === 'Accepted') {
-                    console.log('Submission accepted for the first time')
-                    addScore(problem, user);
-                    addLangs(user, sub);
-                    addSkills(problem,user);
-                }
-
-            } else {
-                if (userProblem.status !== 'Accepted') {
-                    await models.user_problem.update(
-                        { status: subResult.result },
-                        {
-                            where: {
-                                id_problem: req.params.problemId,
-                                id_user: user.id_user
-                            }
-                        }
-                    );
-
-                    if (subResult.result === 'Accepted') {
+                if (!userProblem) {
+                    const newUserProblem = await models.user_problem.create({
+                        id_user: user.id_user,
+                        id_problem: req.params.problemId,
+                        status: subResult.result,
+                    });
+                    if (newUserProblem.dataValues.status === 'Accepted') {
                         console.log('Submission accepted for the first time')
                         addScore(problem, user);
-                        addLangs(user, sub);
+                        addLangs(user, sub, problem);
                         addSkills(problem,user);
                     }
+
                 } else {
-                    console.log('Problem already solved')
-                    addLangs(user, sub);
+                    if (userProblem.status !== 'Accepted') {
+                        await models.user_problem.update(
+                            { status: subResult.result },
+                            {
+                                where: {
+                                    id_problem: req.params.problemId,
+                                    id_user: user.id_user
+                                }
+                            }
+                        );
+
+                        if (subResult.result === 'Accepted') {
+                            console.log('Submission accepted for the first time')
+                            addScore(problem, user);
+                            addLangs(user, sub, problem);
+                            addSkills(problem,user);
+                        }
+                    } else {
+                        console.log('Problem already solved')
+                        addLangs(user, sub, problem);
+                    }
                 }
             }
-        }
             console.log(subResult);
 
             const submissions = await models.submission.findAndCountAll({

@@ -49,18 +49,26 @@ exports.getUserProfile = async (req, res, next) => {
         res.status(404).json({ message: 'User Not Found' })
     } else {
         const userLangs = [];
+        const langsMap = new Map();
         await models.user_lang.findAll({ where: { id_user: user.dataValues.id_user } })
             .then(langs => {
-                for (let lang of langs) {
-                    userLangs.push({
-                        lang: lang.dataValues.lang,
-                        count: lang.dataValues.count
-                    })
+                for(let lang of langs) {
+                    if (langsMap.has(lang.dataValues.lang)) {
+                        langsMap.set(lang.dataValues.lang, langsMap.get(lang.dataValues.lang) + 1);
+                    } else {
+                        langsMap.set(lang.dataValues.lang, 1);
+                    }
                 }
             }).catch(err => {
                 console.log(err)
                 return res.status(500).json(err)
             });
+        for (let [lang, count] of langsMap.entries()) {
+            userLangs.push({
+                lang: lang,
+                count: count
+            })
+        }
 
         const userSkills = [];
         await models.user_skill.findAll({ where: { id_user: user.dataValues.id_user } })
