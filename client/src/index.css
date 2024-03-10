@@ -18,6 +18,13 @@
   font-family: "Quicksand";
   color: #333;
 }
+
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 .navbar {
   padding: 20px 10%;
   display: flex;
@@ -182,7 +189,7 @@
     justify-content: center;
   }
   .navbar .user-info {
-    top: 266px;
+    top: 273px;
     right: unset;
   }
 
@@ -468,6 +475,10 @@ a {
 
 /* problem details */
 
+.submission-form {
+  height: 100%;
+}
+
 .problem-details h2 {
   font-size: 25px;
   color: rgba(0, 0, 255, 0.601);
@@ -491,24 +502,26 @@ a {
 }
 .prb-details {
   overflow-y: scroll;
-  height: 650px;
+  /* height: 650px; */
   border: 2px solid #b3b3b3;
   border-radius: 10px;
   padding: 20px;
   margin: 5px;
-  width: 70%;
+  width: 50%;
 }
 .code {
-  height: 650px;
+  /* height: 650px; */
   border: 2px solid #b3b3b3;
   border-radius: 10px;
   padding: 20px;
   margin: 5px;
-  width: 70%;
+  width: 50%;
+  box-sizing: border-box;
 }
 .prb-code {
   display: flex;
   margin: -20px 0;
+  height: 100vh;
 }
 .prb-navbar .prb-link {
   margin: 5px;
@@ -548,6 +561,7 @@ a {
   cursor: pointer;
 }
 .code-editor {
+  height: 500px;
   margin: 20px 0; 
   border: 1px solid #b3b3b3;
 }
@@ -624,6 +638,7 @@ a {
   padding: 0;
 }
 footer {
+  margin-top: auto;
   text-align: center;
   padding: 20px 0;
   background-color: #dddddd63;
@@ -1136,8 +1151,12 @@ footer {
 } 
 
 
-
 .error {
   color: red;
   padding: 10px 0;
+}
+
+
+.ReactQueryDevtools_Panel {
+  background-color: white !important;
 }

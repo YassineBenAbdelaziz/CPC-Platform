@@ -67,10 +67,9 @@ const Problemset = () => {
     }, [tagsFilter])
 
     useEffect(() => {
-
-            setMinPageNumberLimit(Math.ceil(currentPage / pageNumberLimit))
-            setMaxPageNumberLimit(minPageNumberLimit + pageNumberLimit)
-    }, [ currentPage ])
+        setMinPageNumberLimit(Math.ceil(currentPage / pageNumberLimit))
+        setMaxPageNumberLimit(minPageNumberLimit + pageNumberLimit)
+    }, [currentPage])
 
     //Change Page
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
