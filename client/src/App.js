@@ -33,7 +33,7 @@ function App() {
     <BrowserRouter>
     
       <RefrechUser>
-        <div className="App" style={{ minHeight: '633px' }}>
+        <div className="App">
           <ShowNavBar>
             <NavBar />
           </ShowNavBar>
@@ -82,8 +82,8 @@ function App() {
         </div>
         <ScrollToTop />
       </RefrechUser>
-      <ReactQueryDevtools initialIsOpen />
-    
+    <ReactQueryDevtools initialIsOpen panelProps={{style: {backgroundColor: 'white'}}} />
+
     </BrowserRouter>
     </QueryClientProvider>
 
