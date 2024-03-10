@@ -27,8 +27,6 @@ exports.getPage = async (req, res, next) => {
             offset: offset,
             limit: limit,
             subQuery: false,
-
-
         }
 
         if (req.body.column && req.body.type) {
@@ -52,11 +50,24 @@ exports.getPage = async (req, res, next) => {
             }]
         }
 
-
         const results = await models.problem.findAndCountAll(
             queryParams
-
         );
+
+        if (req.user) {
+            for(let problem of results.rows) {
+                const userProblem = await models.user_problem.findOne({
+                    where: {
+                        id_problem: problem.dataValues.id_problem,
+                        id_user: req.user.id_user
+                    }
+                });
+                if (userProblem) {
+                    problem.dataValues.status = userProblem.dataValues.status
+                }
+            }
+        }
+
         return res.status(200).json({ ...results });
     }
 

@@ -1,27 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
-import { getProblemStatus } from './services/problems';
-import Error from './Error'
-
-const GetProblemStatus = ({ id }) => {
-
-    const {data, isPending, isError, error} = useQuery({
-        queryKey : ['status',id],
-        queryFn :  () => {
-            return getProblemStatus(id);
-        }
-    });
-
-    if (isPending)
-        return <div className='problem-status'>Loading...</div>
-        
-    if (isError)
-        return (
-            <div className='problem-status' > 
-                <Error err={error} /> 
-            </div>
-        )
-
-    const status = data?.status
+const GetProblemStatus = ({ status }) => {
     if (status === "Accepted") {
         return (
             <div className="problem-status" style={{ color: '#02b102', fontSize: '20px' }} title={status}>&#x2713;</div>

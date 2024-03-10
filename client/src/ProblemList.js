@@ -49,7 +49,7 @@ const ProblemList = ({
                 < Link to={fn(problem.id_problem)} key={index}>
                     <div className="problem">
                         <h2>{inContests && (ch[index] + '.')} {problem.title}</h2>
-                        {auth?.id ? <GetProblemStatus id={problem.id_problem} /> : <div className="problem-status"></div>}
+                        {auth?.id ? <GetProblemStatus status={problem?.status} /> : <div className="problem-status"></div>}
                         {diff(problem.score)}
                         <div className="problem-score">{problem.score}</div>
                     </div>
