@@ -105,9 +105,9 @@ const Problem = ({ problem, isPending, error, isError }) => {
 
     return (
         <div>
-            {isError && <Error err={error} />}
-            {isPending && <div>Loading...</div>}
-            {!isPending && !isError && problem && (
+            {(isError || isTagsError || isExamplesError) && <Error err={error} />}
+            {(isPending || tagsArePending || examplesArePending) && <div>Loading...</div>}
+            {!isPending && !isError && !isTagsError && !tagsArePending && !isExamplesError && !examplesArePending && problem && (
                 <div className="prb">
                     <article>
                         <div className="problem-head" style={{ textAlign: 'center', margin: '30px 0' }} >
