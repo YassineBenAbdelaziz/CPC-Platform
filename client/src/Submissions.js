@@ -31,15 +31,16 @@ export default function Submissions({ url }) {
     });
 
 
-
+    
     useEffect(() => {
-
-        if ( count) {
+        // console.log(pageNumberLimit, maxPageNumberLimit, minPageNumberLimit, currentPage);
+        if (count && currentPage > Math.ceil(count / submissionsPerPage)) {
+            // console.log(currentPage, count, submissionsPerPage);
             setCurrentPage(Math.ceil(count / submissionsPerPage))
-            setMinPageNumberLimit(Math.ceil(currentPage / pageNumberLimit))
+            setMinPageNumberLimit(Math.floor(currentPage / pageNumberLimit))
             setMaxPageNumberLimit(minPageNumberLimit + pageNumberLimit - 1)
         }
-    }, [count])
+    }, [submissionsPerPage])
 
     //Change Page
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
