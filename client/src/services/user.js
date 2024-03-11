@@ -19,7 +19,6 @@ export const getCurrentUser = async () => {
 };
 
 export const getProfile = async (username) => {
-    console.log(username);
     const res = await axios.get(`${url}profile/${username}`);
     return await res.data ;
 }
