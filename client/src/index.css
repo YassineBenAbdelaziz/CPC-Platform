@@ -510,14 +510,17 @@ a {
   width: 50%;
 }
 .code {
-  /* height: 650px; */
+  
   border: 2px solid #b3b3b3;
   border-radius: 10px;
   padding: 20px;
   margin: 5px;
   width: 50%;
-  box-sizing: border-box;
+  box-sizing: border-box; 
+  overflow-y : scroll ; 
 }
+
+
 .prb-code {
   display: flex;
   margin: -20px 0;
@@ -561,7 +564,7 @@ a {
   cursor: pointer;
 }
 .code-editor {
-  height: 500px;
+  height : 70vh ;
   margin: 20px 0; 
   border: 1px solid #b3b3b3;
 }
@@ -1159,4 +1162,8 @@ footer {
 
 .ReactQueryDevtools_Panel {
   background-color: white !important;
+}
+
+.text-editor {
+  width : 711px ;
 }
