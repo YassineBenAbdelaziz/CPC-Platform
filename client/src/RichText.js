@@ -2,7 +2,6 @@ import React from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.bubble.css'
-
 import hljs from 'highlight.js'
 import 'highlight.js/styles/monokai-sublime.css'
 

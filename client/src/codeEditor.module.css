@@ -1,0 +1,118 @@
+.form {
+  display : flex ;
+  flex-direction : column ;
+}
+
+
+.formHeader {
+  display : flex ;
+  justify-content : space-between ;
+  align-items : center ;
+  
+}
+
+
+.toggleThemeContainer {
+    display: flex; 
+    align-items: center; 
+  }
+  
+  .toggleThemeContainer input {
+    display: none; 
+  }
+
+  .toggleThemeContainer label {
+    position: relative;
+    display: inline-block;
+    border-radius: 50%;
+    background-color: #ccc; 
+    height: 34px; 
+    width: 60px; 
+    cursor: pointer; 
+    
+  }
+  
+  .slider {
+    background-color: #7dd3fc ; 
+    bottom: 0; 
+    cursor: pointer; 
+    left: 0; 
+    position: absolute; 
+    right: 0; 
+    top: 0; 
+    transition: .4s; 
+  }
+
+  .slider:before { 
+    background-color: #fff; 
+    bottom: 4px; 
+    content: ""; 
+    height: 26px; 
+    left: 4px; 
+    position: absolute; 
+    transition: .4s; 
+    width: 26px; 
+} 
+
+
+input:checked+.slider { 
+    background-color: #334155 ; 
+} 
+  
+input:checked+.slider:before { 
+    transform: translateX(26px); 
+} 
+  
+.slider.round { 
+    border-radius: 34px; 
+} 
+  
+.slider.round:before { 
+    border-radius: 50%; 
+}
+
+.iconContainer {
+    display : flex;
+    justify-content  : space-between ;
+    align-items : center ;
+}
+.icon {
+    width : 15px;
+    height : auto ;
+    z-index : 100;
+}
+
+.faMoon {
+  margin: 7px 9px 3px 3px;
+}
+
+.faSun {
+  margin: 7px 9px 3px 9px;
+}
+
+.dVisible {
+    visibility: visible ;
+}
+
+.dNone {
+    visibility: hidden ;
+}
+
+/*
+
+  .sliderButton {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    width: 20px; 
+    height: 20px; 
+    border-radius: 50%;
+    background-color: #fff; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+*/
+
