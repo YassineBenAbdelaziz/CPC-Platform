@@ -221,26 +221,30 @@ async function addSkills(problem,user) {
             }
         });
         if (!result) {
-            await models.user_skill.create({
-                id_user: user.id_user,
-                skill: tag,
-                count: 1
-            }).catch(err => {
-                console.log(err)
-            });
-        } else {
-            await models.user_skill.update({
-                id_user: user.id_user,
-                skill: tag,
-                count: result.dataValues.count + 1
-            }, {
-                where: {
+            try {
+                await models.user_skill.create({
                     id_user: user.id_user,
                     skill: tag,
-                }
-            }).catch(err => {
-                console.log(err)
-            })
+                    count: 1
+                });
+            } catch(err) {
+                console.log(err);
+            }
+        } else {
+            try {
+                await models.user_skill.update({
+                    id_user: user.id_user,
+                    skill: tag,
+                    count: result.dataValues.count + 1
+                }, {
+                    where: {
+                        id_user: user.id_user,
+                        skill: tag,
+                    }
+                });
+            } catch(err) {
+                console.log(err);
+            }
         }
     }
 }

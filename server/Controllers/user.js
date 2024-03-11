@@ -18,51 +18,70 @@ async function deletefile(path) {
 
 
 exports.getAll = async (req, res, next) => {
-    
-    await models.user.findAll({
-        attributes: ['id_user', 'username', 'score', 'rank', 'imagePath']
-    })
-        .then((results) => {
-            res.status(200).json(results);
-        })
-        .catch((err) => {
-            res.status(500).json({ error: err });
-        });
+    try {
+        const result = await models.user.findAll({ attributes: ['id_user', 'username', 'score', 'rank', 'imagePath'] });
+        res.status(200).json(result);
+    } catch (err) {
+        res.status(500).json({ error: err });
+    }
 }
 
+const difficultyCount = async (condition) => {
+    const count = {
+        easy: 0,
+        medium: 0,
+        hard: 0,
+    }
+    try {
+        const problems = await models.problem.findAll(condition);
+        for (let problem of problems) {
+            if (problem.dataValues.score <= 100) {
+                count.easy++;
+            } else if (problem.dataValues.score > 100 && problem.dataValues.score <= 130) {
+                count.medium++;
+            } else {
+                count.hard++;
+            }
+        }
+    } catch(err) {
+        console.log(err);
+        return res.status(500).json(err);
+    }
+    return count;
+}
 
 exports.getUserProfile = async (req, res, next) => {
     const username = req.params.username;
     let user = {}
-    await models.user.findOne({
-        where: {
-            username: username
-        }
-    }).then((result) => {
-        user = result;
-    }).catch(err => {
+    try {
+        user = await models.user.findOne({
+            where: {
+                username: username
+            }
+        });
+    } catch (err) {
         console.log(err)
         return res.status(500).json(err)
-    });
+    }
 
     if (!user) {
         res.status(404).json({ message: 'User Not Found' })
     } else {
         const userLangs = [];
         const langsMap = new Map();
-        await models.user_lang.findAll({ where: { id_user: user.dataValues.id_user } })
-            .then(langs => {
-                for(let lang of langs) {
-                    if (langsMap.has(lang.dataValues.lang)) {
-                        langsMap.set(lang.dataValues.lang, langsMap.get(lang.dataValues.lang) + 1);
-                    } else {
-                        langsMap.set(lang.dataValues.lang, 1);
-                    }
+        try {
+            const langs = await models.user_lang.findAll({ where: { id_user: user.dataValues.id_user } });
+            for(let lang of langs) {
+                if (langsMap.has(lang.dataValues.lang)) {
+                    langsMap.set(lang.dataValues.lang, langsMap.get(lang.dataValues.lang) + 1);
+                } else {
+                    langsMap.set(lang.dataValues.lang, 1);
                 }
-            }).catch(err => {
-                console.log(err)
-                return res.status(500).json(err)
-            });
+            }
+        } catch(err) {
+            console.log(err);
+            return res.status(500).json(err);
+        }
         for (let [lang, count] of langsMap.entries()) {
             userLangs.push({
                 lang: lang,
@@ -71,55 +90,31 @@ exports.getUserProfile = async (req, res, next) => {
         }
 
         const userSkills = [];
-        await models.user_skill.findAll({ where: { id_user: user.dataValues.id_user } })
-            .then(skills => {
-                for (let skill of skills) {
-                    userSkills.push({
-                        skill: skill.dataValues.skill,
-                        count: skill.dataValues.count
-                    })
-                }
-            }).catch(err => {
-                console.log(err)
-                return res.status(500).json(err)
-            });
-
-        const difficultyCount = async (condition) => {
-            const count = {
-                easy: 0,
-                medium: 0,
-                hard: 0,
-            }
-            await models.problem.findAll(condition)
-                .then(problems => {
-                    for (let problem of problems) {
-                        if (problem.dataValues.score <= 100) {
-                            count.easy++;
-                        } else if (problem.dataValues.score > 100 && problem.dataValues.score <= 130) {
-                            count.medium++;
-                        } else {
-                            count.hard++;
-                        }
-                    }
-                }).catch(err => {
-                    console.log(err)
-                    return res.status(500).json(err)
+        try {
+            const skills = await models.user_skill.findAll({ where: { id_user: user.dataValues.id_user } });
+            for (let skill of skills) {
+                userSkills.push({
+                    skill: skill.dataValues.skill,
+                    count: skill.dataValues.count
                 });
-            return count;
+            }
+        } catch(err) {
+            console.log(err);
+            return res.status(500).json(err);
         }
 
         let solved = [];
-        await models.user_problem.findAll({
-            where: {
-                id_user: user.id_user,
-                status: 'Accepted'
-            }
-        }).then((results) => {
-            solved = results;
-        }).catch(err => {
-            console.log(err)
-            return res.status(500).json(err)
-        });
+        try {
+            solved = await models.user_problem.findAll({
+                where: {
+                    id_user: user.id_user,
+                    status: 'Accepted'
+                }
+            });
+        } catch(err) {
+            console.log(err);
+            return res.status(500).json(err);
+        }
 
         const condition = []
         for (let x of solved) {
@@ -204,18 +199,14 @@ exports.deleteUser = async (req, res, next) => {
             deletefile(user.imagePath);
         }
 
-
         return res.status(200).json({ message: 'User deleted successfully' });
-    }
-    catch (err) {
+    } catch (err) {
         return res.status(500).json({ error: err });
     }
-
 };
 
 
 exports.updateUser = (req, res, next) => {
-    
     const userId = req.params.id;
 
     if (req.user.id_user == userId) {
@@ -276,7 +267,6 @@ exports.updateUser = (req, res, next) => {
 
 
 exports.login = (req, res, next) => {
-
     if (req.body.remember) {
         // Set cookie age to 1 week
         req.session.cookie.maxAge = 604800000;
@@ -299,7 +289,6 @@ exports.login = (req, res, next) => {
 
 
 exports.logout = (req, res, next) => {
-
     req.logout((err) => {
         if (err) {
             next(err);
@@ -310,7 +299,6 @@ exports.logout = (req, res, next) => {
             });
         }
     });
-
 }
 
 exports.getCurrentUser = (req, res, next) => {
