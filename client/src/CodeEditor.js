@@ -4,9 +4,12 @@ import Editor from "@monaco-editor/react"
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { createSubmission } from './services/submission';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import loading from "./imgs/loading.gif";
 import useAuth from './hooks/useAuth';
 import Error from './Error'
+import styles from './codeEditor.module.css';
 
 export default function CodeEditor({ handleSubmissions }) {
 
@@ -20,6 +23,16 @@ export default function CodeEditor({ handleSubmissions }) {
     const [lang, setLang] = useState("");
     const [script, setScript] = useState("");
     // const [disableButton, setDisableButton] = useState(false);
+
+    const [isDarkMode, setIsDarkMode] = useState(false);
+
+    const toggleTheme = () => {
+        setIsDarkMode(!isDarkMode);
+    };
+
+    const options = {
+        minimap: { enabled: false }
+    }
 
     const files = {
         "": {
@@ -55,7 +68,7 @@ export default function CodeEditor({ handleSubmissions }) {
     }
 
     const file = files[lang];
-    const { data: res, mutate , isPending, isError, error} = useMutation({
+    const { data: res, mutate, isPending, isError, error } = useMutation({
         mutationFn: async (body) => {
             return await createSubmission(body);
         },
@@ -66,7 +79,7 @@ export default function CodeEditor({ handleSubmissions }) {
         onError: (error) => {
             console.log(error);
         },
-        
+
     });
 
     function unblock() {
@@ -78,7 +91,7 @@ export default function CodeEditor({ handleSubmissions }) {
         e.preventDefault()
         if (!auth?.id) {
             navigate('/login')
-        } 
+        }
 
         const submission = {
             "langId": file.id,
@@ -87,44 +100,61 @@ export default function CodeEditor({ handleSubmissions }) {
             "userId": auth?.id
         }
         // setDisableButton(true);
-        mutate(submission);        
+        mutate(submission);
     }
 
 
     return (
-        <form onSubmit={(e) => handleSubmit(e)}>
-            <select
-                className="select-lang"
-                name="lang"
-                value={lang}
-                onChange={(e) => setLang(e.target.value)}
-                required
-            >
-                <option value={""} disabled>Select your language</option>
-                <option value={"c"}>C</option>
-                <option value={"cpp"}>C++</option>
-                <option value={"java"}>Java</option>
-                <option value={"python"}>Python</option>
-            </select>
-
-            <div className="submission">
+        <form onSubmit={(e) => handleSubmit(e)} className={styles.form}>
+            <div className={styles.formHeader} >
+                <select
+                    className="select-lang"
+                    name="lang"
+                    value={lang}
+                    onChange={(e) => setLang(e.target.value)}
+                    required
+                >
+                    <option value={""} disabled>Select your language</option>
+                    <option value={"c"}>C</option>
+                    <option value={"cpp"}>C++</option>
+                    <option value={"java"}>Java</option>
+                    <option value={"python"}>Python</option>
+                </select>
+                <div>
+                    <div className={styles.toggleThemeContainer}>
+                        <label htmlFor="theme-toggle">
+                            <input
+                                type="checkbox"
+                                id="theme-toggle"
+                                checked={isDarkMode}
+                                onChange={toggleTheme}
+                            />
+                            <span className={`${styles.slider} ${styles.round}`}>
+                                <div className={styles.iconContainer}>
+                                    <FontAwesomeIcon icon={faSun} className={` ${styles.icon} ${styles.faSun} ${!isDarkMode ? styles.dVisible : styles.dNone}`} />
+                                    <FontAwesomeIcon icon={faMoon} className={` ${styles.icon} ${styles.faMoon} ${isDarkMode ? styles.dVisible : styles.dNone}`} />
+                                </div>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            </div>
                 <div className="code-editor" >
                     <Editor
-                        // theme='vs-dark'
-                        height={'550px'}
+                        theme={isDarkMode ? 'vs-dark' : 'vs'}
                         width={'100%'}
                         path={lang}
                         defaultLanguage={lang}
                         defaultValue={file.value}
                         value={script}
+                        options={options}
                         onChange={(e) => setScript(e)}
                     />
-                </div>
-                <div className="submit-btn">
-                    <button className="submit" disabled={isPending}>Submit</button>
-                    <img src={loading} alt="" style={{ width: '30px', display: isPending ? 'block' : 'none', marginLeft: '10px' }} />
-                    {isError && <Error err={error} />}
-                </div>
+            </div>
+            <div className="submit-btn">
+                <button className="submit" disabled={isPending}>Submit</button>
+                <img src={loading} alt="" style={{ width: '30px', display: isPending ? 'block' : 'none', marginLeft: '10px' }} />
+                {isError && <Error err={error} />}
             </div>
         </form>
     );
