@@ -17,7 +17,7 @@ export const getProblems = async (body) => {
 }
 
 export const getProblemStatus = async (id) => {
-    const res = await axios.get(`${url}problemStatus/${id}` );
+    const res = await axios.get(`${url}problemStatus/${id}`);
     return await res.data ;
 }
 
@@ -26,5 +26,12 @@ export const addproblem = async (body) =>  {
     return await res.data ;
 }
 
+export const editproblem = async (id, body) =>  {
+    const res = await axios.patch(url + id, body);
+    return await res.data ;
+}
 
-
+export const deleteproblem = async (id, body) =>  {
+    const res = await axios.delete(url + id);
+    return await res.data ;
+}

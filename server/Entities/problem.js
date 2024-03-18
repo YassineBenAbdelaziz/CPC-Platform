@@ -13,19 +13,19 @@ module.exports = (sequelize) => {
                 allowNull: false,
             },
             topic: {
-                type: DataTypes.STRING(2000),
+                type: DataTypes.TEXT,
                 allowNull: false,
             },
             input: {
-                type: DataTypes.STRING(1000),
+                type: DataTypes.TEXT,
                 allowNull: false,
             },
             output: {
-                type: DataTypes.STRING(1000),
+                type: DataTypes.TEXT,
                 allowNull: false,
             },
             note: {
-                type: DataTypes.STRING(1000),
+                type: DataTypes.STRING(2000),
                 allowNull: true,
             },
             score: {
@@ -41,19 +41,19 @@ module.exports = (sequelize) => {
                 allowNull: false,
             },
             test_file: {
-                type: DataTypes.STRING(10e6),
+                type: DataTypes.TEXT,
                 allowNull: true,
             },
             solution: {
-                type: DataTypes.STRING(5000),
+                type: DataTypes.TEXT,
                 allowNull: false,
             },
             tutorial: {
-                type: DataTypes.STRING(5000),
+                type: DataTypes.TEXT,
                 allowNull: true,
             },
             checker: {
-                type: DataTypes.STRING(5000),
+                type: DataTypes.TEXT,
                 allowNull: true,
             },
             status: {

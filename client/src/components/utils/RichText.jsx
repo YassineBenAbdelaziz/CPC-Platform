@@ -23,32 +23,24 @@ const modules = {
   ],
 };
 
-  const formats = [
-    'header', 'size',
-    'bold', 'italic', 'underline', 'strike', 'blockquote',
-    'list', 'bullet', 'indent',
-    'link', 'image',
-    'code-block','formula'
-  ];
+const formats = [
+  'header', 'size',
+  'bold', 'italic', 'underline', 'strike', 'blockquote',
+  'list', 'bullet', 'indent',
+  'link', 'image',
+  'code-block','formula'
+];
 
 
-
-
-
-
-
-export default function RichText({setRich}) {
-
-
+export default function RichText({value, setRich}) {
 
   return <div className="text-editor">
     <ReactQuill theme="snow"
+      defaultValue={value || ""}
       onChange={setRich} 
       modules={modules}
       formats={formats}>
-    </ReactQuill>
-
-    
+    </ReactQuill>    
   </div>
 }
 

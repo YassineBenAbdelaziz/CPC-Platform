@@ -22,6 +22,7 @@ import PublicRoutes from './components/auth/PublicRoutes.jsx';
 import RoleBasedRoute from './components/auth/RoleBasedRoute.jsx';
 import { QueryClient, QueryClientProvider  } from '@tanstack/react-query' ;
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools' ;
+import EditProblem from './components/AddProblem/EditProblem.jsx';
 
 const queryClient = new QueryClient();
 
@@ -50,6 +51,7 @@ function App() {
                 <Route path='/loggedin' element={<LoggedIn />}></Route>
                 <Route element={<RoleBasedRoute roles={['mod','admin']} />} >
                   <Route path='/problemset/add-problem' element={<AddProblem />}></Route>
+                  <Route path='/problemset/edit-problem/:id' element={<EditProblem />}></Route>
                 </Route>
                 
                 <Route path='/profile/:username/edit' element={<EditProfile />}></Route>

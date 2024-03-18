@@ -1167,3 +1167,40 @@ footer {
 .text-editor {
   width : 711px ;
 }
+
+
+.delete-problem-btn {
+  text-align: center;
+  padding: 10px;
+  font-weight: 600;
+  font-size: 17px;
+  border: none;
+  border-radius: 9px;
+  color: white;
+  background-color: rgb(248, 35, 35);
+  cursor: pointer;
+}
+.edit-problem {
+  display: flex;
+  align-items: center;
+  margin: -20px 0;
+}
+.edit-problem a {
+  width: 1000px;
+}
+.edit-problem button {
+  display: none;
+  text-align: center;
+  padding: 7px;
+  margin-right: 10px;
+  font-weight: 400;
+  font-size: 15px;
+  border: none;
+  border-radius: 9px;
+  color: white;
+  background-color: rgb(81, 95, 248);
+  cursor: pointer;
+}
+.edit-problem:hover button {
+  display: block;
+}

@@ -1,5 +1,5 @@
 /* eslint-disable array-callback-return */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import close from "../../assets/close.png";
 import { getAlltags } from "../../services/tag.js";
@@ -12,17 +12,33 @@ export default function AddTags(props) {
       return getAlltags();
     },
   });
-
+  
   const tags = [];
   Tags &&
-    Tags.sort((a, b) => (a.tag > b.tag ? 1 : -1)).map((tag) => {
-      tags.push({
-        id: tag.id_tag,
-        name: tag.tag,
-      });
+  Tags.sort((a, b) => (a.tag > b.tag ? 1 : -1)).map((tag) => {
+    tags.push({
+      id: tag.id_tag,
+      name: tag.tag,
     });
-
+  });
+  
   const [data, setData] = useState([]);
+
+  useEffect(() => {
+    if (props.value) {
+      const newTags = [];
+      props.value.tags.forEach((tag) => {
+          const obj = {
+              id: tag.id_tag,
+              name: tag.tag
+          }
+          if (!newTags.some(existingObj => existingObj.id === obj.id))
+              newTags.push(obj);
+      });
+      setData(newTags);
+      props.getData(newTags);
+    }
+  }, [props.value]);
 
   const handleChange = (e) => {
     let id = 0;

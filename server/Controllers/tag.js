@@ -80,7 +80,7 @@ exports.get_tags_by_problem = async (req, res, next) => {
             attributes: ["id_problem"],
             include: [{
                 model: models.tag,
-                attributes: ["tag"],
+                attributes: ["id_tag", "tag"],
                 through: {
                     attributes: []
                 }

@@ -1,10 +1,41 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import close from "../../assets/close.png";
 import add from "../../assets/add.png";
 
 export default function AddExamples(props) {
 
     const [data, setData] = useState([]);
+
+    useEffect(() => {
+        if (props.value && props.name === "Example(s)") {
+            const newExamples = [];
+            props.value.forEach((example) => {
+                const obj = {
+                    id: example.id_example,
+                    input: example.input,
+                    output: example.output
+                }
+                if (!newExamples.some(existingObj => existingObj.id === obj.id))
+                    newExamples.push(obj);
+            });
+            setData(newExamples);
+            props.getData(newExamples);
+        }
+
+        if (props.value && props.name === "Test(s)") {
+            const newTestCases = [];
+            const [a, b] = props.value.split("\nexpected\n");
+            const inputs = a.split("\nnext\n")
+            const outputs = b.split("\nnext\n")
+
+            for(let i = 0; i < inputs.length; i++) {
+                if (inputs[i] !== "" && outputs[i] !== "")
+                    newTestCases.push({input: inputs[i], output: outputs[i]})
+            }
+            setData(newTestCases);
+            props.getData(newTestCases);
+        }
+      }, [props.value]);
 
     const handleClick = () => {
         setData([...data, { input: "", output: "" }])

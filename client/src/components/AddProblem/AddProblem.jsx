@@ -179,7 +179,7 @@ export default function AddProblem() {
                                 <label htmlFor="multiple">Multiple Answers </label>
                             </div>
                             <div className="radio">
-                                <input type="radio" id='single' value='single' name='checker' onClick={() => setChooseChecker(false)} />
+                                <input type="radio" defaultChecked id='single' value='single' name='checker' onClick={() => setChooseChecker(false)} />
                                 <label htmlFor="single">Single Answer </label>
                             </div>
                         </div>

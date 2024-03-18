@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import GetProblemStatus from "./GetProblemStatus.jsx";
 import useAuth from "../../hooks/useAuth.js"
 
@@ -19,6 +19,8 @@ const ProblemList = ({
     }
 
     const { auth } = useAuth();
+    const role = auth?.role?.description;
+    const navigate = useNavigate();
 
     const diff = (score) => {
         if (score <= 100) {
@@ -36,6 +38,10 @@ const ProblemList = ({
         }
     }
 
+    const handleEditProblem = (id) => {
+        navigate(`/problemset/edit-problem/${id}`);
+    }
+
     return (
         <div className="problem-list">
 
@@ -46,14 +52,21 @@ const ProblemList = ({
                 <h3 className="score" onClick={() => handleScoreSort()}>Score</h3>
             </div>
             {problemset.map((problem, index) => (
-                < Link to={fn(problem.id_problem)} key={index}>
+                <div className="edit-problem" key={index}>
+                {role === "admin" || role === "mod" && problem.owner === auth?.username ?
+                    <button className="edit-problem-btn" onClick={() => handleEditProblem(problem.id_problem)}>Edit</button> : <></>
+                    // <Link to={`/problemset/edit-problem/${problem.id_problem}`} className="edit-problem">Edit</Link> : <></>
+                }
+                <Link to={fn(problem.id_problem)} key={index}>
                     <div className="problem">
+                        
                         <h2>{inContests && (ch[index] + '.')} {problem.title}</h2>
                         {auth?.id ? <GetProblemStatus status={problem?.status} /> : <div className="problem-status"></div>}
                         {diff(problem.score)}
                         <div className="problem-score">{problem.score}</div>
                     </div>
                 </Link>
+                </div>
             ))
             }
         </div >
