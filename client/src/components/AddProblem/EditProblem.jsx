@@ -65,7 +65,7 @@ export default function EditProblem() {
         },
     });
 
-    const { data: deleteRes, mutate: deleteProblemMutation, deletionIsPending, deletionIsError, deletionError } = useMutation({
+    const { data: deleteRes, mutate: deleteProblemMutation, isPending: deletionIsPending, isError: deletionIsError, error: deletionError } = useMutation({
         mutationFn : async () => {
             return await deleteproblem(id);
         },

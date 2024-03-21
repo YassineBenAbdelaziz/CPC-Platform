@@ -14,7 +14,7 @@ exports.get_all = (req, res, next) => {
 exports.countByTag = async (req, res, next) => {
     try {
         const results = await models.tag.findAll({
-            attributes: ["tag",
+            attributes: ["id_tag", "tag",
                 [sequelize.fn('COUNT', sequelize.col('problems.id_problem')), 'n_tag'],
             ],
             include: [{
@@ -24,7 +24,7 @@ exports.countByTag = async (req, res, next) => {
                     attributes: []
                 }
             }],
-            group: ['tag'],
+            group: ['tag.id_tag', 'tag.tag'],
             raw: true,
         });
 
@@ -32,7 +32,8 @@ exports.countByTag = async (req, res, next) => {
 
     }
     catch (err) {
-        res.status(500).json({
+        console.log(err);
+        return res.status(500).json({
             error: err,
         })
     }
@@ -140,4 +141,52 @@ exports.delete_tag = async (req, res, next) => {
         res.status(500).json({ error: err });
     }
 
+}
+
+
+exports.delete_tags = async (req, res, next) => {
+    try {
+        const ids = req.body.tagIds; 
+        if (!ids || ids.length === 0) {
+            return res.status(400).json({
+                message: "No ids provided"
+            });
+        }
+        const result = await models.tag.destroy({ where: { id_tag: ids } });
+        if (result === 0) {
+            return res.status(404).json({
+                message: "No tags found with the provided ids"
+            });
+        }
+        res.status(200).json({
+            message: `Deleted ${result} tags`
+        });
+    } catch (error) {
+        res.status(500).json({ error: error });
+    }
+}
+
+
+exports.update_tags = async (req, res, next) => {
+    try {
+        const tags = req.body;
+        if (!tags || tags.length === 0) {
+            return res.status(400).json({
+                message: "No tags provided"
+            });
+        }
+        const results = await Promise.all(tags.map(async ({ id_tag, tag }) => {
+            if (!id_tag || !tag) {
+                throw new Error("id_tag and tag are required for each tag");
+            }
+            const [tagInstance, created] = await models.tag.upsert({ id_tag, tag }, { returning: true });
+            return {
+                message: created ? "Tag created" : "Tag updated",
+                tag: tagInstance
+            };
+        }));
+        res.status(200).json(results);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 }
