@@ -3,8 +3,7 @@ require('dotenv').config();
 const { models } = require('../sequelize');
 const sequelize = require('sequelize');
 const { unlink } = require('node:fs/promises');
-const bcrypt = require('bcrypt');
-
+const e = require('express');
 
 
 async function deletefile(path) {
@@ -19,12 +18,13 @@ async function deletefile(path) {
 
 exports.getAll = async (req, res, next) => {
     try {
-        const result = await models.user.findAll({ attributes: ['id_user', 'username', 'score', 'rank', 'imagePath'] });
+        const result = await models.user.findAll({ attributes: ['id_user', 'username', 'score', 'rank', 'imagePath', 'id_role'] });
         res.status(200).json(result);
     } catch (err) {
         res.status(500).json({ error: err });
     }
 }
+
 
 const difficultyCount = async (condition) => {
     const count = {
@@ -175,37 +175,6 @@ exports.register = (req, res, next) => {
 };
 
 
-
-
-
-exports.deleteUser = async (req, res, next) => {
-    const userId = req.params.id;
-    try {
-        const user = await models.user.findByPk(userId);
-        if (!user) {
-            return res.status(404).json(
-                {
-                    error: 'User not found'
-                });
-        }
-
-        await models.user.destroy(
-            {
-                where: {
-                    id_user: userId
-                }
-            });
-        if (user.imagePath !== '../uploads/profile.webp') {
-            deletefile(user.imagePath);
-        }
-
-        return res.status(200).json({ message: 'User deleted successfully' });
-    } catch (err) {
-        return res.status(500).json({ error: err });
-    }
-};
-
-
 exports.updateUser = (req, res, next) => {
     const userId = req.params.id;
 
@@ -216,8 +185,6 @@ exports.updateUser = (req, res, next) => {
             updatedFields[key] = val;
         }
 
-        
-        updatedFields.username = req.user.username;
         delete updatedFields.id_role;
         
         if (req.file) {
@@ -263,9 +230,6 @@ exports.updateUser = (req, res, next) => {
 };
 
 
-
-
-
 exports.login = (req, res, next) => {
     if (req.body.remember) {
         // Set cookie age to 1 week
@@ -286,8 +250,6 @@ exports.login = (req, res, next) => {
 }
 
 
-
-
 exports.logout = (req, res, next) => {
     req.logout((err) => {
         if (err) {
@@ -300,6 +262,7 @@ exports.logout = (req, res, next) => {
         }
     });
 }
+
 
 exports.getCurrentUser = (req, res, next) => {
     if (req.user) {
@@ -321,3 +284,66 @@ exports.getCurrentUser = (req, res, next) => {
     }
 
 }
+
+
+exports.deleteUser = async (req, res, next) => {
+    const userId = req.params.id;
+    try {
+        const user = await models.user.findByPk(userId);
+        if (!user) {
+            return res.status(404).json(
+                {
+                    error: 'User not found'
+                });
+        }
+
+        await models.user.destroy(
+            {
+                where: {
+                    id_user: userId
+                }
+            });
+        if (user.imagePath !== '../uploads/profile.webp') {
+            deletefile(user.imagePath);
+        }
+
+        return res.status(200).json({ message: 'User deleted successfully' });
+    } catch (err) {
+        return res.status(500).json({ error: err });
+    }
+};
+
+
+exports.editRole = async (req, res, next) => {
+    const userRolePairs = req.body; // Expect an array of {id_user, id_role} objects
+
+    try {
+        for (let pair of userRolePairs) {
+            const users = await models.user.findAll({
+                where: {
+                    id_user: userRolePairs.map(pair => pair.id_user)
+                }
+            });
+        
+            if (!users || users.length !== userRolePairs.length) {
+                return res.status(404).json({
+                        error: 'One or more users not found'
+                    });
+            }
+
+            await models.user.update(
+                {
+                    id_role: pair.id_role
+                },
+                {
+                    where: {
+                        id_user: pair.id_user
+                    },
+                }
+            );
+        }
+        return res.status(200).json({ message: 'Roles updated successfully' });
+    } catch (err) {
+        return res.status(500).json({ error: err });
+    }
+};
