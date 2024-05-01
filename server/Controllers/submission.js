@@ -2,7 +2,7 @@ const sequelize = require('sequelize');
 const { models } = require('../sequelize');
 const axios = require("axios");
 
-const jugdeUrl = "http://localhost:2358/";
+const judgeUrl = process.env.JUDGE_URL;
 
 exports.get_all = (req, res, next) => {
     models.submission.findAll()
@@ -70,7 +70,7 @@ exports.create_submission = async (req, res, next) => {
             }
 
             let tokens = "";
-            const result = await axios.post(jugdeUrl + "submissions/batch/?base64_encoded=false", {
+            const result = await axios.post(judgeUrl + "submissions/batch/?base64_encoded=false", {
                 "submissions": bodies
             });
             result.data && result.data.map(item => tokens += item.token + ",")
@@ -100,7 +100,7 @@ get_submission_details_no_checker = async (tokens) => {
             memory: 0,
             result: ""
         }
-        const result = await axios.get(jugdeUrl + `submissions/batch?tokens=${tokens}&base64_encoded=false&fields=status,time,memory`)
+        const result = await axios.get(judgeUrl + `submissions/batch?tokens=${tokens}&base64_encoded=false&fields=status,time,memory`)
         const sub = result.data.submissions;
         for (let i = 0; i < sub.length; i++) {
             subResult.time = Math.max(subResult.time, sub[i].time * 1000)
@@ -126,7 +126,7 @@ get_submission_details_checker = async (tokens, checker) => {
             memory: 0,
             outputs: []
         }
-        const res = await axios.get(jugdeUrl + `submissions/batch?tokens=${tokens}&base64_encoded=false&fields=stdout,time,memory`)
+        const res = await axios.get(judgeUrl + `submissions/batch?tokens=${tokens}&base64_encoded=false&fields=stdout,time,memory`)
         const sub = res.data.submissions;
         for (let i = 0; i < sub.length; i++) {
             subResult.time = Math.max(subResult.time, sub[i].time * 1000)
@@ -145,7 +145,7 @@ get_submission_details_checker = async (tokens, checker) => {
         }
 
         let newTokens = "";
-        const result = await axios.post(jugdeUrl + "submissions/batch/?base64_encoded=false", {
+        const result = await axios.post(judgeUrl + "submissions/batch/?base64_encoded=false", {
             "submissions": bodies
         });
         result.data && result.data.map(item => newTokens += item.token + ",")
@@ -465,7 +465,7 @@ exports.get_submission = async (req, res, next) => {
         }
         let result = []
         let code = ""
-        const judgeResult = await axios.get(jugdeUrl + `submissions/batch?tokens=${submission.dataValues.tokens}&base64_encoded=false&fields=source_code,stdin,stdout,expected_output,status,time,memory`)
+        const judgeResult = await axios.get(judgeUrl + `submissions/batch?tokens=${submission.dataValues.tokens}&base64_encoded=false&fields=source_code,stdin,stdout,expected_output,status,time,memory`)
 
         const sub = judgeResult.data.submissions;
         for (let i = 0; i < sub.length; i++) {
