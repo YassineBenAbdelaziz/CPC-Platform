@@ -1,13 +1,6 @@
 import fb from "../../assets/Facebook-logo.png";
-import rami from "../../assets/Untitled.png";
 import insta from "../../assets/Instagram_logo_2016.svg.webp";
 import linkedin from "../../assets/linkedin-logo-linkedin-icon-transparent-free-png.webp";
-import bissen from "../../assets/bissen.jpg";
-import boxy from "../../assets/boxy.jpg";
-import ahmed from "../../assets/ahmed.jpg";
-import louay from "../../assets/louay.jpg";
-import ala from "../../assets/ala.png";
-import ezzou from "../../assets/239844742_1718367641886800_5589512442401609340_n.jpg";
 
 const About = () => (
     <div className="content">
@@ -67,56 +60,7 @@ const About = () => (
                         </p>
                     </section>
 
-                    <section id="team">
-                        <h2>Our Team</h2>
-                        <ul>
-                            <li>
-                                <img src={ahmed} alt="Team Member 1" />
-                                <h3>Ahmed Zayoud</h3>
-                                <p>Chair Man</p>
-                            </li>
-                            <li>
-                                <img src={rami} alt="Team Member 2" />
-                                <h3>Med Rami Jebali</h3>
-                                <p>Vice Chair</p>
-                            </li>
-                            <li>
-                                <img src={bissen} alt="Team Member 3" />
-                                <h3>Bissen Abbassi</h3>
-                                <p>General Secretary</p>
-                            </li>
-                            <li>
-                                <img src={louay} alt="Team Member 4" />
-                                <h3>Louay Dhkar</h3>
-                                <p>Web Master</p>
-                            </li>
-                        </ul> {/* satrin ethouma */}
-                        <ul> {/* juste bch ywali star fih 4 abed khw */}
-                            <li>
-                                <img src={boxy} alt="Team Member 5" />
-                                <h3>Seif Bouslama</h3>
-                                <p>HR Manager</p>
-                            </li>
-                            <li>
-                                <img src={ala} alt="Team Member 6" />
-                                <h3>Ala Ben Mimoun</h3>
-                                <p>Treasurer</p>
-                            </li>
-                            <li>
-                                <img src={ezzou} alt="Team Member 7" />
-                                <h3>Ezzeddine Wertani</h3>
-                                <p>Event Manager</p>
-                            </li>
-                        </ul>
-                    </section>
 
-                    {/* <section id="achievements">
-            <h2>Achievements</h2>
-            <ul>
-                <li>2019 - Best Company Award</li>
-                <li>2020 - Innovation Award</li>
-            </ul>
-            </section> */}
                     <section id="social-media">
                         <h2>Our Social Media</h2>
                         <div className="logos">
