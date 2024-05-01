@@ -17,6 +17,8 @@ router.post('/login', passport.authenticate('local'), controller.login);
 
 router.get('/logout', controller.logout);
 
+router.patch('/', isAuth, checkRole(['admin']) , controller.editRole);
+
 router.delete('/:id', isAuth, checkRole(['admin']) , controller.deleteUser);
 
 router.patch('/:id', isAuth, multer, controller.updateUser);

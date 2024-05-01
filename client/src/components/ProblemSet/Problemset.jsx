@@ -214,12 +214,12 @@ const Problemset = () => {
                     <div className="item">
                         <h3>
                             Tags :
-                            <WithPermissions roles={['admin']}>
+                            {/* <WithPermissions roles={['admin']}>
                                 {editing ? 
                                     <img className="save-icon" src={add} alt="save" onClick={handleCreateTag}/>
                                     : <img className="edit-icon" src={editBtn} title="Edit" alt="edit" onClick={() => setEditing(true)}/>
                                 }
-                            </WithPermissions>
+                            </WithPermissions> */}
                         </h3>
                         
                         {isErrorTags && <Error err={tagsError} />}
@@ -247,7 +247,7 @@ const Problemset = () => {
                             ))}
                             
                             <div className="item-content">
-                                {
+                                {/* {
                                     editing ?
                                         <form onSubmit={(e) => handleSaveTags(e)}>
                                             {newTags.map((tag, i) => (
@@ -271,12 +271,19 @@ const Problemset = () => {
                                             ))}
                                             <div className="submit-btn">
                                                 <button className="save-tags" disabled={deletionIsPending}>Save</button>
-                                                {/* <button className="submit" disabled={isPending}>Submit</button> */}
                                                 <img src={loading} alt="" style={{ width: '30px', display: deletionIsPending || updateIsPending ? 'block' : 'none', marginLeft: '10px' }} />
                                                 {(deletionIsError && <Error err={deletionError} />) || (updateIsError && <Error err={updateError} />)}
                                             </div>      
                                         </form>
                                     : 
+                                    tags.sort((a, b) => a.tag > b.tag ? 1 : -1).map((tag, i) => (
+                                        <div className="tag" key={i + 155} onClick={() => handleTagClick(tag.tag)}>
+                                            <div style={{ width: 'max-content', marginRight: '5px' }}> {tag.tag} </div>
+                                            <div>{tag.n_tag}</div>                                           
+                                        </div>
+                                    ))
+                                } */}
+                                {
                                     tags.sort((a, b) => a.tag > b.tag ? 1 : -1).map((tag, i) => (
                                         <div className="tag" key={i + 155} onClick={() => handleTagClick(tag.tag)}>
                                             <div style={{ width: 'max-content', marginRight: '5px' }}> {tag.tag} </div>

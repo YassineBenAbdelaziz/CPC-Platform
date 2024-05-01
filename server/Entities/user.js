@@ -64,8 +64,10 @@ module.exports = (sequelize) => {
         {
             validate: {
                 userNameMatchPass() {
-                    if (this.username === this.password) {
-                        throw new Error("Password must be different from username.");
+                    if (this.changed('username') || this.changed('password')) {
+                        if (this.username === this.password) {
+                            throw new Error("Password must be different from username.");
+                        }
                     }
                 }
             },

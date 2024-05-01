@@ -1,0 +1,32 @@
+.dashboard {
+  text-align: center;
+}
+.dashboard h2 {
+  margin: 25px;
+}
+.dashboard .profile .item,
+.dashboard .profile .score {
+  display: flex;
+  align-items: center;
+}
+.dashboard .profiles {
+  width: -webkit-fill-available;
+  width: -moz-available;
+  background-color: #dddddd26;
+  border: 1px solid #efefef;
+  border-radius: 15px;
+}
+.dashboard .profile {
+  display: flex;
+  padding: 10px;
+  height: 50px;
+}
+.dashboard .profile img {
+  width: 50px;
+  height: 50px;
+  border-radius: 25%;
+  margin-right: 10px;
+}
+.dashboard .profile .score {
+  margin-left: auto;
+}
