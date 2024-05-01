@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import {  getSubmission } from "../../services/submission";
-
+import Error from "../Error/Error";
 
 const SubmissionDetails = ({ sub, display }) => {
 
@@ -44,7 +44,7 @@ const SubmissionDetails = ({ sub, display }) => {
 
     return (
         <div className={`submission-details`} style={subDetailsStyles}>
-            {isError && <div>{error}</div>}
+            {isError && <Error err={error} />}
             {isPending && <div>Loading...</div>}
             {!isError && !isPending && submission && (
                 <>

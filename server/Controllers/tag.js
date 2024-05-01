@@ -7,7 +7,7 @@ exports.get_all = (req, res, next) => {
             res.status(200).json(results);
         })
         .catch((err) => {
-            res.status(500).json({ error: err });
+            return res.status(500).json({ error: "There was an error, try again later"});
         });
 }
 
@@ -32,10 +32,7 @@ exports.countByTag = async (req, res, next) => {
 
     }
     catch (err) {
-        console.log(err);
-        return res.status(500).json({
-            error: err,
-        })
+        return res.status(500).json({ error: "There was an error, try again later"});
     }
 
 }
@@ -52,7 +49,7 @@ exports.create_tag = (req, res, next) => {
             tag: tag
         }))
         .catch(err => {
-            res.status(500).json({ error: err });
+            return res.status(500).json({ error: "There was an error, try again later"});
         });
 }
 
@@ -69,7 +66,7 @@ exports.get_tag = (req, res, next) => {
                 res.status(200).json(tag);
             }
         }).catch(err => {
-            res.status(500).json({ error: err });
+            return res.status(500).json({ error: "There was an error, try again later"});
         });
 }
 
@@ -91,9 +88,7 @@ exports.get_tags_by_problem = async (req, res, next) => {
 
     }
     catch (err) {
-        res.status(500).json({
-            error: err,
-        })
+        return res.status(500).json({ error: "There was an error, try again later"});
     }
 }
 
@@ -118,7 +113,7 @@ exports.update_tag = async (req, res, next) => {
         });
 
     } catch (error) {
-        res.status(500).json({ error: err });
+        return res.status(500).json({ error: "There was an error, try again later"});
     }
 
 }
@@ -138,7 +133,7 @@ exports.delete_tag = async (req, res, next) => {
             message: "Deleted tag with id : " + id
         });
     } catch (error) {
-        res.status(500).json({ error: err });
+        return res.status(500).json({ error: "There was an error, try again later"});
     }
 
 }
@@ -162,7 +157,7 @@ exports.delete_tags = async (req, res, next) => {
             message: `Deleted ${result} tags`
         });
     } catch (error) {
-        res.status(500).json({ error: error });
+        return res.status(500).json({ error: "There was an error, try again later"});
     }
 }
 
@@ -187,6 +182,6 @@ exports.update_tags = async (req, res, next) => {
         }));
         res.status(200).json(results);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: "There was an error, try again later"});
     }
 }

@@ -10,7 +10,7 @@ exports.get_all = (req, res, next) => {
             res.status(200).json(results);
         })
         .catch((err) => {
-            res.status(500).json({ error: err });
+            return res.status(500).json({ error: "There was an error, try again later"});
         });
 }
 
@@ -73,7 +73,6 @@ exports.create_submission = async (req, res, next) => {
             const result = await axios.post(jugdeUrl + "submissions/batch/?base64_encoded=false", {
                 "submissions": bodies
             });
-            console.log('Post submission to judge successful')
             result.data && result.data.map(item => tokens += item.token + ",")
             submission.tokens = tokens;
         }
@@ -88,10 +87,7 @@ exports.create_submission = async (req, res, next) => {
         })
 
     } catch (err) {
-        console.log('Create submission failed')
-        console.log(err)
-        res.status(500).json({ error: err });
-
+        return res.status(500).json({ error: "There was an error, try again later"});
     }
 
 }
@@ -105,7 +101,6 @@ get_submission_details_no_checker = async (tokens) => {
             result: ""
         }
         const result = await axios.get(jugdeUrl + `submissions/batch?tokens=${tokens}&base64_encoded=false&fields=status,time,memory`)
-        console.log('Get submission from judge successful')
         const sub = result.data.submissions;
         for (let i = 0; i < sub.length; i++) {
             subResult.time = Math.max(subResult.time, sub[i].time * 1000)
@@ -120,7 +115,6 @@ get_submission_details_no_checker = async (tokens) => {
         return subResult;
     } catch (err) {
         console.log('Get submission from judge failed')
-        console.log(err)
     }
 }
 
@@ -133,7 +127,6 @@ get_submission_details_checker = async (tokens, checker) => {
             outputs: []
         }
         const res = await axios.get(jugdeUrl + `submissions/batch?tokens=${tokens}&base64_encoded=false&fields=stdout,time,memory`)
-        console.log('Get submission from judge successful')
         const sub = res.data.submissions;
         for (let i = 0; i < sub.length; i++) {
             subResult.time = Math.max(subResult.time, sub[i].time * 1000)
@@ -155,13 +148,10 @@ get_submission_details_checker = async (tokens, checker) => {
         const result = await axios.post(jugdeUrl + "submissions/batch/?base64_encoded=false", {
             "submissions": bodies
         });
-        console.log('Post submission to judge successful')
         result.data && result.data.map(item => newTokens += item.token + ",")
-        console.log(newTokens);
         return subResult;
     } catch (err) {
         console.log('Get submission from judge failed')
-        console.log(err)
     }
 }
 
@@ -281,7 +271,6 @@ exports.get_submissions_by_problem_and_user = async (req, res, next) => {
             const userDataValues = await models.user.findByPk(req.params.userId);
             username = userDataValues.dataValues.username;
             if (username === null) {
-                console.log('User Not Found')
                 return res.status(404).json({
                     error: 'User Not Found',
                 })
@@ -290,7 +279,6 @@ exports.get_submissions_by_problem_and_user = async (req, res, next) => {
             const user = req.user;
             const problem = await models.problem.findByPk(req.params.problemId);
             if (problem === null) {
-                console.log('Problem Not Found')
                 return res.status(404).json({
                     error: 'Problem Not Found',
                 })
@@ -323,7 +311,6 @@ exports.get_submissions_by_problem_and_user = async (req, res, next) => {
                         status: subResult.result,
                     });
                     if (newUserProblem.dataValues.status === 'Accepted') {
-                        console.log('Submission accepted for the first time')
                         addScore(problem, user);
                         addLangs(user, sub, problem);
                         addSkills(problem,user);
@@ -342,18 +329,15 @@ exports.get_submissions_by_problem_and_user = async (req, res, next) => {
                         );
 
                         if (subResult.result === 'Accepted') {
-                            console.log('Submission accepted for the first time')
                             addScore(problem, user);
                             addLangs(user, sub, problem);
                             addSkills(problem,user);
                         }
                     } else {
-                        console.log('Problem already solved')
                         addLangs(user, sub, problem);
                     }
                 }
             }
-            console.log(subResult);
 
             const submissions = await models.submission.findAndCountAll({
                 where: {
@@ -381,8 +365,7 @@ exports.get_submissions_by_problem_and_user = async (req, res, next) => {
         }
 
     } catch (err) {
-        console.log(err)
-        res.status(500).json(err);
+        return res.status(500).json({ error: "There was an error, try again later"});
     }
 }
 
@@ -411,13 +394,11 @@ exports.get_submissions_by_problem = async (req, res, next) => {
         for (let sub of submissions.rows) {
             const user = await models.user.findByPk(sub.dataValues.userIdUser);
             if (user === null) {
-                console.log('User Not Found')
                 return res.status(404).json(err)
             }
             sub.dataValues.user = user.dataValues.username
             const problem = await models.problem.findByPk(sub.dataValues.problemIdProblem);
             if (problem === null) {
-                console.log('Problem Not Found')
                 return res.status(404).json(err)
             }
             sub.dataValues.problem = problem.dataValues.title;
@@ -429,8 +410,7 @@ exports.get_submissions_by_problem = async (req, res, next) => {
         })
 
     } catch (err) {
-        console.log(err)
-        res.status(500).json(err)
+        return res.status(500).json({ error: "There was an error, try again later"});
     }
 }
 
@@ -468,8 +448,7 @@ exports.get_submissions_by_user = async (req, res, next) => {
         });
 
     } catch (err) {
-        console.log(err);
-        return res.status(500).json(err);
+        return res.status(500).json({ error: "There was an error, try again later"});
 
     }
 }
@@ -488,7 +467,6 @@ exports.get_submission = async (req, res, next) => {
         let code = ""
         const judgeResult = await axios.get(jugdeUrl + `submissions/batch?tokens=${submission.dataValues.tokens}&base64_encoded=false&fields=source_code,stdin,stdout,expected_output,status,time,memory`)
 
-        console.log('Get submission from judge successful')
         const sub = judgeResult.data.submissions;
         for (let i = 0; i < sub.length; i++) {
             if (i === 0) {
@@ -523,8 +501,7 @@ exports.get_submission = async (req, res, next) => {
 
 
     } catch (err) {
-        console.log(err)
-        res.status(500).json({ error: err });
+        return res.status(500).json({ error: "There was an error, try again later"});
     }
 
 }

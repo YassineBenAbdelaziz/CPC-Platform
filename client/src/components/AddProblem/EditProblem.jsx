@@ -100,7 +100,6 @@ export default function EditProblem() {
         if (testFile !== "") updatedProblem.test_file = testFile;
         
         mutate(problem);
-        // console.log(tags);
     }
 
     const scores = [];

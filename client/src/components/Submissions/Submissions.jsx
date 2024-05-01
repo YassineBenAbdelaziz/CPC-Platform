@@ -33,9 +33,8 @@ export default function Submissions({ url }) {
 
     
     useEffect(() => {
-        // console.log(pageNumberLimit, maxPageNumberLimit, minPageNumberLimit, currentPage);
+        
         if (count && currentPage > Math.ceil(count / submissionsPerPage)) {
-            // console.log(currentPage, count, submissionsPerPage);
             setCurrentPage(Math.ceil(count / submissionsPerPage))
             setMinPageNumberLimit(Math.floor(currentPage / pageNumberLimit))
             setMaxPageNumberLimit(minPageNumberLimit + pageNumberLimit - 1)

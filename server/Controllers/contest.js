@@ -57,7 +57,7 @@ exports.getContestById = (req, res, next) => {
             res.status(200).json(results);
         })
         .catch((err) => {
-            res.status(500).json({ error: err });
+            return res.status(500).json({ error: "There was an error, try again later"});
         });
 };
 
@@ -79,9 +79,7 @@ exports.createContest = (req, res, next) => {
             });
         })
         .catch((err) => {
-            res.status(500).json({
-                error: err,
-            });
+            return res.status(500).json({ error: "There was an error, try again later"});
         });
 };
 
@@ -99,9 +97,7 @@ exports.deleteContest = (req, res, next) => {
             });
         })
         .catch((err) => {
-            res.status(500).json({
-                error: err,
-            });
+            return res.status(500).json({ error: "There was an error, try again later"});
         });
 };
 
@@ -125,8 +121,6 @@ exports.updateContest = (req, res, next) => {
             });
         })
         .catch((err) => {
-            res.status(500).json({
-                error: err,
-            });
+            return res.status(500).json({ error: "There was an error, try again later"});
         });
 };

@@ -22,7 +22,7 @@ exports.getAll = async (req, res, next) => {
         const result = await models.user.findAll({ attributes: ['id_user', 'username', 'score', 'rank', 'imagePath'] });
         res.status(200).json(result);
     } catch (err) {
-        res.status(500).json({ error: err });
+        res.status(500).json({ error: "There was an error, try again later" });
     }
 }
 
@@ -44,8 +44,7 @@ const difficultyCount = async (condition) => {
             }
         }
     } catch(err) {
-        console.log(err);
-        return res.status(500).json(err);
+        return res.status(500).json({ error: "There was an error, try again later"});
     }
     return count;
 }
@@ -60,8 +59,7 @@ exports.getUserProfile = async (req, res, next) => {
             }
         });
     } catch (err) {
-        console.log(err)
-        return res.status(500).json(err)
+        return res.status(500).json({ error: "There was an error, try again later"});
     }
 
     if (!user) {
@@ -79,8 +77,7 @@ exports.getUserProfile = async (req, res, next) => {
                 }
             }
         } catch(err) {
-            console.log(err);
-            return res.status(500).json(err);
+            return res.status(500).json({ error: "There was an error, try again later"});
         }
         for (let [lang, count] of langsMap.entries()) {
             userLangs.push({
@@ -99,8 +96,7 @@ exports.getUserProfile = async (req, res, next) => {
                 });
             }
         } catch(err) {
-            console.log(err);
-            return res.status(500).json(err);
+            return res.status(500).json({ error: "There was an error, try again later"});
         }
 
         let solved = [];
@@ -112,8 +108,7 @@ exports.getUserProfile = async (req, res, next) => {
                 }
             });
         } catch(err) {
-            console.log(err);
-            return res.status(500).json(err);
+            return res.status(500).json({ error: "There was an error, try again later"});
         }
 
         const condition = []
@@ -167,10 +162,7 @@ exports.register = (req, res, next) => {
             });
         })
         .catch((err) => {
-            console.log(err)
-            res.status(500).json({
-                error: err,
-            });
+            return res.status(500).json({ error: "There was an error, try again later"});
         });
 };
 
@@ -201,7 +193,8 @@ exports.deleteUser = async (req, res, next) => {
 
         return res.status(200).json({ message: 'User deleted successfully' });
     } catch (err) {
-        return res.status(500).json({ error: err });
+        return res.status(500).json({ error: "There was an error, try again later"});
+
     }
 };
 
@@ -254,7 +247,7 @@ exports.updateUser = (req, res, next) => {
                 }
             })
             .catch((err) => {
-                return res.status(500).json({ error: err });
+                return res.status(500).json({ error: "There was an error, try again later"});
             }
             );
     } else {

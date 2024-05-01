@@ -26,10 +26,6 @@ const useFetch = (url) => {
             } catch (err) {
                 
                 if (err.name !== 'AbortError') {
-                    console.log("error ? nah");
-                    console.log("Error Incoming ! ");
-                    console.log(err);
-                    console.log(err.status);
                     setError(err.message);
                     setIsPending(false);
                 }

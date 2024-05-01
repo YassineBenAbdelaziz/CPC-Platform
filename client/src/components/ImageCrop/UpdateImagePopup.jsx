@@ -39,7 +39,7 @@ export const UpdateImage = ({ classes, imageSrc, setImage, setChosen }) => {
       // console.log(urlToFile(croppedImage));
       setChosen(false)
     } catch (e) {
-      console.error(e)
+      //console.error(e)
     }
   }
 

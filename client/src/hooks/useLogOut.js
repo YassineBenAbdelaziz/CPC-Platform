@@ -10,12 +10,11 @@ const logout = () => {
 
     Axios.get(url + "user/logout")
     .then( (res) => {
-        console.log("Logout successful");
         setAuth({});
         
     })
     .catch( err => {
-        console.log("There was an error logging out ", err);
+        console.log("There was an error logging out ");
     })
 }
 

@@ -49,7 +49,7 @@ const EditProfile = () => {
             window.location.pathname = '/profile/' + username;
         },
         onError : (err) => {
-            console.log(err.response.data);
+            //console.log(err.response.data);
         }
     });
     
@@ -79,7 +79,7 @@ const EditProfile = () => {
                 imageDataUrl = await getRotatedImage(imageDataUrl, rotation)
             }
             } catch (e) {
-                console.warn('failed to detect the orientation')
+                //console.warn('failed to detect the orientation')
             }
 
             setImage(imageDataUrl)

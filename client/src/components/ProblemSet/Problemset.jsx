@@ -108,7 +108,7 @@ const Problemset = () => {
     }, [tagsFilter])
 
 
-    console.log(deletedTags);
+
     const handleCreateTag = () => {
         let maxId = 0;
         for (let i = 0; i < newTags.length; i++) {

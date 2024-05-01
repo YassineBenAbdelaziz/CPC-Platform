@@ -16,7 +16,6 @@ function CreateContest() {
             return await addContest(body);
         },
         onSuccess: (data) => {
-            console.log(data);
             //queryClient.invalidateQueries(["problems"]);
             //navigate('/problemset', { replace: true });
         },

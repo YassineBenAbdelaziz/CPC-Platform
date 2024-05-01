@@ -7,7 +7,7 @@ exports.get_all = (req, res, next) => {
             res.status(200).json(results);
         })
         .catch((err) => {
-            res.status(500).json({ error: err });
+            return res.status(500).json({ error: "There was an error, try again later"});
         });
 }
 
@@ -72,9 +72,7 @@ exports.getPage = async (req, res, next) => {
     }
 
     catch (err) {
-        return res.status(500).json({
-            error: err,
-        })
+        return res.status(500).json({ error: "There was an error, try again later"});
     }
 
 }
@@ -117,8 +115,7 @@ exports.create_problem = async (req, res, next) => {
     }
 
     catch (err) {
-        return res.status(500).json({ error: err.message });
-
+        return res.status(500).json({ error: "There was an error, try again later"});
     };
 }
 
@@ -135,7 +132,7 @@ exports.get_problem =  (req, res, next) => {
                 return res.status(200).json(problem);
             }
         }).catch(err => {
-            res.status(500).json({ error: err });
+            return res.status(500).json({ error: "There was an error, try again later"});
         });
 }
 
@@ -155,7 +152,7 @@ exports.get_problems_by_contest = (req, res, next) => {
                 res.status(200).json(problem);
             }
         }).catch(err => {
-            res.status(500).json({ error: err });
+            return res.status(500).json({ error: "There was an error, try again later"});
         });
 }
 
@@ -175,7 +172,7 @@ exports.get_problem_status = async (req, res, next) => {
         }
         
     } catch (err) {
-        res.status(500).json({ error : err })
+        return res.status(500).json({ error: "There was an error, try again later"});
     }
 }
 
@@ -197,7 +194,7 @@ exports.add_tag = async (req, res, next) => {
         const problemTag = await models.problem_tag.create(problem_tag)
         return res.status(201).json(problemTag);
     } catch (error) {
-        res.status(500).json({ error: err });
+        return res.status(500).json({ error: "There was an error, try again later"});
     }
 
 }
@@ -254,7 +251,7 @@ exports.update_problem = async (req, res, next) => {
         }
     }
     catch (err) {
-        return res.status(500).json({ error: err });
+        return res.status(500).json({ error: "There was an error, try again later"});
     }
 
 }
@@ -275,7 +272,7 @@ exports.delete_problem = async (req, res, next) => {
         });
 
     } catch (error) {
-        res.status(500).json({ error: err });
+        return res.status(500).json({ error: "There was an error, try again later"});
     }
 
 

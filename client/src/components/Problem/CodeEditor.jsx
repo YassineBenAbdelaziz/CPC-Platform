@@ -77,7 +77,7 @@ export default function CodeEditor({ handleSubmissions }) {
             queryClient.invalidateQueries(["submissionsPage"]);
         },
         onError: (error) => {
-            console.log(error);
+            //console.log(error);
         },
 
     });

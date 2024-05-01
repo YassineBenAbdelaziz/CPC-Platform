@@ -34,7 +34,6 @@ const validateUser = async (email, password, done) => {
         }
 
     } catch (error) {
-        console.log(error);
         done(error);
     }
 }

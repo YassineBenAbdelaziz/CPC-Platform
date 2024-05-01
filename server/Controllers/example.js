@@ -7,7 +7,7 @@ exports.get_all = (req, res, next) => {
             res.status(200).json(results);
         })
         .catch((err) => {
-            res.status(500).json({ error: err });
+            return res.status(500).json({ error: "There was an error, try again later"});
         });
 }
 
@@ -27,7 +27,7 @@ exports.get_examples_by_problem = (req, res, next) => {
                 res.status(200).json(example);
             }
         }).catch(err => {
-            res.status(500).json({ error: err });
+            return res.status(500).json({ error: "There was an error, try again later"});
         });
 }
 
@@ -45,7 +45,7 @@ exports.create_example = (req, res, next) => {
             example: example
         }))
         .catch(err => {
-            res.status(500).json({ error: err });
+            return res.status(500).json({ error: "There was an error, try again later"});
         });
 }
 
@@ -62,7 +62,7 @@ exports.get_example = (req, res, next) => {
                 res.status(200).json(example);
             }
         }).catch(err => {
-            res.status(500).json({ error: err });
+            return res.status(500).json({ error: "There was an error, try again later"});
         });
 }
 
@@ -87,7 +87,7 @@ exports.update_example = async (req, res, next) => {
             message: "Updated example with id : " + id
         });
     } catch (err) {
-        res.status(500).json({ error: err });
+        return res.status(500).json({ error: "There was an error, try again later"});
     }
 }
 
@@ -106,6 +106,6 @@ exports.delete_example = async (req, res, next) => {
             message: "Deleted example with id : " + id
         });
     } catch (err) {
-        res.status(500).json({ error: err });
+        return res.status(500).json({ error: "There was an error, try again later"});
     }
 }

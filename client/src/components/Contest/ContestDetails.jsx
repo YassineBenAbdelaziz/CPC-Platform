@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import useFetch from "../../hooks/useFetch.jsx";
 import ProblemList from "../ProblemSet/ProblemList.jsx";
 import url from '../utils/Url.js';
+import Error from '../Error/Error.jsx';
 
 const ContestDetails = () => {
     const { id } = useParams();
@@ -16,7 +17,7 @@ const ContestDetails = () => {
     return (
         <div className="content">
             <div className="contest-details">
-                {error && <div>{error}</div>}
+                {error && <Error err={error} />}
                 {isPending && <div>Loading...</div>}
                 {contest && problems && <ProblemList problemset={problems} title={contest.title} inContests={true} contestId={id} />}
             </div>

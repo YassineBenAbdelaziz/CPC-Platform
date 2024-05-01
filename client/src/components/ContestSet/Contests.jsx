@@ -72,7 +72,6 @@ const Contests = () => {
             <div className="contests">
                 {isError && <Error err={error} />}
                 {isPending && <div>Loading...</div>}
-                {console.log(isError + isPending + contests )}
                 {!isError && !isPending && contests  && contests.count === 0 &&
                     <div>No contests found, stay tuned!</div>}
 

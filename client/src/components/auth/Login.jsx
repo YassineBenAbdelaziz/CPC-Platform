@@ -34,7 +34,7 @@ const Login = () => {
             navigate(from, { replace: true });
         },
         onError : (err) => {
-            console.log(err);
+            //console.log(err);
             setMsg('Incorrect email or password');
         }
     })
