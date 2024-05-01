@@ -33,9 +33,10 @@ module.exports = (sequelize) => {
             start: {
                 type: DataTypes.TIME,
             },
-            end: {
-                type: DataTypes.TIME,
-            },
+            duration : {
+                type : DataTypes.INTEGER,
+                allowNull : false,
+            }
         },
         {
             validate : {

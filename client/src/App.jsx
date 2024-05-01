@@ -23,6 +23,7 @@ import RoleBasedRoute from './components/auth/RoleBasedRoute.jsx';
 import { QueryClient, QueryClientProvider  } from '@tanstack/react-query' ;
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools' ;
 import EditProblem from './components/AddProblem/EditProblem.jsx';
+import CreateContest from './components/ContestSet/CreateContest.jsx';
 
 const queryClient = new QueryClient();
 
@@ -45,6 +46,7 @@ function App() {
               <Route path='/contests/:id/:id' element={<ProblemDetails />}></Route>
               <Route path='/contests/:id' element={<ContestDetails />}></Route>
               <Route path='/contests' element={<Contests />}></Route>
+              <Route path='/contests/create/' element={<CreateContest />}></Route>
 
               <Route element={<ProtectedRoutes />}>
                 {/* protected routes here */}

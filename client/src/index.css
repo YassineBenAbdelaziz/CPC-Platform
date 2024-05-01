@@ -586,19 +586,7 @@ a {
 
 /* contests */
 
-.contest {
-  padding: 10px 16px;
-  margin: 20px 0;
-  border-bottom: 1px solid #fafafa;
-}
-.contest:hover {
-  box-shadow: 1px 3px 5px rgba(0,0,0,0.1);
-}
-.contest h2 {
-  font-size: 20px;
-  color: rgba(0, 0, 255, 0.601);
-  margin-bottom: 8px;
-}
+
 
 /* Section Styles */
 #team ul {

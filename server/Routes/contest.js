@@ -4,9 +4,11 @@ const {isAuth, checkRole} = require('../middlewares/authMiddlewares');
 const express = require('express');
 const router = express.Router();
 
-router.get('/', controller.getContests);
+router.get('/upcoming', controller.getUpcomingContests)
 
-router.get('/:id', controller.getContestById);
+router.post('/previous', controller.getPreviousContests);
+
+router.get('/:id/problems/', controller.getContestById);
 
 router.post('/add', isAuth, checkRole(['mod','admin']) , controller.createContest);
 

@@ -1,0 +1,77 @@
+.title {
+    width: 80px;
+    text-align: center;
+  }
+
+.flex_container {
+  display : flex ; 
+  justify-content : space-betwwen ;
+  align-items : center ;
+  margin-left: auto;
+  gap : 20px;
+  text-align : center ;
+}
+
+.table {
+  width : 100% ;
+}
+
+.title {
+  width : 50% ;
+  text-align : left ;
+}
+
+.author {
+  margin-left : auto ;
+}
+
+.contest {
+  display: flex;
+  padding: 10px 16px;
+  margin: 20px 0;
+  border-bottom: 1px solid #fafafa;
+}
+
+.contest:hover {
+  box-shadow: 1px 3px 5px rgba(0,0,0,0.1);
+}
+
+.contest h2 {
+  font-size: 20px;
+  color: rgba(0, 0, 255, 0.601);
+  margin-bottom: 8px;
+}
+
+.contest p {
+  font-size: 18px;
+  color: rgba(0, 0, 255, 0.601);
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.table_header {
+  font-size: 20px;
+}
+
+.tr {
+  text-align : center ;
+}
+
+.title_row {
+  font-size: 20px;
+  font-weight : bold ;
+  color: rgba(0, 0, 255, 0.601);
+  margin-bottom: 8px;
+  text-align : left ;
+
+}
+
+tbody .tr  td {
+  padding: 20px 0;
+  border-bottom: 1px solid #fafafa;
+}
+
+
+tbody .tr:hover {
+  box-shadow: 1px 3px 5px rgba(0,0,0,0.1);
+}
