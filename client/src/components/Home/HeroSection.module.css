@@ -1,0 +1,59 @@
+.container {
+    background-color: #F5F7FA;
+    height: 100vh; 
+    display: flex;
+    justify-content: space-around;
+    align-items: center;   
+
+}
+
+.thumbnail {
+
+}
+    
+
+.hero {
+    width: 400px ;
+    height: auto ;
+}
+
+.text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+}
+
+.title{
+    font-size: 4rem;
+}
+
+.secondLine {
+    color: rgb(81, 95, 248);
+}
+
+.button {
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.button1 {
+    background-color: rgb(81, 95, 248);
+    color: white;
+    border: 2px solid rgb(81, 95, 248);
+    margin-right: 20px;
+}
+
+.button2 {
+    background-color: #F5F7FA;
+    color: rgb(81, 95, 248);
+    border: 2px solid rgb(81, 95, 248);
+}
