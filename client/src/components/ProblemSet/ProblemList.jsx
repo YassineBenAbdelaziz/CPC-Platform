@@ -53,10 +53,10 @@ const ProblemList = ({
             </div>
             {problemset.map((problem, index) => (
                 <div className="edit-problem" key={index}>
-                    {role === "admin" || role === "mod" && problem.owner === auth?.username ?
+                    {/* {role === "admin" || role === "mod" && problem.owner === auth?.username ?
                         <button className="edit-problem-btn" onClick={() => handleEditProblem(problem.id_problem)}>Edit</button> : <></>
                         // <Link to={`/problemset/edit-problem/${problem.id_problem}`} className="edit-problem">Edit</Link> : <></>
-                    }
+                    } */}
                     <Link to={fn(problem.id_problem)}>
                         <div className="problem">
                             
